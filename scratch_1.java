@@ -41,12 +41,51 @@ class TreeNode {
 }
 
 class Scratch {
-  public static void main(String[] args) {}
-
-  public static int numRollsToTarget(int n, int k, int target) {
-
+  public static void main(String[] args) {
+    System.out.println(numRollsToTarget(1, 6, 3));
   }
 
+  public static int numRollsToTarget(int n, int k, int target) {
+    Map<String, Integer> memo = new HashMap<>();
+    return numRollsToTargetHelper(n, k, target, memo);
+  }
+
+  public static int numRollsToTargetHelper(int n, int k, int target, Map<String, Integer> memo){
+    if(n == 0 && target == 0) return 1;
+    if(n == 0 || target <= 0) return 0;
+
+    String key = n + "," + target;
+    if(memo.containsKey(key)) return memo.get(key);
+
+    int ans = 0;
+    for(int i = 1; i <= k; i++){
+      ans = (ans + numRollsToTargetHelper(n - 1, k, target - i, memo)) % 1000000007;
+    }
+
+    memo.put(key, ans);
+    return ans;
+  }
+
+  public List<List<Integer>> combinationSum3(int k, int n) {
+    List<List<Integer>> ans = new ArrayList<>();
+    helper(ans, new ArrayList<>(), k, n, 1);
+
+    return ans;
+  }
+
+
+  public void helper(List<List<Integer>> ans, List<Integer> current, int k, int n, int start){
+    if(current.size() == k && n == 0){
+      ans.add(new ArrayList<>(current));
+      return;
+    }
+
+    for(int i = start; i <= 9 && i <= n; i++){
+      current.add(i);
+      helper(ans, current, k, n - i, i + 1);
+      current.remove(current.size() - 1);
+    }
+  }
   public static boolean validMountainArray(int[] arr) {
     if (arr.length < 3) return false;
 
