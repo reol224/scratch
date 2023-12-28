@@ -47,6 +47,16 @@ class Scratch {
         System.out.println();
     }
 
+    public static boolean winnerSquareGame(int n){
+        int[] dp = new int[n + 1];
+        for(int i = 1; i <= n; i++){
+            for(int j = 1; j * j <= i; j++){
+                dp[i] |= (dp[i - j * j] == 0) ? 1 : 0;
+            }
+        }
+
+        return dp[n] == 1;
+    }
     public static int numIslands(char[][] grid) {
         //bfs
         if(grid == null || grid.length == 0 || grid[0].length == 0){
