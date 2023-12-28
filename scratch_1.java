@@ -44,22 +44,60 @@ class TreeNode {
 
 class Scratch {
     public static void main(String[] args) {
-        System.out.println();
+        System.out.println(threeSum(new int[]{-1, 0, 1, 2, -1, -4}));
     }
 
-    public static boolean winnerSquareGame(int n){
+    public static List<List<Integer>> threeSum(int[] nums) {
+        List<List<Integer>> ans = new ArrayList<>();
+
+        if(nums.length < 3) return ans;
+
+        Arrays.sort(nums);
+
+        for(int i = 0; i < nums.length - 2; i++){
+            //skip dps
+            if(i > 0 && nums[i] == nums[i - 1]) continue;
+
+            int target = -nums[i];
+            int left = i + 1;
+            int right = nums.length - 1;
+
+            while(left < right){
+                int sum = nums[left] + nums[right];
+
+                if(sum == target){
+                    ans.add(Arrays.asList(nums[i], nums[left], nums[right]));
+
+                    while(left < right && nums[left] == nums[left + 1]) left++;
+                    while(left < right && nums[right] == nums[right - 1]) right--;
+
+                    left++;
+                    right--;
+                } else if (sum < target){
+                    left++;
+                } else {
+                    right--;
+                }
+            }
+        }
+
+        return ans;
+    }
+
+    public static boolean winnerSquareGame(int n) {
         int[] dp = new int[n + 1];
-        for(int i = 1; i <= n; i++){
-            for(int j = 1; j * j <= i; j++){
+        for (int i = 1; i <= n; i++) {
+            for (int j = 1; j * j <= i; j++) {
                 dp[i] |= (dp[i - j * j] == 0) ? 1 : 0;
             }
         }
 
         return dp[n] == 1;
     }
+
     public static int numIslands(char[][] grid) {
         //bfs
-        if(grid == null || grid.length == 0 || grid[0].length == 0){
+        if (grid == null || grid.length == 0 || grid[0].length == 0) {
             return 0;
         }
 
@@ -67,9 +105,9 @@ class Scratch {
         int cols = grid[0].length;
         int numIslands = 0;
 
-        for(int i = 0; i < rows; i++){
-            for(int j = 0; j < cols; j++){
-                if(grid[i][j] == '1'){
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                if (grid[i][j] == '1') {
                     numIslands++;
                     numberOfIslandsDfs(grid, i, j);
                 }
@@ -94,6 +132,7 @@ class Scratch {
         numberOfIslandsDfs(grid, i, j + 1);
         numberOfIslandsDfs(grid, i, j - 1);
     }
+
     public static boolean canFinish(int numCourses, int[][] prerequisites) {
         //https://leetcode.com/problems/course-schedule/
         return true;
@@ -2657,29 +2696,29 @@ class Scratch {
         return count;
     }
 
-    public static List<List<Integer>> threeSum(int[] nums) {
-        // doesnt handle duplicates
-        List<List<Integer>> ans = new ArrayList<>();
-        int i = 0;
-        while (i < nums.length - 2) {
-            int j = i + 1;
-            while (j < nums.length - 1) {
-                int k = j + 1;
-                while (k < nums.length) {
-                    if (nums[i] + nums[j] + nums[k] == 0) {
-                        List<Integer> triplet = Arrays.asList(nums[i], nums[j], nums[k]);
-                        if (!ans.contains(triplet)) {
-                            ans.add(triplet);
-                        }
-                    }
-                    k++;
-                }
-                j++;
-            }
-            i++;
-        }
-        return ans;
-    }
+//    public static List<List<Integer>> threeSum(int[] nums) {
+//        // doesnt handle duplicates
+//        List<List<Integer>> ans = new ArrayList<>();
+//        int i = 0;
+//        while (i < nums.length - 2) {
+//            int j = i + 1;
+//            while (j < nums.length - 1) {
+//                int k = j + 1;
+//                while (k < nums.length) {
+//                    if (nums[i] + nums[j] + nums[k] == 0) {
+//                        List<Integer> triplet = Arrays.asList(nums[i], nums[j], nums[k]);
+//                        if (!ans.contains(triplet)) {
+//                            ans.add(triplet);
+//                        }
+//                    }
+//                    k++;
+//                }
+//                j++;
+//            }
+//            i++;
+//        }
+//        return ans;
+//    }
 
     public static String addStrings(String num1, String num2) {
         long n1 = Long.parseLong(num1);
