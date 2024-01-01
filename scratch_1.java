@@ -44,36 +44,88 @@ class TreeNode {
 
 class Scratch {
     public static void main(String[] args) {
-        System.out.println(threeSum(new int[]{-1, 0, 1, 2, -1, -4}));
+        System.out.println(Arrays.toString(numberGame(new int[]{5, 4, 2, 3})));
+    }
+
+    public static boolean makeEqual(String[] words) {
+        Map<Character, Integer> map = new HashMap<>();
+        for(String word : words){
+            for(char c : word.toCharArray()){
+                map.put(c, map.getOrDefault(c, 0) + 1);
+            }
+        }
+
+        for(char c : map.keySet()){
+            if(map.get(c) % words.length != 0){
+                return false;
+            }
+        }
+
+        return true;
+    }
+    public static int[] numberGame(int[] nums) {
+        Arrays.sort(nums);
+        for(int i = 1; i < nums.length; i += 2){
+            int temp = nums[i];
+            nums[i] = nums[i - 1];
+            nums[i - 1] = temp;
+        }
+
+        return nums;
+    }
+    public int minDifficulty(int[] jobDifficulty, int d) {
+        int n = jobDifficulty.length;
+        if (d > n) return -1;
+        int[][] dp = new int[d][n];
+        for (int i = 1; i < d; i++) {
+            Arrays.fill(dp[i], Integer.MAX_VALUE);
+        }
+        int maxDifficulty = 0;
+        for (int i = 0; i <= n - d; i++) {
+            maxDifficulty = Math.max(maxDifficulty, jobDifficulty[i]);
+            dp[0][i] = maxDifficulty;
+        }
+        for (int i = 1; i < d; i++) {
+            for (int j = i; j <= n - d + i; j++) {
+                int currentDayDifficulty = jobDifficulty[j];
+                int result = Integer.MAX_VALUE;
+                for (int k = j - 1; k >= i - 1; k--) {
+                    result = Math.min(result, dp[i - 1][k] + currentDayDifficulty);
+                    currentDayDifficulty = Math.max(currentDayDifficulty, jobDifficulty[k]);
+                }
+                dp[i][j] = result;
+            }
+        }
+        return dp[d - 1][n - 1];
     }
 
     public static List<List<Integer>> threeSum(int[] nums) {
         List<List<Integer>> ans = new ArrayList<>();
 
-        if(nums.length < 3) return ans;
+        if (nums.length < 3) return ans;
 
         Arrays.sort(nums);
 
-        for(int i = 0; i < nums.length - 2; i++){
+        for (int i = 0; i < nums.length - 2; i++) {
             //skip dps
-            if(i > 0 && nums[i] == nums[i - 1]) continue;
+            if (i > 0 && nums[i] == nums[i - 1]) continue;
 
             int target = -nums[i];
             int left = i + 1;
             int right = nums.length - 1;
 
-            while(left < right){
+            while (left < right) {
                 int sum = nums[left] + nums[right];
 
-                if(sum == target){
+                if (sum == target) {
                     ans.add(Arrays.asList(nums[i], nums[left], nums[right]));
 
-                    while(left < right && nums[left] == nums[left + 1]) left++;
-                    while(left < right && nums[right] == nums[right - 1]) right--;
+                    while (left < right && nums[left] == nums[left + 1]) left++;
+                    while (left < right && nums[right] == nums[right - 1]) right--;
 
                     left++;
                     right--;
-                } else if (sum < target){
+                } else if (sum < target) {
                     left++;
                 } else {
                     right--;
@@ -594,7 +646,7 @@ class Scratch {
 
         return (nums[0] * nums[1]) - (nums[nums.length - 1] * nums[nums.length - 2]);
     }
-
+    
     public static String largestNumber(int[] nums) {
         // https://leetcode.com/problems/remove-duplicate-letters/
 
