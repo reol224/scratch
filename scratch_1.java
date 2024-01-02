@@ -44,28 +44,140 @@ class TreeNode {
 
 class Scratch {
     public static void main(String[] args) {
-        System.out.println(Arrays.toString(numberGame(new int[]{5, 4, 2, 3})));
+        System.out.println(findMatrix(new int[]{1, 3, 4, 1, 2, 3, 1}));
+    }
+
+    public static List<List<Integer>> findMatrix(int[] nums) {
+        int[] freq = new int[nums.length + 1];
+        List<List<Integer>> ans = new ArrayList<>();
+
+        for (int num : nums) {
+            if (freq[num] >= ans.size()) {
+                ans.add(new ArrayList<>());
+            }
+
+            ans.get(freq[num]).add(num);
+            freq[num]++;
+        }
+
+        return ans;
+    }
+
+    public static boolean wordBreak(String s, List<String> wordDict) {
+        Set<String> set = new HashSet<>(wordDict);
+        int n = s.length();
+        boolean[] dp = new boolean[n + 1];
+        dp[0] = true;
+
+        for (int i = 1; i <= n; i++) {
+            for (int j = 0; j < i; j++) {
+                if (dp[j] && set.contains(s.substring(j, i))) {
+                    dp[i] = true;
+                    break;
+                }
+            }
+        }
+
+        return dp[n];
+    }
+
+    public static int minExtraChar(String s, String[] dictionary) {
+        int[] dp = new int[s.length() + 1];
+        Arrays.fill(dp, Integer.MAX_VALUE);
+        dp[0] = 0;
+
+        for (int i = 1; i <= s.length(); i++) {
+            for (String word : dictionary) {
+                if (i >= word.length() && s.startsWith(word, i - word.length())) {
+                    dp[i] = Math.min(dp[i], dp[i - word.length()]);
+                }
+            }
+
+            dp[i] = Math.min(dp[i], dp[i - 1] + 1);
+        }
+
+        return dp[s.length()];
+    }
+
+    public static int bestClosingTime(String customers) {
+        int y = 0;
+        int n = 0;
+
+        for (char c : customers.toCharArray()) {
+            if (c == 'Y') {
+                y++;
+            } else {
+                n++;
+            }
+        }
+
+        int profit = n;
+        int loss = y;
+        int[] ans = new int[customers.length() + 1];
+        ans[0] = profit - loss;
+
+        for (int i = 1; i <= customers.length(); i++) {
+            char c = customers.charAt(i - 1);
+            if (c == 'Y') {
+                profit++;
+            } else {
+                loss++;
+            }
+
+            ans[i] = profit - loss;
+        }
+
+        int iCopy = 0;
+        int max = Integer.MIN_VALUE;
+        for (int i = 0; i <= customers.length(); i++) {
+            if (ans[i] > max) {
+                max = ans[i];
+                iCopy = i;
+            }
+        }
+
+        return iCopy;
+    }
+
+    public static int findContentChildren(int[] greed, int[] cookies) {
+        Arrays.sort(greed);
+        Arrays.sort(cookies);
+
+        int content = 0;
+        int i = 0;
+        int j = 0;
+
+        while (i < greed.length && j < cookies.length) {
+            if (cookies[j] >= greed[i]) {
+                content++;
+                i++;
+            }
+            j++;
+        }
+
+        return content;
     }
 
     public static boolean makeEqual(String[] words) {
         Map<Character, Integer> map = new HashMap<>();
-        for(String word : words){
-            for(char c : word.toCharArray()){
+        for (String word : words) {
+            for (char c : word.toCharArray()) {
                 map.put(c, map.getOrDefault(c, 0) + 1);
             }
         }
 
-        for(char c : map.keySet()){
-            if(map.get(c) % words.length != 0){
+        for (char c : map.keySet()) {
+            if (map.get(c) % words.length != 0) {
                 return false;
             }
         }
 
         return true;
     }
+
     public static int[] numberGame(int[] nums) {
         Arrays.sort(nums);
-        for(int i = 1; i < nums.length; i += 2){
+        for (int i = 1; i < nums.length; i += 2) {
             int temp = nums[i];
             nums[i] = nums[i - 1];
             nums[i - 1] = temp;
@@ -73,6 +185,7 @@ class Scratch {
 
         return nums;
     }
+
     public int minDifficulty(int[] jobDifficulty, int d) {
         int n = jobDifficulty.length;
         if (d > n) return -1;
@@ -506,7 +619,6 @@ class Scratch {
             sum += current.get(i);
             if (sum == targetSum) {
                 ans[0]++;
-                ;
             }
         }
 
@@ -646,7 +758,7 @@ class Scratch {
 
         return (nums[0] * nums[1]) - (nums[nums.length - 1] * nums[nums.length - 2]);
     }
-    
+
     public static String largestNumber(int[] nums) {
         // https://leetcode.com/problems/remove-duplicate-letters/
 
