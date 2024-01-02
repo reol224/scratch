@@ -42,11 +42,71 @@ class TreeNode {
     }
 }
 
+class TrieNode {
+    Map<Character, TrieNode> children;
+    int count;
+
+    public TrieNode() {
+        this.children = new HashMap<>();
+        this.count = 0;
+    }
+}
+
 class Scratch {
     public static void main(String[] args) {
-        System.out.println(findMatrix(new int[]{1, 3, 4, 1, 2, 3, 1}));
+        System.out.println(maximumLength("aaaa"));
     }
 
+    public int incremovableSubarrayCount(int[] nums) {
+
+    }
+    public static int maximumLength(String s) {
+        int ans = -1;
+        char[] arr = s.toCharArray();
+        Map<String, Integer> map = new HashMap<>();
+
+        for(int i = 0; i < arr.length; i++){
+            for(int j = i; j < arr.length; j++){
+                String current = s.substring(i , j + 1);
+                map.put(current, map.getOrDefault(current, 0) + 1);
+            }
+        }
+
+        for(String str : map.keySet()){
+            if(map.get(str) >= 3){
+                boolean flag = true;
+
+                for(int i = 1; i < str.length() && flag; i++){
+                    if(str.charAt(i) != str.charAt(0)) {
+                        flag = false;
+                    }
+                }
+
+                if(flag){
+                    ans = Math.max(ans, str.length());
+                }
+            }
+        }
+
+
+        return ans;
+    }
+    public static boolean hasTrailingZeros(int[] nums) {
+        int count = 0;
+        for(int i = 0; i < nums.length; i++){
+            for(int j = 0; j < nums.length; j++){
+                int check = nums[i] | nums[j];
+                String stringCheck = Integer.toBinaryString(check);
+                System.out.println("number " + nums[i] + " and number " + nums[j] + " =check is " + stringCheck);
+                if(stringCheck.endsWith("00") || stringCheck.endsWith("0")){
+                    count++;
+                    System.out.println("COUNTED FOR " + nums[i] + " AND " + nums[j]);
+                }
+            }
+        }
+
+        return count >= 2;
+    }
     public static List<List<Integer>> findMatrix(int[] nums) {
         int[] freq = new int[nums.length + 1];
         List<List<Integer>> ans = new ArrayList<>();
