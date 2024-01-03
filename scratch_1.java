@@ -54,35 +54,78 @@ class TrieNode {
 
 class Scratch {
     public static void main(String[] args) {
-        System.out.println(maximumLength("aaaa"));
+        System.out.println(containsNearbyAlmostDuplicate(new int[]{1,5,9,1,5,9}, 2, 3));
+    }
+
+    public int lengthOfLastWord(String s) {
+
+    }
+    public static boolean containsNearbyAlmostDuplicate(int[] nums, int indexDiff, int valueDiff) {
+        //optimal
+//        if (nums == null || nums.length == 0 || k <= 0 || t < 0) {
+//            return false;
+//        }
+//        TreeSet<Long> set = new TreeSet<>();
+//        for (int i = 0; i < nums.length; i++) {
+//            long num = (long) nums[i];
+//            Long floor = set.floor(num);
+//            if (floor != null && num - floor <= t) {
+//                return true;
+//            }
+//            Long ceiling = set.ceiling(num);
+//            if (ceiling != null && ceiling - num <= t) {
+//                return true;
+//            }
+//            set.add(num);
+//            if (i >= k) {
+//                set.remove((long) nums[i - k]);
+//            }
+//        }
+//        return false;
+        //TLE
+        int i = 0;
+        boolean found = false;
+        while (i < nums.length && !found) {
+            int j = i + 1;
+            while (j < nums.length && !found) {
+                if (i != j && Math.abs(i - j) <= indexDiff && Math.abs(nums[i] - nums[j]) <= valueDiff) {
+                    found = true;
+                }
+                j++;
+            }
+            i++;
+        }
+
+        return found;
     }
 
     public int incremovableSubarrayCount(int[] nums) {
-
+        return 0;
     }
+
     public static int maximumLength(String s) {
         int ans = -1;
         char[] arr = s.toCharArray();
         Map<String, Integer> map = new HashMap<>();
 
-        for(int i = 0; i < arr.length; i++){
-            for(int j = i; j < arr.length; j++){
-                String current = s.substring(i , j + 1);
+        for (int i = 0; i < arr.length; i++) {
+            for (int j = i; j < arr.length; j++) {
+                String current = s.substring(i, j + 1);
                 map.put(current, map.getOrDefault(current, 0) + 1);
             }
         }
 
-        for(String str : map.keySet()){
-            if(map.get(str) >= 3){
+        for (String str : map.keySet()) {
+            if (map.get(str) >= 3) {
                 boolean flag = true;
 
-                for(int i = 1; i < str.length() && flag; i++){
-                    if(str.charAt(i) != str.charAt(0)) {
+                for (int i = 1; i < str.length() && flag; i++) {
+                    if (str.charAt(i) != str.charAt(0)) {
                         flag = false;
                     }
                 }
 
-                if(flag){
+                if (flag) {
                     ans = Math.max(ans, str.length());
                 }
             }
@@ -91,14 +134,15 @@ class Scratch {
 
         return ans;
     }
+
     public static boolean hasTrailingZeros(int[] nums) {
         int count = 0;
-        for(int i = 0; i < nums.length; i++){
-            for(int j = 0; j < nums.length; j++){
+        for (int i = 0; i < nums.length; i++) {
+            for (int j = 0; j < nums.length; j++) {
                 int check = nums[i] | nums[j];
                 String stringCheck = Integer.toBinaryString(check);
                 System.out.println("number " + nums[i] + " and number " + nums[j] + " =check is " + stringCheck);
-                if(stringCheck.endsWith("00") || stringCheck.endsWith("0")){
+                if (stringCheck.endsWith("00") || stringCheck.endsWith("0")) {
                     count++;
                     System.out.println("COUNTED FOR " + nums[i] + " AND " + nums[j]);
                 }
@@ -107,6 +151,7 @@ class Scratch {
 
         return count >= 2;
     }
+
     public static List<List<Integer>> findMatrix(int[] nums) {
         int[] freq = new int[nums.length + 1];
         List<List<Integer>> ans = new ArrayList<>();
