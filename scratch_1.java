@@ -54,12 +54,122 @@ class TrieNode {
 
 class Scratch {
     public static void main(String[] args) {
-        System.out.println(containsNearbyAlmostDuplicate(new int[]{1,5,9,1,5,9}, 2, 3));
+        System.out.println(minimumOperations(new int[]{1,5,0,3,5}));
     }
 
-    public int lengthOfLastWord(String s) {
+    public static int minimumOperations(int[] nums) {
+        Set<Integer> set = new HashSet<>();
 
+        for(int num : nums){
+            if(num != 0) set.add(num);
+        }
+
+        return set.size();
     }
+    public static int longestNiceSubarray(int[] nums) {
+        int left = 0;
+        int ans = 0;
+
+        for(int right = 0; right < nums.length; right++){
+            while(left < right && check(nums, left ,right)) left++;
+
+            ans = Math.max(ans, right - left + 1);
+        }
+
+        return ans;
+    }
+
+    public static boolean check(int[] nums, int left, int right){
+        for(int i = left; i < right; i++){
+            if((nums[i] & nums[right]) != 0) return true;
+        }
+
+        return false;
+    }
+    public static long dividePlayers(int[] skill) {
+        Arrays.sort(skill);
+        long chemistry = 0;
+
+        int firstPair = skill[0] + skill[skill.length - 1];
+
+        for(int i = 0; i < skill.length / 2; i++){
+            int current = skill[i];
+            int currentLast = skill[skill.length - 1 - i];
+
+            //checking if total skill is the same
+            if(firstPair != current + currentLast) return - 1;
+            chemistry += (long) currentLast * current;
+        }
+
+        return chemistry;
+    }
+    public static int pivotInteger(int n) {
+        int left = 0;
+        int right = n;
+        int pivot;
+
+        while(left <= right){
+            pivot = left + (right - left) / 2;
+
+            long firstSum = (long) pivot * (pivot + 1) / 2;
+            long secondSum = (long) (n - pivot + 1) * (n + pivot) / 2;
+
+            if(firstSum == secondSum){
+                return pivot;
+            } else {
+                if(firstSum < secondSum){
+                    left = pivot + 1;
+                } else {
+                    right = pivot - 1;
+                }
+            }
+        }
+
+        return -1;
+    }
+    public static boolean findSubarrays(int[] nums) {
+        Set<Integer> set = new HashSet<>();
+        for (int i = 0; i < nums.length - 1; i++) {
+            int sum = nums[i] + nums[i + 1];
+            if (!set.add(sum)) return true;
+        }
+
+        return false;
+    }
+
+    public int minimumRounds(int[] tasks) {
+        int ans = 0;
+        Map<Integer, Integer> map = new HashMap<>();
+
+        for (int num : tasks) {
+            map.put(num, map.getOrDefault(num, 0) + 1);
+        }
+
+        for (int value : map.values()) {
+            if (value == 1) return -1;
+
+            ans += (int) Math.ceil((double) value / 3);
+        }
+
+        return ans;
+    }
+
+    public static int lengthOfLastWord(String s) {
+        s = s.trim();
+        if (s.isEmpty() || s.equals(" ")) return 0;
+        int length = 0;
+        char[] arr = s.toCharArray();
+        for (int i = arr.length - 1; i >= 0; i--) {
+            if (arr[i] != ' ') {
+                length++;
+            } else {
+                break;
+            }
+        }
+
+        return length;
+    }
+
     public static boolean containsNearbyAlmostDuplicate(int[] nums, int indexDiff, int valueDiff) {
         //optimal
 //        if (nums == null || nums.length == 0 || k <= 0 || t < 0) {
