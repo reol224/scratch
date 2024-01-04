@@ -54,7 +54,31 @@ class TrieNode {
 
 class Scratch {
     public static void main(String[] args) {
-        System.out.println(minimumOperations(new int[]{1,5,0,3,5}));
+        System.out.println(maximumSum(new int[]{18,43,36,13,7}));
+    }
+
+    public static int maximumSum(int[] nums) {
+        //2342 TLE
+        int max = -1;
+
+        for(int i = 0; i < nums.length; i++) {
+            for (int j = i + 1; j < nums.length; j++) {
+                if (sum(nums[i]) == sum(nums[j])) {
+                    max = Math.max(max, nums[i] + nums[j]);
+                }
+            }
+        }
+        return max;
+    }
+
+    public static int sum(int num){
+        int sum = 0;
+        while(num > 0){
+            sum += num % 10;
+            num /= 10;
+        }
+
+        return sum;
     }
 
     public static int minimumOperations(int[] nums) {
