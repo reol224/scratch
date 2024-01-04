@@ -54,7 +54,20 @@ class TrieNode {
 
 class Scratch {
     public static void main(String[] args) {
-        System.out.println(maximumSum(new int[]{18,43,36,13,7}));
+        System.out.println(averageValue(new int[]{1,3,6,10,12,15}));
+    }
+
+    public static int averageValue(int[] nums) {
+        int ans = 0;
+        int count = 0;
+        for(int i = 0; i < nums.length; i++){
+            if(nums[i] % 2 == 0 && nums[i] % 3 == 0){
+                ans += nums[i];
+                count++;
+            }
+        }
+
+        return count == 0 ? 0 : ans / count;
     }
 
     public static int maximumSum(int[] nums) {
