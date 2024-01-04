@@ -59,15 +59,32 @@ class Scratch {
 
     public static int maximumSum(int[] nums) {
         //2342 TLE
+//        int max = -1;
+//
+//        for(int i = 0; i < nums.length; i++) {
+//            for (int j = i + 1; j < nums.length; j++) {
+//                if (sum(nums[i]) == sum(nums[j])) {
+//                    max = Math.max(max, nums[i] + nums[j]);
+//                }
+//            }
+//        }
+//        return max;
+
+        Map<Integer, Integer> map = new HashMap<>();
         int max = -1;
 
-        for(int i = 0; i < nums.length; i++) {
-            for (int j = i + 1; j < nums.length; j++) {
-                if (sum(nums[i]) == sum(nums[j])) {
-                    max = Math.max(max, nums[i] + nums[j]);
-                }
+        for(int num : nums){
+            int sum = sum(num);
+
+            if(map.containsKey(sum)){
+                int other = map.get(sum);
+                max = Math.max(max, num + other);
+                map.put(sum, Math.max(other, num));
+            } else {
+                map.put(sum, num);
             }
         }
+
         return max;
     }
 
