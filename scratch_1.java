@@ -54,14 +54,109 @@ class TrieNode {
 
 class Scratch {
     public static void main(String[] args) {
-        System.out.println(averageValue(new int[]{1,3,6,10,12,15}));
+        System.out.println();
     }
+
+    public boolean isNStraightHand(int[] hand, int groupSize) {
+        //same as https://leetcode.com/problems/divide-array-in-sets-of-k-consecutive-numbers/
+        Map<Integer, Integer> map = new HashMap<>();
+        for(int card : hand){
+            map.put(card, map.getOrDefault(card, 0) + 1);
+        }
+
+        Arrays.sort(hand);
+
+        for (int k : hand) {
+            if (map.get(k) == 0) continue;
+
+            for (int j = 0; j < groupSize; j++) {
+                int current = k + j;
+
+                if (map.getOrDefault(current, 0) == 0) return false;
+
+                map.put(current, map.get(current) - 1);
+            }
+        }
+
+        return true;
+    }
+    public static int maxEvents(int[][] events) {
+        //TODO IDK HAVEN'T SOLVED IT YET
+        Arrays.sort(events, Comparator.comparingInt(a -> a[1]));
+
+        PriorityQueue<Integer> heap = new PriorityQueue<>();
+        int max = 0;
+        int day = 1;
+        int n = events.length;
+        int event = 0;
+
+        while(day <= 100000 && (event < n || !heap.isEmpty())){
+            //events for today
+            while(event < n && events[event][0] == day){
+                heap.offer(events[event++][1]);
+            }
+
+            //remove what has already ended
+            while(!heap.isEmpty() && heap.peek() < day){
+                heap.poll();
+            }
+
+            //attend
+            if(!heap.isEmpty()){
+                heap.poll();
+                max++;
+            }
+
+            day++;
+        }
+
+        return max;
+    }
+    public long maxTaxiEarnings(int n, int[][] rides) {
+        Arrays.sort(rides, Comparator.comparingInt(a -> a[1]));
+        long[] dp = new long[n + 1];
+        int j = 0;
+
+        for(int i = 1; i < dp.length; i++){
+            dp[i] = dp[i - 1];
+
+            while(j < rides.length && i == rides[j][1]){
+                int[] ride = rides[j++];
+                dp[i] = Math.max(dp[i], dp[ride[0]] + ride[1] - ride[0] + ride[2]);
+            }
+        }
+
+        return dp[n];
+    }
+
+    public String largestNumber(int[] nums) {
+        String[] arr = new String[nums.length];
+        for(int i = 0; i < nums.length; i++){
+            arr[i] = String.valueOf(nums[i]);
+        }
+
+        StringBuilder sb = new StringBuilder();
+        Arrays.sort(arr, (a, b) -> (b + a).compareTo(a + b));
+
+        for(String s : arr){
+            sb.append(s);
+        }
+
+        String ans = sb.toString();
+
+        return ans.startsWith("0") ? "0" : ans;
+    }
+
+//    public List<Boolean> prefixesDivBy5(int[] nums) {
+//        //https://leetcode.com/problems/binary-prefix-divisible-by-5/description/
+//        return new List<Boolean>{true, false};
+//    }
 
     public static int averageValue(int[] nums) {
         int ans = 0;
         int count = 0;
-        for(int i = 0; i < nums.length; i++){
-            if(nums[i] % 2 == 0 && nums[i] % 3 == 0){
+        for (int i = 0; i < nums.length; i++) {
+            if (nums[i] % 2 == 0 && nums[i] % 3 == 0) {
                 ans += nums[i];
                 count++;
             }
@@ -86,10 +181,10 @@ class Scratch {
         Map<Integer, Integer> map = new HashMap<>();
         int max = -1;
 
-        for(int num : nums){
+        for (int num : nums) {
             int sum = sum(num);
 
-            if(map.containsKey(sum)){
+            if (map.containsKey(sum)) {
                 int other = map.get(sum);
                 max = Math.max(max, num + other);
                 map.put(sum, Math.max(other, num));
@@ -101,9 +196,9 @@ class Scratch {
         return max;
     }
 
-    public static int sum(int num){
+    public static int sum(int num) {
         int sum = 0;
-        while(num > 0){
+        while (num > 0) {
             sum += num % 10;
             num /= 10;
         }
@@ -114,18 +209,19 @@ class Scratch {
     public static int minimumOperations(int[] nums) {
         Set<Integer> set = new HashSet<>();
 
-        for(int num : nums){
-            if(num != 0) set.add(num);
+        for (int num : nums) {
+            if (num != 0) set.add(num);
         }
 
         return set.size();
     }
+
     public static int longestNiceSubarray(int[] nums) {
         int left = 0;
         int ans = 0;
 
-        for(int right = 0; right < nums.length; right++){
-            while(left < right && check(nums, left ,right)) left++;
+        for (int right = 0; right < nums.length; right++) {
+            while (left < right && check(nums, left, right)) left++;
 
             ans = Math.max(ans, right - left + 1);
         }
@@ -133,45 +229,47 @@ class Scratch {
         return ans;
     }
 
-    public static boolean check(int[] nums, int left, int right){
-        for(int i = left; i < right; i++){
-            if((nums[i] & nums[right]) != 0) return true;
+    public static boolean check(int[] nums, int left, int right) {
+        for (int i = left; i < right; i++) {
+            if ((nums[i] & nums[right]) != 0) return true;
         }
 
         return false;
     }
+
     public static long dividePlayers(int[] skill) {
         Arrays.sort(skill);
         long chemistry = 0;
 
         int firstPair = skill[0] + skill[skill.length - 1];
 
-        for(int i = 0; i < skill.length / 2; i++){
+        for (int i = 0; i < skill.length / 2; i++) {
             int current = skill[i];
             int currentLast = skill[skill.length - 1 - i];
 
             //checking if total skill is the same
-            if(firstPair != current + currentLast) return - 1;
+            if (firstPair != current + currentLast) return -1;
             chemistry += (long) currentLast * current;
         }
 
         return chemistry;
     }
+
     public static int pivotInteger(int n) {
         int left = 0;
         int right = n;
         int pivot;
 
-        while(left <= right){
+        while (left <= right) {
             pivot = left + (right - left) / 2;
 
             long firstSum = (long) pivot * (pivot + 1) / 2;
             long secondSum = (long) (n - pivot + 1) * (n + pivot) / 2;
 
-            if(firstSum == secondSum){
+            if (firstSum == secondSum) {
                 return pivot;
             } else {
-                if(firstSum < secondSum){
+                if (firstSum < secondSum) {
                     left = pivot + 1;
                 } else {
                     right = pivot - 1;
@@ -181,6 +279,7 @@ class Scratch {
 
         return -1;
     }
+
     public static boolean findSubarrays(int[] nums) {
         Set<Integer> set = new HashSet<>();
         for (int i = 0; i < nums.length - 1; i++) {
@@ -1026,12 +1125,6 @@ class Scratch {
         Arrays.sort(nums);
 
         return (nums[0] * nums[1]) - (nums[nums.length - 1] * nums[nums.length - 2]);
-    }
-
-    public static String largestNumber(int[] nums) {
-        // https://leetcode.com/problems/remove-duplicate-letters/
-
-        return "";
     }
 
     public static int jump2(int[] nums) {
