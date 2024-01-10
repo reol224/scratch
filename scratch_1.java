@@ -54,9 +54,33 @@ class TrieNode {
 
 class Scratch {
     public static void main(String[] args) {
-        System.out.println(maximumSetSize(new int[]{1,1,1,1}, new int[]{12,23,41,9}));
+        System.out.println(matchPlayersAndTrainers(new int[]{2}, new int[]{1}));
     }
 
+    public static int matchPlayersAndTrainers(int[] players, int[] trainers) {
+        if (trainers.length == 1 && players.length == 1 && players[0] <= trainers[0]) return 1;
+
+        Arrays.sort(players);
+        Arrays.sort(trainers);
+
+        int count = 0;
+
+        int i = 0;
+        int j = 0;
+
+        while(i < players.length && j < trainers.length){
+            if(players[i] <= trainers[j]){
+                count++;
+                i++;
+                j++;
+            } else if (players[i] > trainers[j]){
+                j++;
+            }
+
+        }
+
+        return count;
+    }
     public int rangeSumBST(TreeNode root, int low, int high) {
         if(root == null) return 0;
 
@@ -72,7 +96,7 @@ class Scratch {
         int n = nums.length;
         int total_count = 0;
 
-        HashMap<Integer, Integer>[] dp = new HashMap[n];
+        Map<Integer, Integer>[] dp = new HashMap[n];
 
         for (int i = 0; i < n; ++i) {
             dp[i] = new HashMap<>();
