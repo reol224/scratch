@@ -54,9 +54,48 @@ class TrieNode {
 
 class Scratch {
     public static void main(String[] args) {
-        System.out.println(matchPlayersAndTrainers(new int[]{2}, new int[]{1}));
+        System.out.println(isLongPressedName("alex", "aaleex"));
     }
 
+    public int diff = 0;
+    public int maxAncestorDiff(TreeNode root) {
+        if(root == null) return 0;
+
+        int min = root.val;
+        int max = root.val;
+
+        diff(root, min, max);
+
+        return diff;
+    }
+
+    public void diff(TreeNode root, int min, int max){
+        if(root == null) return;
+
+        diff = Math.max(diff, Math.max(Math.abs(min - root.val), Math.abs(max - root.val)));
+        min = Math.min(min, root.val);
+        max = Math.max(max, root.val);
+
+        diff(root.left, min, max);
+        diff(root.right, min, max);
+    }
+
+    public static boolean isLongPressedName(String name, String typed) {
+        int i = 0, j = 0;
+
+        while (j < typed.length()) {
+            if (i < name.length() && name.charAt(i) == typed.charAt(j)) {
+                i++;
+                j++;
+            } else if (j > 0 && typed.charAt(j) == typed.charAt(j - 1)) {
+                j++;
+            } else {
+                return false;
+            }
+        }
+
+        return i == name.length();
+    }
     public static int matchPlayersAndTrainers(int[] players, int[] trainers) {
         if (trainers.length == 1 && players.length == 1 && players[0] <= trainers[0]) return 1;
 
