@@ -2,6 +2,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.*;
+import java.util.stream.IntStream;
 
 class ListNode {
     int val;
@@ -54,8 +55,70 @@ class TrieNode {
 
 class Scratch {
     public static void main(String[] args) {
-        System.out.println(isLongPressedName("alex", "aaleex"));
+        System.out.println(halvesAreAlike("book"));
     }
+
+    public static int longestSubsequence(String s, int k) {
+
+    }
+    public static int minStepsII(String s, String t) {
+        int[] first = new int[26];
+        int[] second = new int[26];
+
+        for(char c : s.toCharArray()) first[c - 'a']++;
+        for(char c : t.toCharArray()) second[c - 'a']++;
+
+        int ans = 0;
+
+        for(int i = 0; i < 26; i++){
+            ans += Math.abs(first[i] - second[i]);
+        }
+
+        return ans;
+    }
+    public int minStepsI(String s, String t) {
+       int[] first = new int[26];
+       int[] second = new int[26];
+
+       for(char c : s.toCharArray()) first[c - 'a']++;
+       for(char c : t.toCharArray()) second[c - 'a']++;
+
+       int ans = 0;
+
+       for(int i = 0; i < 26; i++){
+           ans += Math.abs(first[i] - second[i]);
+       }
+
+       return ans / 2;
+    }
+
+    public static boolean halvesAreAlike(String s) {
+        int first = 0;
+        int second = 0;
+        Set<Character> vowels = new HashSet<>();
+        vowels.add('a');
+        vowels.add('e');
+        vowels.add('i');
+        vowels.add('o');
+        vowels.add('u');
+        vowels.add('A');
+        vowels.add('E');
+        vowels.add('I');
+        vowels.add('O');
+        vowels.add('U');
+
+        for(int i = 0; i < s.length() / 2; i++){
+            if(vowels.contains(s.charAt(i))) first++;
+        }
+
+        for(int i = s.length() / 2; i < s.length(); i++){
+            if(vowels.contains(s.charAt(i))) second++;
+        }
+
+        return first == second;
+
+    }
+
 
     public int diff = 0;
     public int maxAncestorDiff(TreeNode root) {
