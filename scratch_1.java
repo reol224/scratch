@@ -55,12 +55,101 @@ class TrieNode {
 
 class Scratch {
     public static void main(String[] args) {
-        System.out.println(halvesAreAlike("book"));
+        System.out.println(longestSubsequence("001010101011010100010101101010010", 93951055));
     }
+
 
     public static int longestSubsequence(String s, int k) {
+        char[] arr = s.toCharArray();
+        int zeroes = 0;
 
+        for (char c : arr) {
+            if (c == '0')
+                zeroes++;
+        }
+
+        int ones = 0;
+        int val = 0;
+        int n = arr.length;
+        for(int i = n - 1; i >= 0; i--){
+            int x = (int)(val + Math.pow(2, n - 1 - i) * (arr[i] - '0'));
+            if(x <= k){
+                val += Math.pow(2, n - 1 - i) * (arr[i] - '0');
+                if(arr[i] == '1'){
+                    ones++;
+                }
+            }
+            else {
+                break;
+            }
+        }
+
+        return zeroes + ones;
     }
+
+
+    //TLE too
+    //https://leetcode.com/problems/longest-binary-subsequence-less-than-or-equal-to-k/description/
+//    public static int longestSubsequence(String s, int k) {
+//        if(s == null || k == 0) return 0;
+//
+//        Map<String, Integer> memo = new HashMap<>();
+//        String longest = s.substring(0, 1);
+//        for(int i = 0; i < s.length(); i++){
+//            String temp = longestSubsequenceHelper(s, i, k, "", memo);
+//            if(temp.length() > longest.length()) longest = temp;
+//        }
+//
+//        return longest.length();
+//    }
+//
+//    private static String longestSubsequenceHelper(String s, int i, int k, String current, Map<String, Integer> memo) {
+//        if(i == s.length()){
+//            if(current.isEmpty() || Integer.parseInt(current, 2) <= k){
+//                return current;
+//            } else {
+//                return "";
+//            }
+//        }
+//
+//        String key = i + ":" + current;
+//        if(memo.containsKey(key)) {return memo.get(key).toString();}
+//
+//        String includeCurrent = longestSubsequenceHelper(s, i + 1, k, current + s.charAt(i), memo);
+//        String excludeCurrent = longestSubsequenceHelper(s, i + 1, k, current, memo);
+//
+//        String ans =  (includeCurrent.length() > excludeCurrent.length()) ? includeCurrent : excludeCurrent;
+//        memo.put(key, ans.length());
+//        return ans;
+//    }
+
+    //TLE so we do memoization
+//    public static int longestSubsequence(String s, int k) {
+//        if(s == null || k == 0) return 0;
+//
+//        String longest = s.substring(0, 1);
+//        for(int i = 0; i < s.length(); i++){
+//            String temp = longestSubsequenceHelper(s, i, k, "");
+//            if(temp.length() > longest.length()) longest = temp;
+//        }
+//
+//        return longest.length();
+//    }
+//
+//    private static String longestSubsequenceHelper(String s, int i, int k, String current) {
+//        if(i == s.length()){
+//            if(current.isEmpty() || Integer.parseInt(current, 2) <= k){
+//                return current;
+//            } else {
+//                return "";
+//            }
+//        }
+//
+//        String includeCurrent = longestSubsequenceHelper(s, i + 1, k, current + s.charAt(i));
+//        String excludeCurrent = longestSubsequenceHelper(s, i + 1, k, current);
+//
+//        return (includeCurrent.length() > excludeCurrent.length()) ? includeCurrent : excludeCurrent;
+//    }
 
     public static int minStepsII(String s, String t) {
         int[] first = new int[26];
