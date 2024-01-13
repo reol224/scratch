@@ -61,35 +61,37 @@ class Scratch {
     public static int longestSubsequence(String s, int k) {
 
     }
+
     public static int minStepsII(String s, String t) {
         int[] first = new int[26];
         int[] second = new int[26];
 
-        for(char c : s.toCharArray()) first[c - 'a']++;
-        for(char c : t.toCharArray()) second[c - 'a']++;
+        for (char c : s.toCharArray()) first[c - 'a']++;
+        for (char c : t.toCharArray()) second[c - 'a']++;
 
         int ans = 0;
 
-        for(int i = 0; i < 26; i++){
+        for (int i = 0; i < 26; i++) {
             ans += Math.abs(first[i] - second[i]);
         }
 
         return ans;
     }
+
     public int minStepsI(String s, String t) {
-       int[] first = new int[26];
-       int[] second = new int[26];
+        int[] first = new int[26];
+        int[] second = new int[26];
 
-       for(char c : s.toCharArray()) first[c - 'a']++;
-       for(char c : t.toCharArray()) second[c - 'a']++;
+        for (char c : s.toCharArray()) first[c - 'a']++;
+        for (char c : t.toCharArray()) second[c - 'a']++;
 
-       int ans = 0;
+        int ans = 0;
 
-       for(int i = 0; i < 26; i++){
-           ans += Math.abs(first[i] - second[i]);
-       }
+        for (int i = 0; i < 26; i++) {
+            ans += Math.abs(first[i] - second[i]);
+        }
 
-       return ans / 2;
+        return ans / 2;
     }
 
     public static boolean halvesAreAlike(String s) {
@@ -107,12 +109,12 @@ class Scratch {
         vowels.add('O');
         vowels.add('U');
 
-        for(int i = 0; i < s.length() / 2; i++){
-            if(vowels.contains(s.charAt(i))) first++;
+        for (int i = 0; i < s.length() / 2; i++) {
+            if (vowels.contains(s.charAt(i))) first++;
         }
 
-        for(int i = s.length() / 2; i < s.length(); i++){
-            if(vowels.contains(s.charAt(i))) second++;
+        for (int i = s.length() / 2; i < s.length(); i++) {
+            if (vowels.contains(s.charAt(i))) second++;
         }
 
         return first == second;
@@ -121,8 +123,9 @@ class Scratch {
 
 
     public int diff = 0;
+
     public int maxAncestorDiff(TreeNode root) {
-        if(root == null) return 0;
+        if (root == null) return 0;
 
         int min = root.val;
         int max = root.val;
@@ -132,8 +135,8 @@ class Scratch {
         return diff;
     }
 
-    public void diff(TreeNode root, int min, int max){
-        if(root == null) return;
+    public void diff(TreeNode root, int min, int max) {
+        if (root == null) return;
 
         diff = Math.max(diff, Math.max(Math.abs(min - root.val), Math.abs(max - root.val)));
         min = Math.min(min, root.val);
@@ -159,6 +162,7 @@ class Scratch {
 
         return i == name.length();
     }
+
     public static int matchPlayersAndTrainers(int[] players, int[] trainers) {
         if (trainers.length == 1 && players.length == 1 && players[0] <= trainers[0]) return 1;
 
@@ -170,12 +174,12 @@ class Scratch {
         int i = 0;
         int j = 0;
 
-        while(i < players.length && j < trainers.length){
-            if(players[i] <= trainers[j]){
+        while (i < players.length && j < trainers.length) {
+            if (players[i] <= trainers[j]) {
                 count++;
                 i++;
                 j++;
-            } else if (players[i] > trainers[j]){
+            } else if (players[i] > trainers[j]) {
                 j++;
             }
 
@@ -183,8 +187,9 @@ class Scratch {
 
         return count;
     }
+
     public int rangeSumBST(TreeNode root, int low, int high) {
-        if(root == null) return 0;
+        if (root == null) return 0;
 
         int current = (root.val >= low && root.val <= high) ? root.val : 0;
         int left = rangeSumBST(root.left, low, high);
@@ -192,6 +197,7 @@ class Scratch {
 
         return current + left + right;
     }
+
     public int numberOfArithmeticSlices(int[] nums) {
         //https://leetcode.com/problems/arithmetic-slices-ii-subsequence/description/
         //THE FIRST ONE TOO https://leetcode.com/problems/arithmetic-slices/description/
