@@ -62,7 +62,49 @@ class Scratch {
         if(head == null || head.next == null) return head;
 
         ListNode middle = middleNode(head);
+        ListNode secondHead = middle.next;
+        middle.next = null;
+
+        ListNode l1 = sortList(head);
+        ListNode l2 = sortList(secondHead);
+
+        return mergeLinkedList(l1, l2);
     }
+
+    public static ListNode mergeLinkedList(ListNode l1, ListNode l2){
+        ListNode head;
+
+        if(l1 == null) return l2;
+        if(l2 == null) return l1;
+
+        if(l1.val < l2.val){
+            head = l1;
+            l1 = l1.next;
+        } else {
+            head = l2;
+            l2 = l2.next;
+        }
+
+        ListNode dummy = head;
+
+        while(l1 != null && l2 != null){
+            if(l1.val < l2.val){
+                dummy.next = l1;
+                l1 = l1.next;
+                dummy = dummy.next;
+            } else {
+                dummy.next = l2;
+                l2 = l2.next;
+                dummy = dummy.next;
+            }
+        }
+
+        if(l1 == null) dummy.next = l2;
+        if(l2 == null) dummy.next = l1;
+
+        return head;
+    }
+
     public static String multiply(String num1, String num2) {
         //uglee Karatsuba
         if (num1 == null || num2 == null)
