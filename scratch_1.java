@@ -55,11 +55,222 @@ class TrieNode {
 
 class Scratch {
     public static void main(String[] args) {
-        System.out.println(multiply("123", "456"));
+        System.out.println(maxOperations(new int[]{1, 2, 3, 4}, 5));
+    }
+
+    public List<Integer> beautifulIndices(String s, String a, String b, int k) {
+        //USE KNUTH-MORRIS-PRATT FOR FINDING PATTERNS IN STRINGS
+        int[] pa = prep((a + '#' + s).toCharArray());
+        int[] pb = prep((b + '#' + s).toCharArray());
+        List<Integer> ia = new ArrayList<>();
+        List<Integer> ib = new ArrayList<>();
+
+        for (int i = 0; i < pa.length; i++) {
+            if (pa[i] == a.length()) {
+                ia.add(i - a.length() * 2);
+            }
+        }
+
+        for (int i = 0; i < pb.length; i++) {
+            if (pb[i] == b.length()) {
+                ib.add(i - b.length() * 2);
+            }
+        }
+
+        List<Integer> ans = new ArrayList<>();
+        for (int i : ia) {
+            int p = binarySearch(ib, i);
+            for (int p1 = p - 1; p1 <= p + 1; p1++) {
+                if (0 <= p1 && p1 < ib.size() && Math.abs(ib.get(p1) - i) <= k) {
+                    ans.add(i);
+                    break;
+                }
+            }
+        }
+
+        return ans;
+    }
+
+    private int binarySearch(List<Integer> ib, int target) {
+        int left = 0;
+        int right = ib.size() - 1;
+
+        while (left <= right) {
+            int mid = left + (right - left) / 2;
+            if (ib.get(mid) < target) {
+                left = mid + 1;
+            } else if (ib.get(mid) > target) {
+                right = mid - 1;
+            } else {
+                return mid;
+            }
+        }
+
+        return left;
+    }
+
+    private int[] prep(char[] p) {
+        int[] pi = new int[p.length];
+        int j = 0;
+
+        for (int i = 1; i < p.length; i++) {
+            while (j != 0 && p[j] != p[i]) {
+                j = pi[j - 1];
+            }
+
+            if (p[j] == p[i]) {
+                j++;
+            }
+
+            pi[i] = j;
+        }
+
+        return pi;
+    }
+
+    public static int maxFrequencyElements(int[] nums) {
+        int[] freq = new int[10000];
+        for (int num : nums) {
+            freq[num]++;
+        }
+
+        int max = 0;
+        for (int i : freq) max = Math.max(i, max);
+
+        int ans = 0;
+        for (int i = 1; i < freq.length; i++) {
+            if (freq[i] == max) {
+                ans += freq[i];
+            }
+        }
+
+        return ans;
+    }
+
+    public static int maxOperations(int[] nums, int k) {
+        Arrays.sort(nums);
+        int start = 0;
+        int end = nums.length - 1;
+        int ans = 0;
+
+        while (start < end) {
+            if (nums[start] + nums[end] == k) {
+                ans++;
+                start++;
+                end--;
+            } else if (nums[start] + nums[end] > k) {
+                end--;
+            } else start++;
+        }
+
+        return ans;
+    }
+
+    public static String reverseWords(String s) {
+        String[] words = s.split("\\s+");
+        StringBuilder reversedString = new StringBuilder();
+
+        for (int i = words.length - 1; i >= 0; i--) {
+            if (!words[i].isEmpty()) {
+                reversedString.append(words[i]).append(" ");
+            }
+        }
+
+        return reversedString.toString().trim();
+    }
+
+    public static int distinctPrimeFactors(int[] nums) {
+        Set<Integer> distinctPrimeFactors = new HashSet<>();
+
+        for (int num : nums) {
+            findDistinctPrimeFactors(num, distinctPrimeFactors);
+        }
+
+        return distinctPrimeFactors.size();
+    }
+
+    private static void findDistinctPrimeFactors(int num, Set<Integer> distinctPrimeFactors) {
+        // Handle the case of negative numbers or 0
+        if (num <= 0) {
+            return;
+        }
+
+        // Find and add the distinct prime factors
+        for (int i = 2; i * i <= num; i++) {
+            while (num % i == 0) {
+                distinctPrimeFactors.add(i);
+                num /= i;
+            }
+        }
+
+        // If num is a prime number greater than 1
+        if (num > 1) {
+            distinctPrimeFactors.add(num);
+        }
+    }
+
+    public static int[] closestDivisors(int num) {
+        for (int i = (int) Math.sqrt(num + 2); i > 0; --i) {
+            if ((num + 1) % i == 0)
+                return new int[]{i, (num + 1) / i};
+            if ((num + 2) % i == 0)
+                return new int[]{i, (num + 2) / i};
+        }
+        return new int[]{};
+    }
+
+    public static int findLucky(int[] arr) {
+        int[] freq = new int[10000];
+
+        for (int j : arr) {
+            freq[j]++;
+        }
+
+        for (int i = arr.length; i > 0; i--) {
+            if (freq[i] == i) return i;
+        }
+
+        return -1;
+    }
+
+    public static boolean kLengthApart(int[] nums, int k) {
+        int count = 0;
+        if (nums[0] == 0) count = k;
+
+        for (int i = 1; i < nums.length; i++) {
+            if (nums[i] == 1) {
+                if (count < k) return false;
+                count = 0;
+            } else {
+                count++;
+            }
+        }
+
+        return true;
+    }
+
+    public static int minOperations(int[] nums) {
+        int count = 0;
+        int m2max = 0;
+
+        for (int n : nums) {
+            int m2 = 0;
+
+            while (n > 1) {
+                if (n % 2 == 1) count++;
+                m2++;
+                n /= 2;
+            }
+
+            if (n == 1) count++;
+            m2max = Math.max(m2max, m2);
+        }
+
+        return m2max + count;
     }
 
     public static ListNode sortList(ListNode head) {
-        if(head == null || head.next == null) return head;
+        if (head == null || head.next == null) return head;
 
         ListNode middle = middleNode(head);
         ListNode secondHead = middle.next;
@@ -71,13 +282,13 @@ class Scratch {
         return mergeLinkedList(l1, l2);
     }
 
-    public static ListNode mergeLinkedList(ListNode l1, ListNode l2){
+    public static ListNode mergeLinkedList(ListNode l1, ListNode l2) {
         ListNode head;
 
-        if(l1 == null) return l2;
-        if(l2 == null) return l1;
+        if (l1 == null) return l2;
+        if (l2 == null) return l1;
 
-        if(l1.val < l2.val){
+        if (l1.val < l2.val) {
             head = l1;
             l1 = l1.next;
         } else {
@@ -87,8 +298,8 @@ class Scratch {
 
         ListNode dummy = head;
 
-        while(l1 != null && l2 != null){
-            if(l1.val < l2.val){
+        while (l1 != null && l2 != null) {
+            if (l1.val < l2.val) {
                 dummy.next = l1;
                 l1 = l1.next;
                 dummy = dummy.next;
@@ -99,8 +310,8 @@ class Scratch {
             }
         }
 
-        if(l1 == null) dummy.next = l2;
-        if(l2 == null) dummy.next = l1;
+        if (l1 == null) dummy.next = l2;
+        if (l2 == null) dummy.next = l1;
 
         return head;
     }
@@ -172,7 +383,7 @@ class Scratch {
             c = ((f * s) + c) / 10;
         }
 
-        if (c > 0)  sb.insert(0, c);
+        if (c > 0) sb.insert(0, c);
         return trim(sb);
     }
 
@@ -342,6 +553,30 @@ class Scratch {
 //        return (includeCurrent.length() > excludeCurrent.length()) ? includeCurrent : excludeCurrent;
 //    }
 
+    public boolean closeStrings(String word1, String word2) {
+        int[] first = new int[26];
+        int[] second = new int[26];
+
+        for (char c : word1.toCharArray()) first[c - 'a']++;
+        for (char c : word2.toCharArray()) second[c - 'a']++;
+
+        int ans = 0;
+
+        for (int i = 0; i < 26; i++) {
+            if((first[i] == 0 && second[i] != 0) || (first[i] != 0 && second[i] == 0)){
+                return false;
+            }
+        }
+
+        Arrays.sort(first);
+        Arrays.sort(second);
+
+        for(int i = 0; i < 26; i++){
+            if(first[i] != second[i]) return false;
+        }
+
+        return true;
+    }
     public static int minStepsII(String s, String t) {
         int[] first = new int[26];
         int[] second = new int[26];
@@ -4996,7 +5231,7 @@ class Scratch {
         return head;
     }
 
-    public static String reverseWords(String s) {
+    public static String reverseWordsJUSTHECHARS(String s) {
         //        StringBuilder sb = new StringBuilder();
         //        String[] words  = s.split(" ");
         //        for(String word : words) {
