@@ -54,8 +54,235 @@ class TrieNode {
 }
 
 class Scratch {
+    static int result = 0;
     public static void main(String[] args) {
-        System.out.println(maxOperations(new int[]{1, 2, 3, 4}, 5));
+        System.out.println(Arrays.toString(findErrorNums(new int[]{1,1})));
+    }
+
+    public int countSubstrings(String s) {
+        int ans = 0;
+
+        for(int i = 0; i < s.length(); i++){
+            for(int j = i; j < s.length(); j++){
+                if(isPalindrome(s, i, j)) ans++;
+            }
+        }
+
+        return ans;
+    }
+    
+    public boolean isPalindrome(String s, int left, int right){
+        w
+    }
+    
+    public static int longestCommonSubsequence(String text1, String text2){
+        int l1 = text1.length();
+        int l2 = text2.length();
+
+        int[][] dp = new int[l1 + 1][l2 + 2];
+
+        for (int i = 1; i <= l1; i++){
+            for(int j = 1; j <= l2; j++){
+                if(text1.charAt(i - 1) == text2.charAt(j - 1)){
+                    dp[i][j] = dp[i - 1][j - 1] + 1;
+                } else {
+                    dp[i][j] = Math.max(dp[i - 1][j], dp[i][j - 1]);
+                }
+            }
+        }
+
+        return dp[l1][l2];
+    }
+    public static int maxLength(List<String> arr) {
+        if(arr == null || arr.size() == 0) return 0;
+
+        dfsMaxLength(arr, "", 0);
+
+        return result;
+    }
+
+    public static void dfsMaxLength(List<String> arr, String path, int index){
+        boolean unique = isUnique(path);
+
+        if(unique){
+            result = Math.max(path.length(), result);
+        }
+
+        if(index == arr.size() || !unique) return;
+
+        for(int i = index; i < arr.size(); i++){
+            dfsMaxLength(arr, path + arr.get(i), i + 1);
+        }
+    }
+
+    public static boolean isUnique(String s){
+        Set<Character> set = new HashSet<>();
+        for(char c : s.toCharArray()){
+            if(set.contains(c)) return false;
+            set.add(c);
+        }
+
+        return true;
+    }
+
+    public static int[] findErrorNums(int[] nums) {
+        int[] arr = new int[2];
+
+        for (int i = 0; i < nums.length; i++) {
+            int index = Math.abs(nums[i]) - 1;
+
+            if (nums[index] < 0) {
+                arr[0] = Math.abs(nums[i]);
+            } else {
+                nums[index] = -nums[index];
+            }
+        }
+
+        for (int i = 0; i < nums.length; i++) {
+            if (nums[i] > 0) {
+                arr[1] = i + 1;
+            }
+        }
+
+        return arr;
+
+    }
+
+    public int minimumPushes(String word) {
+        int[] freq = new int[26];
+
+        for (char c : word.toCharArray()) {
+            freq[c - 'a']++;
+        }
+
+        Arrays.sort(freq);
+        reverseArray(freq);
+
+        int ans = 0;
+
+        for (int i = 0; i < 26; i++) {
+            int cost = i / 8 + 1;
+            ans += cost * freq[i];
+        }
+
+        return ans;
+    }
+
+    public void reverseArray(int[] arr) {
+        int start = 0;
+        int end = arr.length - 1;
+
+        while (start < end) {
+            int temp = arr[start];
+            arr[start] = arr[end];
+            arr[end] = temp;
+            start++;
+            end--;
+        }
+    }
+
+    public int rob(int[] nums) {
+        //TODO houserobber1
+        //https://leetcode.com/problems/house-robber/description/?envType=daily-question&envId=2024-01-21
+        return 0;
+    }
+
+    public int sumSubarrayMins(int[] arr) {
+        //TODO
+        //https://leetcode.com/problems/sum-of-subarray-minimums/description/?envType=daily-question&envId=2024-01-20
+        return 0;
+    }
+
+    public static boolean uniqueOccurrences(int[] arr) {
+        Map<Integer, Integer> map = new HashMap<>();
+        for (int num : arr) {
+            map.put(num, map.getOrDefault(num, 0) + 1);
+        }
+
+        Set<Integer> set = new HashSet<>(map.values());
+
+        return map.size() == set.size();
+    }
+
+    public List<Integer> largestValues(TreeNode root) {
+        List<Integer> ans = new ArrayList<>();
+
+        if (root == null) return ans;
+
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.offer(root);
+
+        while (!queue.isEmpty()) {
+            int rowSize = queue.size();
+            int max = Integer.MIN_VALUE;
+
+            for (int i = 0; i < rowSize; i++) {
+                TreeNode current = queue.poll();
+                max = Math.max(max, current.val);
+
+                if (current.left != null) queue.offer(current.left);
+                if (current.right != null) queue.offer(current.right);
+            }
+
+            ans.add(max);
+        }
+
+        return ans;
+    }
+
+    public boolean findTarget(TreeNode root, int k) {
+        List<Integer> nodes = new ArrayList<>();
+        helperInorder(root, nodes);
+
+        int left = 0;
+        int right = nodes.size() - 1;
+
+        while (left < right) {
+            int current = nodes.get(left) + nodes.get(right);
+            if (current == k) {
+                return true;
+            } else if (current < k) {
+                left++;
+            } else {
+                right--;
+            }
+        }
+
+        return false;
+    }
+
+    public static List<List<Integer>> findWinners(int[][] matches) {
+        int[] losses = new int[100001];
+
+        for (int i = 0; i < matches.length; i++) {
+            int win = matches[i][0];
+            int loss = matches[i][1];
+
+            if (losses[win] == 0) losses[win] = -1;
+            if (losses[loss] == -1) {
+                losses[loss] = 1;
+            } else {
+                losses[loss]++;
+            }
+        }
+
+        List<Integer> zeroLoss = new ArrayList<>();
+        List<Integer> oneLoss = new ArrayList<>();
+
+        List<List<Integer>> ans = new ArrayList<>();
+
+        for (int i = 0; i < losses.length; i++) {
+            if (losses[i] == -1) {
+                zeroLoss.add(i);
+            } else if (losses[i] == 1) {
+                oneLoss.add(i);
+            }
+        }
+
+        ans.add(zeroLoss);
+        ans.add(oneLoss);
+
+        return ans;
     }
 
     public List<Integer> beautifulIndices(String s, String a, String b, int k) {
@@ -563,7 +790,7 @@ class Scratch {
         int ans = 0;
 
         for (int i = 0; i < 26; i++) {
-            if((first[i] == 0 && second[i] != 0) || (first[i] != 0 && second[i] == 0)){
+            if ((first[i] == 0 && second[i] != 0) || (first[i] != 0 && second[i] == 0)) {
                 return false;
             }
         }
@@ -571,12 +798,13 @@ class Scratch {
         Arrays.sort(first);
         Arrays.sort(second);
 
-        for(int i = 0; i < 26; i++){
-            if(first[i] != second[i]) return false;
+        for (int i = 0; i < 26; i++) {
+            if (first[i] != second[i]) return false;
         }
 
         return true;
     }
+
     public static int minStepsII(String s, String t) {
         int[] first = new int[26];
         int[] second = new int[26];
@@ -5132,6 +5360,11 @@ class Scratch {
         }
 
         return true;
+    }
+
+    public ListNode reverseBetween(ListNode head, int left, int right) {
+        //REVERSE LINKED LIST II
+        return new ListNode();
     }
 
     public static ListNode reverseLinkedList(ListNode head) {
