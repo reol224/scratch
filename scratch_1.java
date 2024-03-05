@@ -55,35 +55,58 @@ class TrieNode {
 
 class Scratch {
     static int result = 0;
+
     public static void main(String[] args) {
-        System.out.println(Arrays.toString(findErrorNums(new int[]{1,1})));
+        System.out.println(Arrays.toString(findErrorNums(new int[]{1, 1})));
+    }
+
+    public int countSegments(String s) {
+        String trimmed = s.trim();
+        if(trimmed.isEmpty()) return 0;
+
+        return trimmed.split("\\s+").length;
+    }
+
+    public int longestPalindrome(String s) {
+        int[] arr = new int[128];
+        for (int i = 0; i < s.length(); i++) {
+            arr[s.charAt(i)]++;
+        }
+
+        int ans = 0;
+        for (int i = 0; i < arr.length; i++) {
+            if (arr[i] % 2 == 0) {
+                ans += arr[i];
+            } else {
+                ans += arr[i] - 1;
+            }
+        }
+
+        return ans < s.length() ? ans + 1 : ans;
+
     }
 
     public int countSubstrings(String s) {
         int ans = 0;
 
-        for(int i = 0; i < s.length(); i++){
-            for(int j = i; j < s.length(); j++){
-                if(isPalindrome(s, i, j)) ans++;
+        for (int i = 0; i < s.length(); i++) {
+            for (int j = i; j < s.length(); j++) {
+                if (isPalindrome(s, i, j)) ans++;
             }
         }
 
         return ans;
     }
-    
-    public boolean isPalindrome(String s, int left, int right){
-        w
-    }
-    
-    public static int longestCommonSubsequence(String text1, String text2){
+
+    public static int longestCommonSubsequence(String text1, String text2) {
         int l1 = text1.length();
         int l2 = text2.length();
 
         int[][] dp = new int[l1 + 1][l2 + 2];
 
-        for (int i = 1; i <= l1; i++){
-            for(int j = 1; j <= l2; j++){
-                if(text1.charAt(i - 1) == text2.charAt(j - 1)){
+        for (int i = 1; i <= l1; i++) {
+            for (int j = 1; j <= l2; j++) {
+                if (text1.charAt(i - 1) == text2.charAt(j - 1)) {
                     dp[i][j] = dp[i - 1][j - 1] + 1;
                 } else {
                     dp[i][j] = Math.max(dp[i - 1][j], dp[i][j - 1]);
@@ -93,32 +116,33 @@ class Scratch {
 
         return dp[l1][l2];
     }
+
     public static int maxLength(List<String> arr) {
-        if(arr == null || arr.size() == 0) return 0;
+        if (arr == null || arr.size() == 0) return 0;
 
         dfsMaxLength(arr, "", 0);
 
         return result;
     }
 
-    public static void dfsMaxLength(List<String> arr, String path, int index){
+    public static void dfsMaxLength(List<String> arr, String path, int index) {
         boolean unique = isUnique(path);
 
-        if(unique){
+        if (unique) {
             result = Math.max(path.length(), result);
         }
 
-        if(index == arr.size() || !unique) return;
+        if (index == arr.size() || !unique) return;
 
-        for(int i = index; i < arr.size(); i++){
+        for (int i = index; i < arr.size(); i++) {
             dfsMaxLength(arr, path + arr.get(i), i + 1);
         }
     }
 
-    public static boolean isUnique(String s){
+    public static boolean isUnique(String s) {
         Set<Character> set = new HashSet<>();
-        for(char c : s.toCharArray()){
-            if(set.contains(c)) return false;
+        for (char c : s.toCharArray()) {
+            if (set.contains(c)) return false;
             set.add(c);
         }
 
