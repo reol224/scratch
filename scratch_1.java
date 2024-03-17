@@ -60,10 +60,141 @@ class Scratch {
   Set<String> set = new HashSet<>();
 
   public static void main(String[] args) {
-    System.out.println(searchMatrix(new int[][] {
-        { 1, 3, 5, 7 },
-        { 10, 11, 16, 20 },
-        { 23, 30, 34, 60 } }, 3));
+    System.out.println(Arrays.toString(insert(new int[][] { { 1, 3 }, { 6, 9 } }, new int[] { 2, 5 })));
+  }
+
+  /**
+   * Inserts a new interval into a list of existing intervals.
+   *
+   * @param intervals   Array of intervals. Each interval is represented
+   *                    by an array with two elements: the start and end
+   *                    of the interval.
+   * @param newInterval The new interval to be inserted.
+   * @return Array of intervals with the new interval inserted.
+   */
+  public static int[][] insert(int[][] intervals, int[] newInterval) {
+    // Initialize a counter to keep track of the current interval
+    int i = 0;
+
+    // Initialize a list to hold the result
+    List<int[]> result = new ArrayList<>();
+
+    // Iterate through the existing intervals
+    while (i < intervals.length) {
+      // Check if the current interval ends before the new interval starts
+      if (intervals[i][1] < newInterval[0]) {
+        // If so, add the current interval to the result
+        result.add(intervals[i]);
+      } else if (intervals[i][0] > newInterval[1]) {
+        // If the current interval starts after the new interval ends,
+        // break the loop since the new interval should be inserted after this one
+        break;
+      } else {
+        // If the current interval and new interval overlap, update the
+        // start and end of the new interval
+        newInterval[0] = Math.min(newInterval[0], intervals[i][0]);
+        newInterval[1] = Math.max(newInterval[1], intervals[i][1]);
+      }
+      // Increment the counter
+      i++;
+    }
+
+    // Add the new interval to the result
+    result.add(newInterval);
+
+    // Add the remaining intervals to the result
+    while (i < intervals.length) {
+      result.add(intervals[i++]);
+    }
+
+    // Convert the list of intervals to a 2D array and return the result
+    return result.toArray(new int[result.size()][2]);
+  }
+
+  public ListNode oddEvenList(ListNode head) {
+    if (head == null || head.next == null
+        || head.next.next == null) {
+      return head;
+    }
+
+    ListNode oddHead = head;
+    ListNode evenHead = head.next;
+    ListNode oddTail = oddHead;
+    ListNode evenTail = evenHead;
+
+    ListNode curr = evenHead.next;
+    boolean isOdd = true;
+
+    while (curr != null) {
+      ListNode next = curr.next;
+      if (isOdd) {
+        oddTail.next = curr;
+        oddTail = curr;
+      } else {
+        evenTail.next = curr;
+        evenTail = curr;
+      }
+
+      curr = next;
+      isOdd = !isOdd;
+    }
+
+    oddTail.next = evenHead;
+    evenTail.next = null;
+
+    return oddHead;
+  }
+
+  public static int findMaxLength(int[] nums) {
+    Map<Integer, Integer> map = new HashMap<>();
+    map.put(0, -1);
+    int zero = 0;
+    int one = 0;
+    int max = 0;
+
+    for (int i = 0; i < nums.length; i++) {
+      if (nums[i] == 0) {
+        zero++;
+      } else {
+        one++;
+      }
+
+      int diff = zero - one;
+
+      if (map.containsKey(diff)) {
+        max = Math.max(max, i - map.get(diff));
+      } else {
+        map.put(diff, i);
+      }
+    }
+
+    return max;
+  }
+
+  public static String getHappyString(int n, int k) {
+    char[] pool = { 'a', 'b', 'c' };
+    // dfsHappyString(n, k, 0, new char[n], pool);
+    return "";
+
+  }
+
+  public String customSortString(String order, String s) {
+    Character[] result = new Character[s.length()];
+    for (int i = 0; i < s.length(); i++) {
+      result[i] = s.charAt(i);
+    }
+
+    Arrays.sort(result, (c1, c2) -> {
+      return order.indexOf(c1) - order.indexOf(c2);
+    });
+
+    String ans = "";
+    for (Character c : result) {
+      ans += c;
+    }
+
+    return ans;
+
   }
 
   public static boolean searchMatrix(int[][] matrix, int target) {
