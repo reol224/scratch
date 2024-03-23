@@ -60,7 +60,99 @@ class Scratch {
   Set<String> set = new HashSet<>();
 
   public static void main(String[] args) {
-    System.out.println(Arrays.toString(insert(new int[][] { { 1, 3 }, { 6, 9 } }, new int[] { 2, 5 })));
+    reorderList(new ListNode(1, new ListNode(2, new ListNode(3, new ListNode(4)))));
+  }
+
+  public static int maxUncrossedLines(int[] nums1, int[] nums2) {
+    // the basic algorithm for Longest Common Subsequence
+    int n1 = nums1.length;
+    int n2 = nums2.length;
+
+    int[][] dp = new int[n1 + 1][n2 + 1];
+
+    for (int i = 1; i <= n1; i++) {
+      for (int j = 1; j <= n2; j++) {
+        if (nums1[i - 1] == nums2[j - 1]) {
+          dp[i][j] = dp[i - 1][j - 1] + 1;
+        } else {
+          dp[i][j] = Math.max(dp[i][j - 1], dp[i - 1][j]);
+        }
+      }
+    }
+
+    return dp[n1][n2];
+  }
+
+  public static void reorderList(ListNode head) {
+    // step 1. find the middle
+    ListNode slow = head;
+    ListNode fast = head;
+    // to avoid cycle
+    ListNode prev = head;
+
+    while (fast != null && fast.next != null) {
+      prev = slow;
+      slow = slow.next;
+      fast = fast.next.next;
+    }
+    prev.next = null;
+
+    // step 2. reverse the second half
+    ListNode first = head;
+    ListNode second = reverseLL(slow);
+
+    // step 3. merge
+    mergeLL(first, second);
+
+  }
+
+  public static void mergeLL(ListNode first, ListNode second) {
+    while (second != null) {
+      ListNode next = first.next;
+      first.next = second;
+      first = second;
+      second = next;
+    }
+  }
+
+  public static ListNode reverseLL(ListNode head) {
+    if (head == null)
+      return null;
+    ListNode prev = null;
+    ListNode current = head;
+    ListNode next = null;
+
+    while (current != null) {
+      next = current.next;
+      current.next = prev;
+      prev = current;
+      current = next;
+    }
+
+    head = prev;
+    return prev;
+  }
+
+  public static int rearrangeCharacters(String s, String target) {
+    int[] freqS = new int[26];
+    for (char c : s.toCharArray()) {
+      freqS[c - 'a']++;
+    }
+
+    int[] freqTarget = new int[26];
+    for (char c : target.toCharArray()) {
+      freqTarget[c - 'a']++;
+    }
+
+    int max = Integer.MAX_VALUE;
+    for (char c : target.toCharArray()) {
+      if (freqTarget[c - 'a'] == 0) {
+        return 0;
+      }
+      max = Math.min(max, freqS[c - 'a'] / freqTarget[c - 'a']);
+    }
+
+    return max;
   }
 
   /**
