@@ -60,7 +60,23 @@ class Scratch {
   Set<String> set = new HashSet<>();
 
   public static void main(String[] args) {
-    System.out.println(minDistance("horse", "ros"));
+    System.out.println(maximumUnits(new int[][] { { 5, 10 }, { 2, 5 }, { 4, 7 }, { 3, 9 } }, 10));
+  }
+
+  public static int maximumUnits(int[][] boxTypes, int truckSize) {
+    // get the highest number of units by sorting
+    Arrays.sort(boxTypes, (a, b) -> b[1] - a[1]);
+    int count = 0;
+
+    for (int[] box : boxTypes) {
+      int units = Math.min(box[0], truckSize);
+      count += units * box[1];
+      truckSize -= units;
+      if (truckSize == 0)
+        return count;
+    }
+
+    return count;
   }
 
   public static ListNode detectCycle(ListNode head) {
