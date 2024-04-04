@@ -59,8 +59,277 @@ class Scratch {
 
   Set<String> set = new HashSet<>();
 
+  TreeNode prev;
+
   public static void main(String[] args) {
-    System.out.println(maximumUnits(new int[][] { { 5, 10 }, { 2, 5 }, { 4, 7 }, { 3, 9 } }, 10));
+    System.out.println(shortestWay("abc", "abcbc"));
+  }
+
+  public static int shortestWay(String source, String target) {
+    int m = source.length();
+    int n = target.length();
+    int count = 0;
+    int j = 0;
+
+    while (j < n) {
+      int i = 0;
+      boolean fine = false;
+      while (i < m && j < n) {
+        if (source.charAt(i) == target.charAt(j)) {
+          j++;
+          fine = true;
+        }
+        i++;
+      }
+
+      if (!fine)
+        return -1;
+      count++;
+    }
+
+    return count;
+  }
+
+  public static boolean confusingNumber(int n) {
+    Map<Integer, Integer> map = new HashMap<>() {
+      {
+        put(0, 0);
+        put(1, 1);
+        put(6, 9);
+        put(8, 8);
+        put(9, 6);
+      }
+    };
+
+    // check if n contains 2,3,4,5, or 7
+    int copy = n;
+    while (copy > 0) {
+      int lastDigit = copy % 10;
+      if (!map.containsKey(lastDigit)) {
+        return false;
+      }
+      copy /= 10;
+    }
+
+    copy = n;
+    // check if its the same after rotation
+    int rotated = 0;
+    while (copy > 0) {
+      int lastDigit = copy % 10;
+      rotated = rotated * 10 + map.get(lastDigit);
+      copy /= 10;
+    }
+    return rotated != n;
+
+  }
+
+  /**
+   * This function finds the minimum number of rotations required to match
+   * all the dominoes in an array.
+   *
+   * @param tops    Array of top numbers of the dominoes
+   * @param bottoms Array of bottom numbers of the dominoes
+   * @return The minimum number of rotations required, or -1 if
+   *         no match is possible
+   */
+  public static int minDominoRotationsGOOGLE(int[] tops, int[] bottoms) {
+    // Length of the array
+    int n = tops.length;
+
+    // Initialize rotations with the number of rotations for the first domino
+    int rotations = checkDomino(tops[0], bottoms, tops, n);
+
+    // If the first domino matches or there is a match with the first bottom,
+    // return the number of rotations
+    if (rotations != -1 || tops[0] == bottoms[0]) {
+      return rotations;
+    }
+    // Otherwise, try matching with the first bottom
+    else {
+      return checkDomino(bottoms[0], bottoms, tops, n);
+    }
+  }
+
+  /**
+   * This function checks if a given number matches with any of the top or
+   * bottom numbers in the array and returns the minimum number of rotations
+   * needed to make all the dominoes match.
+   *
+   * @param number  The number to check against the array
+   * @param tops    Array of top numbers of the dominoes
+   * @param bottoms Array of bottom numbers of the dominoes
+   * @param n       Length of the array
+   * @return The minimum number of rotations needed, or -1 if
+   *         no match is possible
+   */
+  public static int checkDomino(int number, int[] tops, int[] bottoms, int n) {
+    // Initialize number of rotations for top and bottom
+    int ra = 0;
+    int rb = 0;
+
+    // Iterate over the array and check if the number matches with any of
+    // the top or bottom numbers
+    for (int i = 0; i < n; i++) {
+      if (tops[i] != number && bottoms[i] != number) {
+        // If no match is found, return -1
+        return -1;
+      } else if (tops[i] != number) {
+        // If the number is not a top number, increment the rotation count for top
+        ra++;
+      } else if (bottoms[i] != number) {
+        // If the number is not a bottom number, increment the rotation count for bottom
+        rb++;
+      }
+    }
+
+    // Return the minimum of the rotation counts for top and bottom
+    return Math.min(ra, rb);
+  }
+
+  public void duplicateZerosGOOGLE(int[] arr) {
+    Queue<Integer> q = new LinkedList();
+    for (int i = 0; i < arr.length; i++) {
+      q.add(arr[i]);
+
+      if (arr[i] == 0) {
+        q.add(0);
+      }
+
+      arr[i] = q.remove();
+    }
+  }
+
+  public int[] minOperationsGOOGLE(String boxes) {
+    int[] ans = new int[boxes.length()]; // Initialize an array to store the result
+
+    // Iterate over each box
+    for (int i = 0; i < boxes.length(); i++) {
+      // Iterate over each box again to calculate operations needed for the current
+      // box
+      for (int j = 0; j < boxes.length(); j++) {
+        // Check if the box contains a ball and it's not the current box
+        if (boxes.charAt(j) == '1' && i != j) {
+          // Calculate the distance between the current box and the box with a ball,
+          // and add it to the answer for the current box
+          ans[i] += Math.abs(i - j);
+        }
+      }
+    }
+
+    return ans; // Return the array containing the operations needed for each box
+  }
+
+  public static boolean uniqueOccurrencesg(int[] arr) {
+    Map<Integer, Integer> map = new HashMap<>();
+    for (int a : arr) {
+      map.put(a, map.getOrDefault(a, 0) + 1);
+    }
+
+    Set<Integer> set = new HashSet<>(map.values());
+
+    return set.size() == map.size();
+  }
+
+  public static int getMaximumGold(int[][] grid) {
+    int rows = grid.length;
+    int cols = grid[0].length;
+    int[] max = new int[1];
+
+    for (int i = 0; i < rows; i++) {
+      for (int j = 0; j < cols; j++) {
+        if (grid[i][j] != 0) {
+          dfsMaxGold(grid, i, j, 0, max);
+        }
+      }
+    }
+
+    return max[0];
+  }
+
+  public static void dfsMaxGold(int[][] grid, int i, int j, int current, int[] max) {
+    if (i < 0 || j < 0 || i >= grid.length || j >= grid[0].length || grid[i][j] == 0 || grid[i][j] == 0) {
+      max[0] = Math.max(max[0], current);
+      return;
+    }
+
+    int gold = grid[i][j];
+    grid[i][j] = 0; // mark as visited
+
+    dfsMaxGold(grid, i + 1, j, current + gold, max);
+    dfsMaxGold(grid, i - 1, j, current + gold, max);
+    dfsMaxGold(grid, i, j + 1, current + gold, max);
+    dfsMaxGold(grid, i, j - 1, current + gold, max);
+
+    grid[i][j] = gold;
+  }
+
+  public static int findLengthOfLCIS(int[] nums) {
+    if (nums == null || nums.length == 0)
+      return 0;
+    int count = 1;
+    int max = 1;
+
+    for (int i = 0; i < nums.length - 1; i++) {
+      if (nums[i] < nums[i + 1]) {
+        count++;
+        max = Math.max(max, count);
+      } else {
+        count = 1;
+      }
+    }
+
+    return max;
+  }
+
+  public void flatten(TreeNode root) {
+    if (root == null)
+      return;
+
+    flatten(root.right);
+    flatten(root.left);
+
+    root.right = prev;
+    root.left = null;
+
+    prev = root;
+  }
+
+  // public static ListNode removeElements(ListNode head, int val) {
+  // while (head != null && head.val == val) {
+  // head = head.next;
+  // }
+
+  // ListNode current = head;
+  // while (current != null && current.next != null) {
+  // if (current.next.val == val) {
+  // current.next = current.next.next;
+  // } else {
+  // current = current.next;
+  // }
+  // }
+
+  // return head;
+  // }
+
+  public static String toLowerCase(String s) {
+    for (char c : s.toCharArray()) {
+      if (Character.isUpperCase(c)) {
+        s = s.replace(c, Character.toLowerCase(c));
+      }
+    }
+
+    return s;
+  }
+
+  public static String removeDuplicateLetters(String s) {
+    Set<Character> set = new HashSet<>();
+    for (char c : s.toCharArray()) {
+      set.add(c);
+    }
+
+    TreeSet<Character> treeSet = new TreeSet<>(set);
+
+    return treeSet.toString();
   }
 
   public static int maximumUnits(int[][] boxTypes, int truckSize) {
@@ -6544,7 +6813,7 @@ class Scratch {
     return string.substring(begin + 1, end);
   }
 
-  public static int lengthOfLongestSubstring(String s) {
+  public static int lengthOfLongestSubstringGOOGLEONSITE(String s) {
     Set<Character> chars = new HashSet<>();
     int i = 0;
     int j = 0;
