@@ -62,7 +62,371 @@ class Scratch {
   TreeNode prev;
 
   public static void main(String[] args) {
-    System.out.println(shortestWay("abc", "abcbc"));
+    System.out.println(longestMonotonicSubarray(new int[] { 1, 4, 3, 3, 2 }));
+  }
+
+  /**
+   * Returns the minimum number of operations required to make the median of the
+   * given array equal to k.
+   * 
+   * @param nums array of integers
+   * @param k    target median
+   * @return minimum number of operations required
+   */
+  public static long minOperationsToMakeMedianK(int[] nums, int k) { // 1 2 3 6 8 10 12
+    // Sort the array
+    Arrays.sort(nums);
+
+    // Calculate the median index
+    int n = nums.length;
+    int medianIndex = n / 2;
+
+    // Initialize the number of operations to 0
+    long operations = 0;
+
+    // If the median is already equal to k, return 0
+    if (nums[medianIndex] == k)
+      return 0;
+
+    // If the median is greater than k, iterate from the median index towards the
+    // beginning and calculate the number of operations required
+    if (nums[medianIndex] > k) {
+      for (int i = medianIndex; i >= 0 && nums[i] > k; i--) {
+        operations += nums[i] - k;
+      }
+    }
+    // If the median is less than k, iterate from the median index towards the end
+    // and calculate the number of operations required
+    else {
+      for (int i = medianIndex; i < n && nums[i] < k; i++) {
+        operations += k - nums[i];
+      }
+    }
+
+    // Return the minimum number of operations required
+    return operations;
+  }
+
+  public static int longestMonotonicSubarray(int[] nums) {
+    int inc = 1;
+    int dec = 1;
+    int max = 1;
+    for (int i = 1; i < nums.length; i++) {
+      if (nums[i] > nums[i - 1]) {
+        inc++;
+        dec = 1;
+      } else if (nums[i] < nums[i - 1]) {
+        dec++;
+        inc = 1;
+      } else {
+        inc = 1;
+        dec = 1;
+      }
+      max = Math.max(max, Math.max(inc, dec));
+    }
+    return max;
+  }
+
+  public static boolean checkValidString(String s) {
+    Stack<Integer> stack = new Stack<>();
+    Stack<Integer> starStack = new Stack<>();
+    for (int i = 0; i < s.length(); i++) {
+      if (s.charAt(i) == '(') {
+        stack.push(i);
+      } else if (s.charAt(i) == '*') {
+        starStack.push(i);
+      } else {
+        if (!stack.isEmpty()) {
+          stack.pop();
+        } else if (!starStack.isEmpty()) {
+          starStack.pop();
+        } else {
+          return false;
+        }
+      }
+    }
+
+    while (!stack.isEmpty() && !starStack.isEmpty()) {
+      if (stack.pop() > starStack.pop()) {
+        return false;
+      }
+    }
+
+    return stack.isEmpty();
+  }
+
+  public static int maxTurbulenceSize(int[] arr) {
+    int maxLength = 1;
+    int incLength = 1;
+    int decLength = 1;
+
+    for (int i = 1; i < arr.length; ++i) {
+      int nextIncLength = arr[i - 1] < arr[i] ? decLength + 1 : 1;
+      int nextDecLength = arr[i - 1] > arr[i] ? incLength + 1 : 1;
+
+      incLength = nextIncLength;
+      decLength = nextDecLength;
+
+      maxLength = Math.max(maxLength, Math.max(incLength, decLength));
+    }
+
+    return maxLength;
+  }
+
+  /**
+   * Returns a string with invalid parentheses removed.
+   * 
+   * @param s Input string with parentheses
+   * @return String with invalid parentheses removed
+   */
+  public static String minRemoveToMakeValid(String s) {
+    // Set to store indices of invalid parentheses
+    Set<Integer> set = new HashSet<>();
+
+    // Stack to store indices of open parentheses
+    Deque<Integer> stack = new ArrayDeque<>();
+
+    // Iterate through the string
+    for (int i = 0; i < s.length(); i++) {
+      // If the character is an opening parentheses
+      if (s.charAt(i) == '(') {
+        // Push the index to the stack
+        stack.push(i);
+      }
+      // If the character is a closing parentheses
+      else if (s.charAt(i) == ')') {
+        // If the stack is not empty, pop the index from the stack
+        if (!stack.isEmpty()) {
+          stack.pop();
+        }
+        // If the stack is empty, add the index to the set
+        else {
+          set.add(i);
+        }
+      }
+    }
+
+    // Pop all remaining indices from the stack and add them to the set
+    while (!stack.isEmpty()) {
+      set.add(stack.pop());
+    }
+
+    // Create a StringBuilder to build the resulting string
+    StringBuilder sb = new StringBuilder();
+
+    // Iterate through the string
+    for (int i = 0; i < s.length(); i++) {
+      // If the index is not in the set, add the character to the StringBuilder
+      if (!set.contains(i)) {
+        sb.append(s.charAt(i));
+      }
+    }
+
+    // Return the resulting string
+    return sb.toString();
+  }
+
+  public static String largestTimeFromDigits(int[] arr) {
+    Arrays.sort(arr);
+
+    String latest = "";
+    for (int i = 23; i >= 0; i--) {
+      for (int j = 59; j >= 0; j--) {
+        if (isValidTime(arr, i, j)) {
+          latest = String.format("%02d:%02d", i, j);
+          return latest;
+        }
+      }
+    }
+
+    return latest;
+  }
+
+  public static boolean isValidTime(int[] arr, int hours, int mins) {
+    int[] digits = new int[10];
+    for (int num : arr) {
+      digits[num]++;
+    }
+
+    digits[hours / 10]++;
+    digits[hours % 10]++;
+    digits[mins / 10]++;
+    digits[mins % 10]++;
+
+    System.out.println(Arrays.toString(digits));
+    return false;
+  }
+
+  public static int longestLine(int[][] mat) {
+    // horrible 3d solution
+    if (mat == null || mat.length == 0 || mat[0].length == 0) {
+      return 0;
+    }
+
+    int m = mat.length;
+    int n = mat[0].length;
+    int maxCount = 0;
+
+    // Initialize DP array for horizontal direction
+    int[][] dpHorizontal = new int[m][n];
+    for (int i = 0; i < m; i++) {
+      for (int j = 0; j < n; j++) {
+        if (mat[i][j] == 1) {
+          dpHorizontal[i][j] = (j == 0) ? 1 : dpHorizontal[i][j - 1] + 1;
+          maxCount = Math.max(maxCount, dpHorizontal[i][j]);
+        }
+      }
+    }
+
+    // Initialize DP array for vertical direction
+    int[][] dpVertical = new int[m][n];
+    for (int j = 0; j < n; j++) {
+      for (int i = 0; i < m; i++) {
+        if (mat[i][j] == 1) {
+          dpVertical[i][j] = (i == 0) ? 1 : dpVertical[i - 1][j] + 1;
+          maxCount = Math.max(maxCount, dpVertical[i][j]);
+        }
+      }
+    }
+
+    // Initialize DP array for diagonal direction
+    int[][] dpDiagonal = new int[m][n];
+    for (int i = 0; i < m; i++) {
+      for (int j = 0; j < n; j++) {
+        if (mat[i][j] == 1) {
+          dpDiagonal[i][j] = (i == 0 || j == 0) ? 1 : dpDiagonal[i - 1][j - 1] + 1;
+          maxCount = Math.max(maxCount, dpDiagonal[i][j]);
+        }
+      }
+    }
+
+    // Initialize DP array for anti-diagonal direction
+    int[][] dpAntiDiagonal = new int[m][n];
+    for (int i = 0; i < m; i++) {
+      for (int j = n - 1; j >= 0; j--) {
+        if (mat[i][j] == 1) {
+          dpAntiDiagonal[i][j] = (i == 0 || j == n - 1) ? 1 : dpAntiDiagonal[i - 1][j + 1] + 1;
+          maxCount = Math.max(maxCount, dpAntiDiagonal[i][j]);
+        }
+      }
+    }
+
+    return maxCount;
+  }
+
+  public static int countNodesGOOGLE(TreeNode root) {
+    if (root == null) {
+      return 0;
+    }
+    return 1 + countNodes(root.left) + countNodes(root.right);
+  }
+
+  public static boolean backspaceCompareGOOGLE(String s, String t) {
+    Stack<Character> stackS = new Stack<>();
+    Stack<Character> stackT = new Stack<>();
+
+    for (char c : s.toCharArray()) {
+      if (c == '#') {
+        if (!stackS.isEmpty()) {
+          stackS.pop();
+        }
+      } else {
+        stackS.push(c);
+      }
+    }
+
+    for (char c : t.toCharArray()) {
+      if (c == '#') {
+        if (!stackT.isEmpty()) {
+          stackT.pop();
+        }
+      } else {
+        stackT.push(c);
+      }
+    }
+
+    return stackS.equals(stackT);
+  }
+
+  public static int minPathSum(int[][] grid) {
+    int[][] dp = new int[grid.length][grid[0].length];
+    int m = grid.length - 1;
+    int n = grid[0].length - 1;
+
+    for (int i = m; i >= 0; i--) {
+      for (int j = n; j >= 0; j--) {
+        if (i == m && j != n) {
+          dp[i][j] = grid[i][j] + dp[i][j + 1];
+        } else if (i != m && j == n) {
+          dp[i][j] = grid[i][j] + dp[i + 1][j];
+        } else if (i != m && j != n) {
+          dp[i][j] = grid[i][j] + Math.min(dp[i + 1][j], dp[i][j + 1]);
+        } else {
+          dp[i][j] = grid[i][j];
+        }
+      }
+    }
+
+    return dp[0][0];
+  }
+
+  /**
+   * Takes a string and removes adjacent characters that are 32 positions apart in
+   * the ASCII table.
+   *
+   * @param s String to be modified
+   * @return Modified string
+   */
+  public static String makeGood(String s) {
+    // Initialize index to 0
+    int i = 0;
+
+    // Iterate over the string until the second-to-last character
+    while (i < s.length() - 1) {
+      // Check if the difference between the current and next character is 32
+      if (Math.abs(s.charAt(i) - s.charAt(i + 1)) == 32) {
+        // Remove the current and next character and reset index to 0
+        s = s.substring(0, i) + s.substring(i + 2);
+        i = 0;
+      } else {
+        // Increment index
+        i++;
+      }
+    }
+
+    // Return the modified string
+    return s;
+  }
+
+  public static List<Integer> addToArrayForm(int[] num, int k) {
+    // works as brute force but will fail for numbers that overflow integer
+    // StringBuilder sb = new StringBuilder();
+    // for (int i = 0; i < num.length; i++) {
+    // sb.append(num[i]);
+    // }
+    // int sum = Integer.parseInt(sb.toString()) + k;
+    // List<Integer> ans = new ArrayList<>();
+    // while (sum != 0) {
+    // ans.add(0, sum % 10);
+    // sum /= 10;
+    // }
+    // return ans;
+
+    List<Integer> ans = new ArrayList<>();
+    int end = num.length - 1;
+    int carry = k;
+
+    while (end >= 0 || carry != 0) {
+      if (end >= 0) {
+        carry += num[end];
+      }
+
+      ans.add(0, carry % 10);
+      carry /= 10;
+      end--;
+    }
+
+    return ans;
   }
 
   public static int shortestWay(String source, String target) {
