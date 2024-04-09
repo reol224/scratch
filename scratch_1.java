@@ -62,7 +62,20 @@ class Scratch {
   TreeNode prev;
 
   public static void main(String[] args) {
-    System.out.println(longestMonotonicSubarray(new int[] { 1, 4, 3, 3, 2 }));
+    System.out.println(timeRequiredToBuy(new int[] { 5, 1, 1, 1 }, 0));
+  }
+
+  public static int timeRequiredToBuy(int[] tickets, int k) {
+    int count = 0;
+    for (int i = 0; i < tickets.length; i++) {
+      if (i <= k) {
+        count += Math.min(tickets[i], tickets[k]);
+      } else {
+        count += Math.min(tickets[i], tickets[k] - 1);
+      }
+    }
+
+    return count;
   }
 
   /**
