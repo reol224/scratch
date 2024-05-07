@@ -65,6 +65,21 @@ class Scratch {
     System.out.println(timeRequiredToBuy(new int[] { 5, 1, 1, 1 }, 0));
   }
 
+  public static ListNode doubleIt(ListNode head) {
+    if (head.val > 4) {
+      head = new ListNode(0, head);
+    }
+
+    for (ListNode node = head; node != null; node = node.next) {
+      node.val = (node.val * 2) % 10;
+
+      if (node.next != null && node.next.val > 4)
+        node.val++;
+    }
+
+    return head;
+  }
+
   public static int timeRequiredToBuy(int[] tickets, int k) {
     int count = 0;
     for (int i = 0; i < tickets.length; i++) {
