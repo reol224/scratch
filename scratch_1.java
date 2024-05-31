@@ -62,7 +62,83 @@ class Scratch {
   TreeNode prev;
 
   public static void main(String[] args) {
-    System.out.println(timeRequiredToBuy(new int[] { 5, 1, 1, 1 }, 0));
+    System.out.println(canThreePartsEqualSum(new int[] { 0, 2, 1, -6, 6, 7, 9, -1, 2, 0, 1 }));
+  }
+
+  public static boolean canThreePartsEqualSum(int[] arr) {
+    int sum = 0;
+    for (int num : arr) {
+      sum += num;
+    }
+
+    if (sum % 3 != 0) {
+      return false;
+    }
+
+    int target = sum / 3;
+    int curr = 0;
+    int count = 0;
+
+    for (int i = 0; i < arr.length - 1; i++) {
+      curr += arr[i];
+      if (curr == target) {
+        curr = 0;
+        count++;
+        if (count == 2)
+          return true;
+      }
+    }
+
+    return false;
+  }
+
+  public static int duplicateNumbersXOR(int[] nums) {
+    Map<Integer, Integer> map = new HashMap<>();
+    for (int num : nums) {
+      map.put(num, map.getOrDefault(num, 0) + 1);
+    }
+
+    int ans = 0;
+    for (Map.Entry<Integer, Integer> entry : map.entrySet()) {
+      if (entry.getValue() == 2) {
+        ans ^= entry.getKey();
+      }
+    }
+
+    return ans;
+  }
+
+  public static int singleNumberII(int[] nums) {
+    Map<Integer, Integer> map = new HashMap<>();
+    for (int num : nums) {
+      map.put(num, map.getOrDefault(num, 0) + 1);
+    }
+
+    int ans = 0;
+    for (Map.Entry<Integer, Integer> entry : map.entrySet()) {
+      if (entry.getValue() == 1) {
+        ans = entry.getKey();
+      }
+    }
+
+    return ans;
+  }
+
+  public static int[] singleNumberIII(int[] nums) {
+    Map<Integer, Integer> map = new HashMap<>();
+    for (int num : nums) {
+      map.put(num, map.getOrDefault(num, 0) + 1);
+    }
+
+    int[] res = new int[2];
+    int i = 0;
+    for (Map.Entry<Integer, Integer> entry : map.entrySet()) {
+      if (entry.getValue() == 1) {
+        res[i++] = entry.getKey();
+      }
+    }
+
+    return res;
   }
 
   public static ListNode doubleIt(ListNode head) {
