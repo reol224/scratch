@@ -62,16 +62,86 @@ class Scratch {
   TreeNode prev;
 
   public static void main(String[] args) {
-    System.out.println(scoreOfString("hello"));
+    System.out.println(findKthPositive(new int[] { 2, 3, 4, 7, 11 }, 5));
+  }
+
+  public static int findKthPositive(int[] arr, int k) {
+    int i = 0;
+    int j = 0;
+    int count = 0;
+    while (i < arr.length) {
+      if (arr[i] == j + 1) {
+        i++;
+        j++;
+      } else {
+        count++;
+        if (count == k) {
+          return j + 1;
+        }
+        j++;
+      }
+    }
+
+    // If the loop ends, it means k-th missing number is beyond the array
+    return j + k - count;
+  }
+
+  public static int numSubmat(int[][] mat) {
+    // return the number of submatrices that have all ones (1)
+    int rows = mat.length;
+    int cols = mat[0].length;
+    int[][] dp = new int[rows][cols];
+    int count = 0;
+
+    for (int i = 0; i < rows; i++) {
+      for (int j = 0; j < cols; j++) {
+        if (mat[i][j] == 1) {
+          dp[i][j] = (j == 0) ? 1 : dp[i][j - 1] + 1;
+        }
+      }
+    }
+
+    // count
+    for (int i = 0; i < rows; i++) {
+      for (int j = 0; j < cols; j++) {
+        if (mat[i][j] == 1) {
+          int min = dp[i][j];
+          for (int k = i; k < rows; k++) {
+            if (mat[k][j] == 0) {
+              break;
+            }
+
+            min = Math.min(min, dp[k][j]);
+            count += min;
+          }
+        }
+      }
+    }
+
+    return count;
+  }
+
+  public static int busyStudent(int[] startTime, int[] endTime, int queryTime) {
+    int count = 0;
+    for (int i = 0; i < startTime.length; i++) {
+      for (int j = 0; j < endTime.length; j++) {
+        if (queryTime >= startTime[i] && queryTime <= endTime[i]) {
+          count++;
+        }
+        i++;
+      }
+    }
+
+    return count;
   }
 
   public static int scoreOfString(String s) {
     int score = 0;
     for (int i = 0; i < s.length() - 1; i++) {
-        score += Math.abs(s.charAt(i) - s.charAt(i + 1));
+      score += Math.abs(s.charAt(i) - s.charAt(i + 1));
     }
     return score;
-}
+  }
 
   public static boolean canThreePartsEqualSum(int[] arr) {
     int sum = 0;
