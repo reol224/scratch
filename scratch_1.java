@@ -62,7 +62,146 @@ class Scratch {
   TreeNode prev;
 
   public static void main(String[] args) {
-    System.out.println(findKthPositive(new int[] { 2, 3, 4, 7, 11 }, 5));
+    System.out.println(maximumLength(new int[] { 1, 2, 1, 1, 3 }, 2));
+  }
+
+  public int findWinningPlayer(int[] skills, int k) {
+    // TLE
+    int n = skills.length;
+    if (k == 1) {
+      int max = 0;
+      int winner = 0;
+      for (int i = 0; i < n; i++) {
+        if (skills[i] > max) {
+          max = skills[i];
+          winner = i;
+        }
+      }
+      return winner;
+    }
+
+    Queue<Integer> queue = new LinkedList<>();
+    for (int i = 0; i < n; i++) {
+      queue.offer(i);
+    }
+
+    int current = queue.poll();
+    int wins = 0;
+
+    while (wins < k) {
+      int challenger = queue.poll();
+
+      if (skills[current] > skills[challenger]) {
+        wins++;
+        queue.offer(challenger);
+      } else {
+        queue.offer(current);
+        current = challenger;
+        wins = 1;
+      }
+    }
+
+    return current;
+
+    /*
+     * int n = skills.length;
+     * 
+     * // Find the player with the highest skill
+     * int idx = 0;
+     * for (int i = 1; i < n; i++) {
+     * if (skills[i] > skills[idx]) {
+     * idx = i;
+     * }
+     * }
+     * 
+     * // If k is larger than n-1, the player with the highest skill will definitely
+     * win
+     * if (k > n - 1) {
+     * return idx;
+     * }
+     * 
+     * Queue<Integer> queue = new LinkedList<>();
+     * for (int i = 0; i < n; i++) {
+     * queue.offer(i);
+     * }
+     * 
+     * int winner = queue.poll();
+     * int wins = 0;
+     * 
+     * while (wins < k) {
+     * int challenger = queue.poll();
+     * 
+     * if (skills[winner] > skills[challenger]) {
+     * wins++;
+     * queue.offer(challenger);
+     * } else {
+     * queue.offer(winner);
+     * winner = challenger;
+     * wins = 1;
+     * }
+     * }
+     * 
+     * return winner;
+     */
+  }
+
+  public static int subarraysDivByK(int[] nums, int k) {
+    int n = nums.length;
+    int[] count = new int[k];
+    count[0] = 1;
+    int sum = 0;
+    int result = 0;
+    for (int i = 0; i < n; i++) {
+      sum += nums[i];
+      int mod = sum % k;
+      if (mod < 0) {
+        mod += k;
+      }
+      result += count[mod];
+      count[mod]++;
+    }
+    return result;
+  }
+
+  public static String clearDigits(String s) {
+    StringBuilder sb = new StringBuilder(s);
+
+    while (true) {
+      int idx = -1;
+
+      for (int i = 0; i < sb.length(); i++) {
+        if (Character.isDigit(sb.charAt(i))) {
+          idx = i;
+          break;
+        }
+      }
+
+      if (idx == -1) {
+        break;
+      }
+
+      int nonDigitIndex = -1;
+      for (int i = idx - 1; i >= 0; i--) {
+        if (!Character.isDigit(sb.charAt(i))) {
+          nonDigitIndex = i;
+          break;
+        }
+      }
+
+      if (nonDigitIndex != -1) {
+        sb.deleteCharAt(idx);
+        sb.deleteCharAt(nonDigitIndex);
+      } else {
+        sb.deleteCharAt(idx);
+      }
+    }
+
+    return sb.toString();
+  }
+
+  public static int getMaxLen(int[] nums) {
+    // https://leetcode.com/problems/maximum-length-of-subarray-with-positive-product/description/
+    return 0;
   }
 
   public static int findKthPositive(int[] arr, int k) {
