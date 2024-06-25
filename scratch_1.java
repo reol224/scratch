@@ -61,8 +61,66 @@ class Scratch {
 
   TreeNode prev;
 
+  static boolean mem[][];
+
   public static void main(String[] args) {
-    System.out.println(maximumLength(new int[] { 1, 2, 1, 1, 3 }, 2));
+    System.out.println(longestSubarray(new int[] { 8, 2, 4, 7 }, 4));
+  }
+
+  public static int longestSubarray(int[] nums, int limit) {
+    Deque<Integer> maxDeque = new LinkedList<>();
+    Deque<Integer> minDeque = new LinkedList<>();
+    int left = 0;
+    int maxLength = 0;
+
+    for (int right = 0; right < nums.length; ++right) {
+      while (!maxDeque.isEmpty() && maxDeque.peekLast() < nums[right]) {
+        maxDeque.pollLast();
+      }
+      maxDeque.offerLast(nums[right]);
+      while (!minDeque.isEmpty() && minDeque.peekLast() > nums[right]) {
+        minDeque.pollLast();
+      }
+      minDeque.offerLast(nums[right]);
+      while (maxDeque.peekFirst() - minDeque.peekFirst() > limit) {
+
+        if (maxDeque.peekFirst() == nums[left]) {
+          maxDeque.pollFirst();
+        }
+        if (minDeque.peekFirst() == nums[left]) {
+          minDeque.pollFirst();
+        }
+        ++left;
+      }
+
+      maxLength = Math.max(maxLength, right - left + 1);
+    }
+
+    return maxLength;
+  }
+
+  public static boolean canPartition(int[] nums) {
+    // TLE
+    int sum = IntStream.of(nums).sum();
+    if (sum % 2 != 0) {
+      return false;
+    }
+
+    mem = new boolean[nums.length + 1][sum / 2 + 1];
+
+    return canPartitionHelper(nums, 0, 0, sum / 2);
+  }
+
+  public static boolean canPartitionHelper(int[] nums, int idx, int curSum, int target) {
+    if (target == 0) {
+      return true;
+    } else if (idx >= nums.length || target < 0) {
+      return false;
+    }
+
+    return canPartitionHelper(nums, idx + 1, curSum + nums[idx], target)
+        || canPartitionHelper(nums, idx + 1, curSum, target);
+
   }
 
   public int findWinningPlayer(int[] skills, int k) {
