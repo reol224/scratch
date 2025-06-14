@@ -64,7 +64,148 @@ class Scratch {
   static boolean mem[][];
 
   public static void main(String[] args) {
-    System.out.println(longestSubarray(new int[] { 8, 2, 4, 7 }, 4));
+    System.out.println(mostFrequentChar("riverbed"));
+  }
+
+  public static List<Integer> pairProduct(List<Integer> numbers, int target) {
+    Map<Double, Integer> map = new HashMap<>();
+    for(int i = 0; i < numbers.size(); i++){
+      int current = numbers.get(i);
+      double complement = (double) target / current;
+
+      if(map.containsKey(complement)){
+        return List.of(map.get(complement), i);
+      }
+
+      map.put((double) current, i);
+    }
+    return null;
+  }
+
+  public static List<Integer> pairSum(List<Integer> numbers, int target) {
+    // Brute force Time O(n squared) Space O(1)
+//        for(int i = 0; i < numbers.size(); i++){
+//            for(int j = i + 1; j < numbers.size(); j++){
+//                if(numbers.get(i) + numbers.get(j) == target){
+//                    return Arrays.asList(i, j);
+//                }
+//            }
+//        }
+//        return new ArrayList<>();
+
+    // Time O(n) Space O(n)
+    Map<Integer, Integer> map = new HashMap<>();
+    for(int i = 0; i < numbers.size(); i++){
+      int current = numbers.get(i);
+      int complement = target - current;
+
+      if(map.containsKey(complement)){
+        return List.of(map.get(complement), i);
+      }
+
+      map.put(current, i);
+    }
+
+    return null;
+    }
+
+
+  public static char mostFrequentChar(String s) {
+    // Basic version to find out the most frequent character
+//    int[] count = new int[26];
+//    for(char c : s.toCharArray()){
+//      count[c - 'a']++;
+//    }
+//
+//    int max = 0;
+//    char mf = 'a';
+//
+//    for(int i = 0; i < 26; i++){
+//      if(count[i] > max){
+//        max = count[i];
+//        mf = (char)('a' + i);
+//      }
+//    }
+//
+//    return mf;
+
+    // Version that will ALSO return the most frequent character that's EARLIEST in the String
+    // Ex. : Source.mostFrequentChar("riverbed"); // -> 'r' (adica nu il intoarce pe 'e')
+
+    int[] count = new int[26];
+    for(char c : s.toCharArray()){
+      count[c - 'a']++;
+    }
+
+    int max = 0;
+    char mf = s.charAt(0);
+
+    for(char c : s.toCharArray()){
+      if(count[c - 'a'] > max){
+        max = count[c - 'a'];
+        mf = c;
+      }
+    }
+
+
+    return mf;
+  }
+
+  public static long smallestNumber(long num) {
+    if (num < 10) {
+      return num;
+    }
+
+    List<Long> list = new ArrayList<>();
+
+    for (Long i : list) {
+      list.add(num % 10);
+      num /= 10;
+    }
+
+    Collections.sort(list);
+
+    if (list.get(0) == 0) {
+
+    }
+    return 5L;
+  }
+
+  public static int minDeletion(int[] nums) {
+    int del = 0;
+    int finalIndex = 0;
+
+    for (int i = 0; i < nums.length - 1; i++) {
+      if (finalIndex % 2 == 0) {
+        if (nums[i] == nums[i + 1]) {
+          del++;
+          finalIndex--;
+        }
+      }
+
+      finalIndex++;
+    }
+
+    if ((nums.length - del) % 2 != 0) {
+      del++;
+    }
+
+    return del;
+  }
+
+  public static int maxWidthRamp(int[] nums) {
+    int num = nums.length;
+    int max = 0;
+
+    for (int i = 0; i < num; i++) {
+      for (int j = i + 1; j < num; j++) {
+        if (nums[i] <= nums[j]) {
+          max = Math.max(max, j - i);
+        }
+      }
+    }
+
+    return max;
   }
 
   public static int longestSubarray(int[] nums, int limit) {
@@ -163,7 +304,7 @@ class Scratch {
 
     /*
      * int n = skills.length;
-     * 
+     *
      * // Find the player with the highest skill
      * int idx = 0;
      * for (int i = 1; i < n; i++) {
@@ -171,24 +312,24 @@ class Scratch {
      * idx = i;
      * }
      * }
-     * 
+     *
      * // If k is larger than n-1, the player with the highest skill will definitely
      * win
      * if (k > n - 1) {
      * return idx;
      * }
-     * 
+     *
      * Queue<Integer> queue = new LinkedList<>();
      * for (int i = 0; i < n; i++) {
      * queue.offer(i);
      * }
-     * 
+     *
      * int winner = queue.poll();
      * int wins = 0;
-     * 
+     *
      * while (wins < k) {
      * int challenger = queue.poll();
-     * 
+     *
      * if (skills[winner] > skills[challenger]) {
      * wins++;
      * queue.offer(challenger);
@@ -198,7 +339,7 @@ class Scratch {
      * wins = 1;
      * }
      * }
-     * 
+     *
      * return winner;
      */
   }
@@ -447,7 +588,7 @@ class Scratch {
   /**
    * Returns the minimum number of operations required to make the median of the
    * given array equal to k.
-   * 
+   *
    * @param nums array of integers
    * @param k    target median
    * @return minimum number of operations required
@@ -554,7 +695,7 @@ class Scratch {
 
   /**
    * Returns a string with invalid parentheses removed.
-   * 
+   *
    * @param s Input string with parentheses
    * @return String with invalid parentheses removed
    */
@@ -5521,13 +5662,13 @@ class Scratch {
      * 5, etc.).
      * The & (bitwise AND) operation is used to retain only the bits from n that
      * correspond to even indices.
-     * 
+     *
      * n & 0b1010101010:
      * The binary number 0b1010101010 is also a 10-bit number (0-indexed) that has
      * zeros at even indices and ones at odd indices.
      * The & (bitwise AND) operation is used to retain only the bits from n that
      * correspond to odd indices.
-     * 
+     *
      * Integer.bitCount(x): This method is used to count the number of ones (set
      * bits) in the binary representation of the integer x
      */
