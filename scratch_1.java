@@ -20,6 +20,28 @@ class ListNode {
   }
 }
 
+class Node<T> {
+    T val;
+    Node<T> next;
+
+    public Node(T val){
+        this.val = val;
+        this.next = null;
+    }
+}
+
+class NodeBT<T> { //binary tree node
+    T val;
+    Node<T> left;
+    Node<T> right;
+
+    public NodeBT(T val) {
+        this.val = val;
+        this.left = null;
+        this.right = null;
+    }
+}
+
 class TreeNode {
 
   int val;
@@ -67,6 +89,232 @@ class Scratch {
     List<Integer> b = List.of(3, 6, 9, 2, 10);
 
     System.out.println(intersection(a, b));
+  }
+
+//    public static int treeSum(Node<Integer> root) {
+//        if(root == null){
+//            return 0;
+//        }
+//
+//        int sum = 0;
+//        Queue<Node<Integer>> bt = new ArrayDeque<>();
+//        bt.add(root);
+//
+//        while(!bt.isEmpty()){
+//            Node<Integer> current = bt.remove();
+//            sum += current.val;
+//
+//            if(current.left != null){
+//                bt.add(current.left);
+//            }
+//
+//            if(current.right != null){
+//                bt.add(current.right);
+//            }
+//        }
+//
+//
+//        return sum;
+//    }
+
+//    public static boolean treeIncludes(Node<String> root, String target) {
+//        if(root == null){
+//            return false;
+//        }
+//
+//        if(root.val == target){
+//            return true;
+//        }
+//
+//        Queue<Node<String>> bt = new ArrayDeque<>();;
+//        bt.add(root);
+//
+//        while(!bt.isEmpty()){
+//            Node<String> current = bt.remove();
+//            if(current.val == target){
+//                return true;
+//            }
+//
+//            if(current.left != null){
+//                bt.add(current.left);
+//            }
+//
+//            if(current.right != null){
+//                bt.add(current.right);
+//            }
+//        }
+//
+//
+//        return false;
+//    }
+
+//    public static Double treeMinValue(Node<Double> root) {
+//        Queue<Node<Double>> bt = new ArrayDeque<>();
+//        bt.add(root);
+//        Double min = Double.POSITIVE_INFINITY;
+//
+//        while(!bt.isEmpty()){
+//            Node<Double> current = bt.remove();
+//            if(current.val < min){
+//                min = current.val;
+//            }
+//
+//            if(current.left != null){
+//                bt.add(current.left);
+//            }
+//
+//            if(current.right != null){
+//                bt.add(current.right);
+//            }
+//        }
+//
+//
+//
+//        return min;
+//    }
+
+//    public static Double maxPathSum(Node<Double> root) {
+//        if(root == null){
+//            return Double.NEGATIVE_INFINITY;
+//        }
+//
+//        if(root.left == null && root.right == null){
+//            return root.val;
+//        }
+//
+//        return root.val + Math.max(maxPathSum(root.left), maxPathSum(root.right));
+//    }
+
+//    public static List<String> breadthFirstValues(Node<String> root) {
+//        if (root == null) {
+//            return List.of();
+//        }
+//        List<String> values = new ArrayList<>();
+//        Queue<Node<String>> queue = new ArrayDeque<>();
+//        queue.add(root);
+//        while (!queue.isEmpty()) {
+//            Node<String> node = queue.remove();
+//            values.add(node.val);
+//            if (node.left != null) {
+//                queue.add(node.left);
+//            }
+//            if (node.right != null) {
+//                queue.add(node.right);
+//            }
+//        }
+//        return values;
+//    }
+
+//    public static List<String> depthFirstValues(Node<String> root) {
+//      // whatever just prints the values
+//        List<String> list = new ArrayList<>();
+//        Stack<Node<String>> bt = new Stack<>();
+//
+//        if(root != null){
+//            bt.push(root);
+//        }
+//
+//        while(!bt.isEmpty()){
+//            Node<String> current = bt.pop();
+//            list.add(current.val);
+//
+//            if(current.right != null){
+//                bt.push(current.right);
+//            }
+//
+//            if(current.left != null){
+//                bt.push(current.left);
+//            }
+//
+//        }
+//
+//        return list;
+//    }
+
+    public static <T> Node<T> zipperLists(Node<T> head1, Node<T> head2) {
+        Node<T> current1 = head1;
+        Node<T> current2 = head2;
+
+        while(current1 != null && current2 != null){
+            Node<T> next1 = current1.next;
+            Node<T> next2 = current2.next;
+
+            current1.next = current2;
+
+            while(next1 != null){
+                current2.next = next1;
+            }
+
+            current1 = next1;
+            current2 = next2;
+
+        }
+
+        return head1;
+    }
+
+  public static int sumList(Node<Integer> head) {
+    int sum = 0;
+    Node<Integer> current = head;
+
+    while(current != null){
+      sum += current.val;
+      current = current.next;
+    }
+
+
+    return sum;
+  }
+
+    public static List<String> linkedListValues(Node<String> head) {
+        List<String> list = new ArrayList<>();
+        Node<String> current = head;
+
+        while(current != null){
+            list.add(current.val);
+            current = current.next;
+        }
+
+        return list;
+    }
+
+    // recursive
+//    public static List<String> linkedListValues(Node<String> head) {
+//        List<String> values = new ArrayList<>();
+//        linkedListValues(head, values);
+//        return values;
+//    }
+//
+//    public static void linkedListValues(Node<String> head, List<String> values) {
+//        if (head == null) {
+//            return;
+//        }
+//        values.add(head.val);
+//        linkedListValues(head.next, values);
+//    }
+
+  public static List<String> intersectionWithDupes(List<String> listA, List<String> listB) {
+    List<String> ans = new ArrayList<>();
+    Map<String, Integer> countA = new HashMap<>();
+    for (String letter : listA) {
+      countA.put(letter, countA.getOrDefault(letter, 0) + 1);
+    }
+
+    Map<String, Integer> countB = new HashMap<>();
+    for(String letter : listB){
+      countB.put(letter, countB.getOrDefault(letter, 0) + 1);
+    }
+
+    for(String letter : countA.keySet()){
+      if(countB.containsKey(letter)){
+        for(int i = 0; i < Math.min(countA.get(letter), countB.get(letter)); i++){
+          ans.add(letter);
+        }
+      }
+    }
+
+
+    return ans;
   }
 
   public static boolean allUnique(List<String> items) {
