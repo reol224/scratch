@@ -93,6 +93,43 @@ class Scratch {
     System.out.println(intersection(a, b));
   }
 
+  public static boolean isSubsequence(String string1, String string2) {
+    int i = 0;
+    int j = 0;
+
+    while(i < string1.length() && j < string2.length()){
+      if(string1.charAt(i) == string2.charAt(j)){
+        i++;
+        j++;
+      } else {
+        j++;
+      }
+    }
+
+    return i == string1.length();
+  }
+
+  // public static <T> T bottomRightValue(Node<T> root) {
+  //   Queue<Node<T>> bt = new ArrayDeque<>();
+  //   bt.add(root);
+
+  //   Node<T> current = null;
+  //   while(!bt.isEmpty()){
+  //     current = bt.remove();
+
+  //     if(current.left != null){
+  //       bt.add(current.left);
+  //     }
+
+  //     if(current.right != null){
+  //       bt.add(current.right);
+  //     }
+      
+  //   }
+  //   // current will be the last node processed, which is the bottom right node
+  //   return current.val;
+  // }
+
   // public static <T> List<T> leafList(Node<T> root) {
   //   if(root == null){
   //     return List.of();
