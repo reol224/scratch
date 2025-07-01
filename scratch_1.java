@@ -8,7 +8,8 @@ class ListNode {
   int val;
   ListNode next;
 
-  ListNode() {}
+  ListNode() {
+  }
 
   ListNode(int val) {
     this.val = val;
@@ -21,25 +22,25 @@ class ListNode {
 }
 
 class Node<T> {
-    T val;
-    Node<T> next;
+  T val;
+  Node<T> next;
 
-    public Node(T val){
-        this.val = val;
-        this.next = null;
-    }
+  public Node(T val) {
+    this.val = val;
+    this.next = null;
+  }
 }
 
-class NodeBT<T> { //binary tree node
-    T val;
-    Node<T> left;
-    Node<T> right;
+class NodeBT<T> { // binary tree node
+  T val;
+  Node<T> left;
+  Node<T> right;
 
-    public NodeBT(T val) {
-        this.val = val;
-        this.left = null;
-        this.right = null;
-    }
+  public NodeBT(T val) {
+    this.val = val;
+    this.left = null;
+    this.right = null;
+  }
 }
 
 class TreeNode {
@@ -50,7 +51,8 @@ class TreeNode {
 
   TreeNode right;
 
-  TreeNode() {}
+  TreeNode() {
+  }
 
   TreeNode(int val) {
     this.val = val;
@@ -91,207 +93,301 @@ class Scratch {
     System.out.println(intersection(a, b));
   }
 
-//    public static int treeSum(Node<Integer> root) {
-//        if(root == null){
-//            return 0;
-//        }
-//
-//        int sum = 0;
-//        Queue<Node<Integer>> bt = new ArrayDeque<>();
-//        bt.add(root);
-//
-//        while(!bt.isEmpty()){
-//            Node<Integer> current = bt.remove();
-//            sum += current.val;
-//
-//            if(current.left != null){
-//                bt.add(current.left);
-//            }
-//
-//            if(current.right != null){
-//                bt.add(current.right);
-//            }
-//        }
-//
-//
-//        return sum;
-//    }
+  // public static <T> List<T> leafList(Node<T> root) {
+  //   if(root == null){
+  //     return List.of();
+  //   }
 
-//    public static boolean treeIncludes(Node<String> root, String target) {
-//        if(root == null){
-//            return false;
-//        }
-//
-//        if(root.val == target){
-//            return true;
-//        }
-//
-//        Queue<Node<String>> bt = new ArrayDeque<>();;
-//        bt.add(root);
-//
-//        while(!bt.isEmpty()){
-//            Node<String> current = bt.remove();
-//            if(current.val == target){
-//                return true;
-//            }
-//
-//            if(current.left != null){
-//                bt.add(current.left);
-//            }
-//
-//            if(current.right != null){
-//                bt.add(current.right);
-//            }
-//        }
-//
-//
-//        return false;
-//    }
+  //   List<T> leaves = new ArrayList<>();
+  //   Stack<Node<T>> bt = new Stack<>();
+  //   bt.add(root);
 
-//    public static Double treeMinValue(Node<Double> root) {
-//        Queue<Node<Double>> bt = new ArrayDeque<>();
-//        bt.add(root);
-//        Double min = Double.POSITIVE_INFINITY;
-//
-//        while(!bt.isEmpty()){
-//            Node<Double> current = bt.remove();
-//            if(current.val < min){
-//                min = current.val;
-//            }
-//
-//            if(current.left != null){
-//                bt.add(current.left);
-//            }
-//
-//            if(current.right != null){
-//                bt.add(current.right);
-//            }
-//        }
-//
-//
-//
-//        return min;
-//    }
+  //   while(!bt.isEmpty()){
+  //     Node<T> current = bt.pop();
+  //     if(current.left == null && current.right == null){
+  //       leaves.add(current.val);
+  //     }
 
-//    public static Double maxPathSum(Node<Double> root) {
-//        if(root == null){
-//            return Double.NEGATIVE_INFINITY;
-//        }
-//
-//        if(root.left == null && root.right == null){
-//            return root.val;
-//        }
-//
-//        return root.val + Math.max(maxPathSum(root.left), maxPathSum(root.right));
-//    }
+  //     if(current.right != null){
+  //       bt.push(current.right);
+  //     }
 
-//    public static List<String> breadthFirstValues(Node<String> root) {
-//        if (root == null) {
-//            return List.of();
-//        }
-//        List<String> values = new ArrayList<>();
-//        Queue<Node<String>> queue = new ArrayDeque<>();
-//        queue.add(root);
-//        while (!queue.isEmpty()) {
-//            Node<String> node = queue.remove();
-//            values.add(node.val);
-//            if (node.left != null) {
-//                queue.add(node.left);
-//            }
-//            if (node.right != null) {
-//                queue.add(node.right);
-//            }
-//        }
-//        return values;
-//    }
+  //     if(current.left != null){
+  //       bt.push(current.left);
+  //     }
+      
+  //   }
+  
+  //   return leaves;
+  // }
 
-//    public static List<String> depthFirstValues(Node<String> root) {
-//      // whatever just prints the values
-//        List<String> list = new ArrayList<>();
-//        Stack<Node<String>> bt = new Stack<>();
-//
-//        if(root != null){
-//            bt.push(root);
-//        }
-//
-//        while(!bt.isEmpty()){
-//            Node<String> current = bt.pop();
-//            list.add(current.val);
-//
-//            if(current.right != null){
-//                bt.push(current.right);
-//            }
-//
-//            if(current.left != null){
-//                bt.push(current.left);
-//            }
-//
-//        }
-//
-//        return list;
-//    }
+  // public static <T> int howHigh(Node<T> root){
+  //   if(root == null){
+  //     return -1;
+  //   }
 
-    public static <T> Node<T> zipperLists(Node<T> head1, Node<T> head2) {
-        Node<T> current1 = head1;
-        Node<T> current2 = head2;
+  //   return 1 + Math.max(howHigh(root.left), howHigh(root.right));
+  // }
 
-        while(current1 != null && current2 != null){
-            Node<T> next1 = current1.next;
-            Node<T> next2 = current2.next;
+  // public static <T> int treeValueCount(Node<T> root, T target){
+  //   if(root == null){
+  //     return 0;
+  //   }
 
-            current1.next = current2;
+  //   if(root.val == target && root.left == null && root.right == null){
+  //     return 1;
+  //   }
 
-            while(next1 != null){
-                current2.next = next1;
-            }
+  //   int count = 0;
+  //   Queue<Node<T>> bt = new ArrayDeque<>();
+  //   bt.add(root);
 
-            current1 = next1;
-            current2 = next2;
+  //   while(!bt.isEmpty()){
+  //     Node<T> current = bt.remove();
+  //     if(current.val == target){
+  //       count++;
+  //     }
 
-        }
+  //     if(current.left != null){
+  //       bt.add(current.left);
+  //     }
 
-        return head1;
+  //     if(current.right != null){
+  //       bt.add(current.right);
+  //     }
+  //   }
+    
+  //   return count;
+  // }
+
+  // public static <T> List<T> pathFinder(Node<T> root, T target) {
+  //   if (root == null){
+  //     return List.of();
+  //   }
+
+  //   if(root.val == target){
+  //     return List.of(root.val);
+  //   }
+
+  //   List<T> left = pathFinder(root.left, target);
+  //   if(left != null){
+  //     List<T> newPath = new ArrayList<>();
+  //     newPath.add(root.left);
+  //     newPath.addAll(left);
+  //     return newPath;
+  //   }
+
+  //   List<T> right = pathFinder(root.right, target);
+  //   if(right != null){
+  //     List<T> newPath = new ArrayList<>();
+  //     newPath.add(root.right);
+  //     newPath.addAll(right);
+  //     return newPath;
+  //   }
+
+  //   return List.of(null);
+  // }
+
+  // public static int treeSum(Node<Integer> root) {
+  // if(root == null){
+  // return 0;
+  // }
+  //
+  // int sum = 0;
+  // Queue<Node<Integer>> bt = new ArrayDeque<>();
+  // bt.add(root);
+  //
+  // while(!bt.isEmpty()){
+  // Node<Integer> current = bt.remove();
+  // sum += current.val;
+  //
+  // if(current.left != null){
+  // bt.add(current.left);
+  // }
+  //
+  // if(current.right != null){
+  // bt.add(current.right);
+  // }
+  // }
+  //
+  //
+  // return sum;
+  // }
+
+  // public static boolean treeIncludes(Node<String> root, String target) {
+  // if(root == null){
+  // return false;
+  // }
+  //
+  // if(root.val == target){
+  // return true;
+  // }
+  //
+  // Queue<Node<String>> bt = new ArrayDeque<>();;
+  // bt.add(root);
+  //
+  // while(!bt.isEmpty()){
+  // Node<String> current = bt.remove();
+  // if(current.val == target){
+  // return true;
+  // }
+  //
+  // if(current.left != null){
+  // bt.add(current.left);
+  // }
+  //
+  // if(current.right != null){
+  // bt.add(current.right);
+  // }
+  // }
+  //
+  //
+  // return false;
+  // }
+
+  // public static Double treeMinValue(Node<Double> root) {
+  // Queue<Node<Double>> bt = new ArrayDeque<>();
+  // bt.add(root);
+  // Double min = Double.POSITIVE_INFINITY;
+  //
+  // while(!bt.isEmpty()){
+  // Node<Double> current = bt.remove();
+  // if(current.val < min){
+  // min = current.val;
+  // }
+  //
+  // if(current.left != null){
+  // bt.add(current.left);
+  // }
+  //
+  // if(current.right != null){
+  // bt.add(current.right);
+  // }
+  // }
+  //
+  //
+  //
+  // return min;
+  // }
+
+  // public static Double maxPathSum(Node<Double> root) {
+  // if(root == null){
+  // return Double.NEGATIVE_INFINITY;
+  // }
+  //
+  // if(root.left == null && root.right == null){
+  // return root.val;
+  // }
+  //
+  // return root.val + Math.max(maxPathSum(root.left), maxPathSum(root.right));
+  // }
+
+  // public static List<String> breadthFirstValues(Node<String> root) {
+  // if (root == null) {
+  // return List.of();
+  // }
+  // List<String> values = new ArrayList<>();
+  // Queue<Node<String>> queue = new ArrayDeque<>();
+  // queue.add(root);
+  // while (!queue.isEmpty()) {
+  // Node<String> node = queue.remove();
+  // values.add(node.val);
+  // if (node.left != null) {
+  // queue.add(node.left);
+  // }
+  // if (node.right != null) {
+  // queue.add(node.right);
+  // }
+  // }
+  // return values;
+  // }
+
+  // public static List<String> depthFirstValues(Node<String> root) {
+  // // whatever just prints the values
+  // List<String> list = new ArrayList<>();
+  // Stack<Node<String>> bt = new Stack<>();
+  //
+  // if(root != null){
+  // bt.push(root);
+  // }
+  //
+  // while(!bt.isEmpty()){
+  // Node<String> current = bt.pop();
+  // list.add(current.val);
+  //
+  // if(current.right != null){
+  // bt.push(current.right);
+  // }
+  //
+  // if(current.left != null){
+  // bt.push(current.left);
+  // }
+  //
+  // }
+  //
+  // return list;
+  // }
+
+  public static <T> Node<T> zipperLists(Node<T> head1, Node<T> head2) {
+    Node<T> current1 = head1;
+    Node<T> current2 = head2;
+
+    while (current1 != null && current2 != null) {
+      Node<T> next1 = current1.next;
+      Node<T> next2 = current2.next;
+
+      current1.next = current2;
+
+      while (next1 != null) {
+        current2.next = next1;
+      }
+
+      current1 = next1;
+      current2 = next2;
+
     }
+
+    return head1;
+  }
 
   public static int sumList(Node<Integer> head) {
     int sum = 0;
     Node<Integer> current = head;
 
-    while(current != null){
+    while (current != null) {
       sum += current.val;
       current = current.next;
     }
 
-
     return sum;
   }
 
-    public static List<String> linkedListValues(Node<String> head) {
-        List<String> list = new ArrayList<>();
-        Node<String> current = head;
+  public static List<String> linkedListValues(Node<String> head) {
+    List<String> list = new ArrayList<>();
+    Node<String> current = head;
 
-        while(current != null){
-            list.add(current.val);
-            current = current.next;
-        }
-
-        return list;
+    while (current != null) {
+      list.add(current.val);
+      current = current.next;
     }
 
-    // recursive
-//    public static List<String> linkedListValues(Node<String> head) {
-//        List<String> values = new ArrayList<>();
-//        linkedListValues(head, values);
-//        return values;
-//    }
-//
-//    public static void linkedListValues(Node<String> head, List<String> values) {
-//        if (head == null) {
-//            return;
-//        }
-//        values.add(head.val);
-//        linkedListValues(head.next, values);
-//    }
+    return list;
+  }
+
+  // recursive
+  // public static List<String> linkedListValues(Node<String> head) {
+  // List<String> values = new ArrayList<>();
+  // linkedListValues(head, values);
+  // return values;
+  // }
+  //
+  // public static void linkedListValues(Node<String> head, List<String> values) {
+  // if (head == null) {
+  // return;
+  // }
+  // values.add(head.val);
+  // linkedListValues(head.next, values);
+  // }
 
   public static List<String> intersectionWithDupes(List<String> listA, List<String> listB) {
     List<String> ans = new ArrayList<>();
@@ -301,18 +397,17 @@ class Scratch {
     }
 
     Map<String, Integer> countB = new HashMap<>();
-    for(String letter : listB){
+    for (String letter : listB) {
       countB.put(letter, countB.getOrDefault(letter, 0) + 1);
     }
 
-    for(String letter : countA.keySet()){
-      if(countB.containsKey(letter)){
-        for(int i = 0; i < Math.min(countA.get(letter), countB.get(letter)); i++){
+    for (String letter : countA.keySet()) {
+      if (countB.containsKey(letter)) {
+        for (int i = 0; i < Math.min(countA.get(letter), countB.get(letter)); i++) {
           ans.add(letter);
         }
       }
     }
-
 
     return ans;
   }
@@ -327,27 +422,27 @@ class Scratch {
     return true;
 
     // Or this
-    //    Set<String> uniqueItems = new HashSet<>(items);
-    //    return uniqueItems.size() == items.size();
+    // Set<String> uniqueItems = new HashSet<>(items);
+    // return uniqueItems.size() == items.size();
   }
 
   public static List<Integer> exclusiveItems(List<Integer> a, List<Integer> b) {
     // LTE on tons of input, brute-force
-    //    List<Integer> ans = new ArrayList<>();
+    // List<Integer> ans = new ArrayList<>();
     //
-    //    for(int num : a){
-    //      if(!b.contains(num)){
-    //        ans.add(num);
-    //      }
-    //    }
+    // for(int num : a){
+    // if(!b.contains(num)){
+    // ans.add(num);
+    // }
+    // }
     //
-    //    for(int num : b){
-    //      if(!a.contains(num)){
-    //        ans.add(num);
-    //      }
-    //    }
+    // for(int num : b){
+    // if(!a.contains(num)){
+    // ans.add(num);
+    // }
+    // }
     //
-    //    return ans;
+    // return ans;
 
     List<Integer> ans = new ArrayList<>();
     Set<Integer> setA = new HashSet<>(a);
@@ -370,14 +465,14 @@ class Scratch {
 
   public static List<Integer> intersection(List<Integer> listA, List<Integer> listB) {
     // LTE
-    //    List<Integer> ans = new ArrayList<>();
-    //    for(int num : listA){
-    //      if(listB.contains(num)){
-    //        ans.add(num);
-    //      }
-    //    }
+    // List<Integer> ans = new ArrayList<>();
+    // for(int num : listA){
+    // if(listB.contains(num)){
+    // ans.add(num);
+    // }
+    // }
     //
-    //    return ans;
+    // return ans;
 
     Set<Integer> set = new HashSet<>(listB);
     List<Integer> intersection = new ArrayList<>();
@@ -407,14 +502,14 @@ class Scratch {
 
   public static List<Integer> pairSum(List<Integer> numbers, int target) {
     // Brute force Time O(n squared) Space O(1)
-    //        for(int i = 0; i < numbers.size(); i++){
-    //            for(int j = i + 1; j < numbers.size(); j++){
-    //                if(numbers.get(i) + numbers.get(j) == target){
-    //                    return Arrays.asList(i, j);
-    //                }
-    //            }
-    //        }
-    //        return new ArrayList<>();
+    // for(int i = 0; i < numbers.size(); i++){
+    // for(int j = i + 1; j < numbers.size(); j++){
+    // if(numbers.get(i) + numbers.get(j) == target){
+    // return Arrays.asList(i, j);
+    // }
+    // }
+    // }
+    // return new ArrayList<>();
 
     // Time O(n) Space O(n)
     Map<Integer, Integer> map = new HashMap<>();
@@ -434,25 +529,27 @@ class Scratch {
 
   public static char mostFrequentChar(String s) {
     // Basic version to find out the most frequent character
-    //    int[] count = new int[26];
-    //    for(char c : s.toCharArray()){
-    //      count[c - 'a']++;
-    //    }
+    // int[] count = new int[26];
+    // for(char c : s.toCharArray()){
+    // count[c - 'a']++;
+    // }
     //
-    //    int max = 0;
-    //    char mf = 'a';
+    // int max = 0;
+    // char mf = 'a';
     //
-    //    for(int i = 0; i < 26; i++){
-    //      if(count[i] > max){
-    //        max = count[i];
-    //        mf = (char)('a' + i);
-    //      }
-    //    }
+    // for(int i = 0; i < 26; i++){
+    // if(count[i] > max){
+    // max = count[i];
+    // mf = (char)('a' + i);
+    // }
+    // }
     //
-    //    return mf;
+    // return mf;
 
-    // Version that will ALSO return the most frequent character that's EARLIEST in the String
-    // Ex. : Source.mostFrequentChar("riverbed"); // -> 'r' (adica nu il intoarce pe 'e')
+    // Version that will ALSO return the most frequent character that's EARLIEST in
+    // the String
+    // Ex. : Source.mostFrequentChar("riverbed"); // -> 'r' (adica nu il intoarce pe
+    // 'e')
 
     int[] count = new int[26];
     for (char c : s.toCharArray()) {
@@ -486,7 +583,8 @@ class Scratch {
 
     Collections.sort(list);
 
-    if (list.get(0) == 0) {}
+    if (list.get(0) == 0) {
+    }
 
     return 5L;
   }
@@ -819,7 +917,8 @@ class Scratch {
       if (curr == target) {
         curr = 0;
         count++;
-        if (count == 2) return true;
+        if (count == 2)
+          return true;
       }
     }
 
@@ -883,7 +982,8 @@ class Scratch {
     for (ListNode node = head; node != null; node = node.next) {
       node.val = (node.val * 2) % 10;
 
-      if (node.next != null && node.next.val > 4) node.val++;
+      if (node.next != null && node.next.val > 4)
+        node.val++;
     }
 
     return head;
@@ -903,11 +1003,12 @@ class Scratch {
   }
 
   /**
-   * Returns the minimum number of operations required to make the median of the given array equal
+   * Returns the minimum number of operations required to make the median of the
+   * given array equal
    * to k.
    *
    * @param nums array of integers
-   * @param k target median
+   * @param k    target median
    * @return minimum number of operations required
    */
   public static long minOperationsToMakeMedianK(int[] nums, int k) { // 1 2 3 6 8 10 12
@@ -922,7 +1023,8 @@ class Scratch {
     long operations = 0;
 
     // If the median is already equal to k, return 0
-    if (nums[medianIndex] == k) return 0;
+    if (nums[medianIndex] == k)
+      return 0;
 
     // If the median is greater than k, iterate from the median index towards the
     // beginning and calculate the number of operations required
@@ -1207,7 +1309,8 @@ class Scratch {
   }
 
   /**
-   * Takes a string and removes adjacent characters that are 32 positions apart in the ASCII table.
+   * Takes a string and removes adjacent characters that are 32 positions apart in
+   * the ASCII table.
    *
    * @param s String to be modified
    * @return Modified string
@@ -1281,7 +1384,8 @@ class Scratch {
         i++;
       }
 
-      if (!fine) return -1;
+      if (!fine)
+        return -1;
       count++;
     }
 
@@ -1289,16 +1393,15 @@ class Scratch {
   }
 
   public static boolean confusingNumber(int n) {
-    Map<Integer, Integer> map =
-        new HashMap<>() {
-          {
-            put(0, 0);
-            put(1, 1);
-            put(6, 9);
-            put(8, 8);
-            put(9, 6);
-          }
-        };
+    Map<Integer, Integer> map = new HashMap<>() {
+      {
+        put(0, 0);
+        put(1, 1);
+        put(6, 9);
+        put(8, 8);
+        put(9, 6);
+      }
+    };
 
     // check if n contains 2,3,4,5, or 7
     int copy = n;
@@ -1322,12 +1425,14 @@ class Scratch {
   }
 
   /**
-   * This function finds the minimum number of rotations required to match all the dominoes in an
+   * This function finds the minimum number of rotations required to match all the
+   * dominoes in an
    * array.
    *
-   * @param tops Array of top numbers of the dominoes
+   * @param tops    Array of top numbers of the dominoes
    * @param bottoms Array of bottom numbers of the dominoes
-   * @return The minimum number of rotations required, or -1 if no match is possible
+   * @return The minimum number of rotations required, or -1 if no match is
+   *         possible
    */
   public static int minDominoRotationsGOOGLE(int[] tops, int[] bottoms) {
     // Length of the array
@@ -1348,13 +1453,15 @@ class Scratch {
   }
 
   /**
-   * This function checks if a given number matches with any of the top or bottom numbers in the
-   * array and returns the minimum number of rotations needed to make all the dominoes match.
+   * This function checks if a given number matches with any of the top or bottom
+   * numbers in the
+   * array and returns the minimum number of rotations needed to make all the
+   * dominoes match.
    *
-   * @param number The number to check against the array
-   * @param tops Array of top numbers of the dominoes
+   * @param number  The number to check against the array
+   * @param tops    Array of top numbers of the dominoes
    * @param bottoms Array of bottom numbers of the dominoes
-   * @param n Length of the array
+   * @param n       Length of the array
    * @return The minimum number of rotations needed, or -1 if no match is possible
    */
   public static int checkDomino(int number, int[] tops, int[] bottoms, int n) {
@@ -1464,7 +1571,8 @@ class Scratch {
   }
 
   public static int findLengthOfLCIS(int[] nums) {
-    if (nums == null || nums.length == 0) return 0;
+    if (nums == null || nums.length == 0)
+      return 0;
     int count = 1;
     int max = 1;
 
@@ -1481,7 +1589,8 @@ class Scratch {
   }
 
   public void flatten(TreeNode root) {
-    if (root == null) return;
+    if (root == null)
+      return;
 
     flatten(root.right);
     flatten(root.left);
@@ -1539,7 +1648,8 @@ class Scratch {
       int units = Math.min(box[0], truckSize);
       count += units * box[1];
       truckSize -= units;
-      if (truckSize == 0) return count;
+      if (truckSize == 0)
+        return count;
     }
 
     return count;
@@ -1710,7 +1820,8 @@ class Scratch {
   }
 
   public static ListNode reverseLL(ListNode head) {
-    if (head == null) return null;
+    if (head == null)
+      return null;
     ListNode prev = null;
     ListNode current = head;
     ListNode next = null;
@@ -1751,8 +1862,9 @@ class Scratch {
   /**
    * Inserts a new interval into a list of existing intervals.
    *
-   * @param intervals Array of intervals. Each interval is represented by an array with two
-   *     elements: the start and end of the interval.
+   * @param intervals   Array of intervals. Each interval is represented by an
+   *                    array with two
+   *                    elements: the start and end of the interval.
    * @param newInterval The new interval to be inserted.
    * @return Array of intervals with the new interval inserted.
    */
@@ -1855,7 +1967,7 @@ class Scratch {
   }
 
   public static String getHappyString(int n, int k) {
-    char[] pool = {'a', 'b', 'c'};
+    char[] pool = { 'a', 'b', 'c' };
     // dfsHappyString(n, k, 0, new char[n], pool);
     return "";
   }
@@ -1965,7 +2077,8 @@ class Scratch {
   }
 
   public static int robb(int[] nums) {
-    if (nums.length == 0) return 0;
+    if (nums.length == 0)
+      return 0;
 
     int dp1 = 0;
     int dp2 = 0;
@@ -2007,7 +2120,8 @@ class Scratch {
     }
 
     String zero = generateTheString(curr + "0");
-    if (zero.length() > 0) return zero;
+    if (zero.length() > 0)
+      return zero;
 
     return generateTheString(curr + "1");
   }
@@ -2055,7 +2169,8 @@ class Scratch {
 
   public int countSegments(String s) {
     String trimmed = s.trim();
-    if (trimmed.isEmpty()) return 0;
+    if (trimmed.isEmpty())
+      return 0;
 
     return trimmed.split("\\s+").length;
   }
@@ -2111,7 +2226,8 @@ class Scratch {
   }
 
   public static int maxLength(List<String> arr) {
-    if (arr == null || arr.size() == 0) return 0;
+    if (arr == null || arr.size() == 0)
+      return 0;
 
     dfsMaxLength(arr, "", 0);
 
@@ -2125,7 +2241,8 @@ class Scratch {
       result = Math.max(path.length(), result);
     }
 
-    if (index == arr.size() || !unique) return;
+    if (index == arr.size() || !unique)
+      return;
 
     for (int i = index; i < arr.size(); i++) {
       dfsMaxLength(arr, path + arr.get(i), i + 1);
@@ -2135,7 +2252,8 @@ class Scratch {
   public static boolean isUnique(String s) {
     Set<Character> set = new HashSet<>();
     for (char c : s.toCharArray()) {
-      if (set.contains(c)) return false;
+      if (set.contains(c))
+        return false;
       set.add(c);
     }
 
@@ -2223,7 +2341,8 @@ class Scratch {
   public List<Integer> largestValues(TreeNode root) {
     List<Integer> ans = new ArrayList<>();
 
-    if (root == null) return ans;
+    if (root == null)
+      return ans;
 
     Queue<TreeNode> queue = new LinkedList<>();
     queue.offer(root);
@@ -2236,8 +2355,10 @@ class Scratch {
         TreeNode current = queue.poll();
         max = Math.max(max, current.val);
 
-        if (current.left != null) queue.offer(current.left);
-        if (current.right != null) queue.offer(current.right);
+        if (current.left != null)
+          queue.offer(current.left);
+        if (current.right != null)
+          queue.offer(current.right);
       }
 
       ans.add(max);
@@ -2274,7 +2395,8 @@ class Scratch {
       int win = matches[i][0];
       int loss = matches[i][1];
 
-      if (losses[win] == 0) losses[win] = -1;
+      if (losses[win] == 0)
+        losses[win] = -1;
       if (losses[loss] == -1) {
         losses[loss] = 1;
       } else {
@@ -2378,7 +2500,8 @@ class Scratch {
     }
 
     int max = 0;
-    for (int i : freq) max = Math.max(i, max);
+    for (int i : freq)
+      max = Math.max(i, max);
 
     int ans = 0;
     for (int i = 1; i < freq.length; i++) {
@@ -2403,7 +2526,8 @@ class Scratch {
         end--;
       } else if (nums[start] + nums[end] > k) {
         end--;
-      } else start++;
+      } else
+        start++;
     }
 
     return ans;
@@ -2454,8 +2578,10 @@ class Scratch {
 
   public static int[] closestDivisors(int num) {
     for (int i = (int) Math.sqrt(num + 2); i > 0; --i) {
-      if ((num + 1) % i == 0) return new int[] {i, (num + 1) / i};
-      if ((num + 2) % i == 0) return new int[] {i, (num + 2) / i};
+      if ((num + 1) % i == 0)
+        return new int[] { i, (num + 1) / i };
+      if ((num + 2) % i == 0)
+        return new int[] { i, (num + 2) / i };
     }
     return new int[] {};
   }
@@ -2468,7 +2594,8 @@ class Scratch {
     }
 
     for (int i = arr.length; i > 0; i--) {
-      if (freq[i] == i) return i;
+      if (freq[i] == i)
+        return i;
     }
 
     return -1;
@@ -2476,11 +2603,13 @@ class Scratch {
 
   public static boolean kLengthApart(int[] nums, int k) {
     int count = 0;
-    if (nums[0] == 0) count = k;
+    if (nums[0] == 0)
+      count = k;
 
     for (int i = 1; i < nums.length; i++) {
       if (nums[i] == 1) {
-        if (count < k) return false;
+        if (count < k)
+          return false;
         count = 0;
       } else {
         count++;
@@ -2498,12 +2627,14 @@ class Scratch {
       int m2 = 0;
 
       while (n > 1) {
-        if (n % 2 == 1) count++;
+        if (n % 2 == 1)
+          count++;
         m2++;
         n /= 2;
       }
 
-      if (n == 1) count++;
+      if (n == 1)
+        count++;
       m2max = Math.max(m2max, m2);
     }
 
@@ -2511,7 +2642,8 @@ class Scratch {
   }
 
   public static ListNode sortList(ListNode head) {
-    if (head == null || head.next == null) return head;
+    if (head == null || head.next == null)
+      return head;
 
     ListNode middle = middleNode(head);
     ListNode secondHead = middle.next;
@@ -2526,8 +2658,10 @@ class Scratch {
   public static ListNode mergeLinkedList(ListNode l1, ListNode l2) {
     ListNode head;
 
-    if (l1 == null) return l2;
-    if (l2 == null) return l1;
+    if (l1 == null)
+      return l2;
+    if (l2 == null)
+      return l1;
 
     if (l1.val < l2.val) {
       head = l1;
@@ -2551,23 +2685,30 @@ class Scratch {
       }
     }
 
-    if (l1 == null) dummy.next = l2;
-    if (l2 == null) dummy.next = l1;
+    if (l1 == null)
+      dummy.next = l2;
+    if (l2 == null)
+      dummy.next = l1;
 
     return head;
   }
 
   public static String multiply(String num1, String num2) {
     // uglee Karatsuba
-    if (num1 == null || num2 == null) return null;
-    if ("".equals(num1) || "".equals(num2)) return "";
-    if (num1.length() == 1 || num2.length() == 1) return singleMultiply(num2, num1);
+    if (num1 == null || num2 == null)
+      return null;
+    if ("".equals(num1) || "".equals(num2))
+      return "";
+    if (num1.length() == 1 || num2.length() == 1)
+      return singleMultiply(num2, num1);
 
     int len = Math.max(num1.length(), num2.length());
     StringBuilder sb1 = new StringBuilder(num1);
     StringBuilder sb2 = new StringBuilder(num2);
-    for (int a = sb1.length(); a < len; a++) sb1.insert(0, '0');
-    for (int a = sb2.length(); a < len; a++) sb2.insert(0, '0');
+    for (int a = sb1.length(); a < len; a++)
+      sb1.insert(0, '0');
+    for (int a = sb2.length(); a < len; a++)
+      sb2.insert(0, '0');
     num1 = sb1.toString();
     num2 = sb2.toString();
 
@@ -2583,20 +2724,24 @@ class Scratch {
   }
 
   private static String trim(StringBuilder sb) {
-    while (sb.length() > 1 && sb.charAt(0) == '0') sb.deleteCharAt(0);
+    while (sb.length() > 1 && sb.charAt(0) == '0')
+      sb.deleteCharAt(0);
     return sb.toString();
   }
 
   private static String[] split(String s) {
     int m = s.length() >> 1;
     m = (s.length() & 1) == 1 ? m + 1 : m;
-    return new String[] {s.substring(0, m), s.substring(m)};
+    return new String[] { s.substring(0, m), s.substring(m) };
   }
 
   private static String singleMultiply(String num1, String num2) {
-    if ("0".equals(num1) || "0".equals(num2)) return "0";
-    if ("1".equals(num1)) return num2;
-    if ("1".equals(num2)) return num1;
+    if ("0".equals(num1) || "0".equals(num2))
+      return "0";
+    if ("1".equals(num1))
+      return num2;
+    if ("1".equals(num2))
+      return num1;
 
     String a, b;
     if (num1.length() == 1) {
@@ -2616,7 +2761,8 @@ class Scratch {
       c = ((f * s) + c) / 10;
     }
 
-    if (c > 0) sb.insert(0, c);
+    if (c > 0)
+      sb.insert(0, c);
     return trim(sb);
   }
 
@@ -2640,7 +2786,8 @@ class Scratch {
       c = (f + c + s) / 10;
     }
 
-    if (c > 0) sb.insert(0, c);
+    if (c > 0)
+      sb.insert(0, c);
     return trim(sb);
   }
 
@@ -2666,7 +2813,8 @@ class Scratch {
           break;
         }
       }
-      if (a == null) return "0";
+      if (a == null)
+        return "0";
     }
 
     StringBuilder sb = new StringBuilder();
@@ -2690,7 +2838,8 @@ class Scratch {
 
   private static String pad(String num, int zeros) {
     StringBuilder sb = new StringBuilder(num);
-    for (int a = 0; a < zeros; a++) sb.append('0');
+    for (int a = 0; a < zeros; a++)
+      sb.append('0');
     return sb.toString();
   }
 
@@ -2699,7 +2848,8 @@ class Scratch {
     int zeroes = 0;
 
     for (char c : arr) {
-      if (c == '0') zeroes++;
+      if (c == '0')
+        zeroes++;
     }
 
     int ones = 0;
@@ -2796,8 +2946,10 @@ class Scratch {
     int[] first = new int[26];
     int[] second = new int[26];
 
-    for (char c : word1.toCharArray()) first[c - 'a']++;
-    for (char c : word2.toCharArray()) second[c - 'a']++;
+    for (char c : word1.toCharArray())
+      first[c - 'a']++;
+    for (char c : word2.toCharArray())
+      second[c - 'a']++;
 
     int ans = 0;
 
@@ -2811,7 +2963,8 @@ class Scratch {
     Arrays.sort(second);
 
     for (int i = 0; i < 26; i++) {
-      if (first[i] != second[i]) return false;
+      if (first[i] != second[i])
+        return false;
     }
 
     return true;
@@ -2821,8 +2974,10 @@ class Scratch {
     int[] first = new int[26];
     int[] second = new int[26];
 
-    for (char c : s.toCharArray()) first[c - 'a']++;
-    for (char c : t.toCharArray()) second[c - 'a']++;
+    for (char c : s.toCharArray())
+      first[c - 'a']++;
+    for (char c : t.toCharArray())
+      second[c - 'a']++;
 
     int ans = 0;
 
@@ -2837,8 +2992,10 @@ class Scratch {
     int[] first = new int[26];
     int[] second = new int[26];
 
-    for (char c : s.toCharArray()) first[c - 'a']++;
-    for (char c : t.toCharArray()) second[c - 'a']++;
+    for (char c : s.toCharArray())
+      first[c - 'a']++;
+    for (char c : t.toCharArray())
+      second[c - 'a']++;
 
     int ans = 0;
 
@@ -2865,11 +3022,13 @@ class Scratch {
     vowels.add('U');
 
     for (int i = 0; i < s.length() / 2; i++) {
-      if (vowels.contains(s.charAt(i))) first++;
+      if (vowels.contains(s.charAt(i)))
+        first++;
     }
 
     for (int i = s.length() / 2; i < s.length(); i++) {
-      if (vowels.contains(s.charAt(i))) second++;
+      if (vowels.contains(s.charAt(i)))
+        second++;
     }
 
     return first == second;
@@ -2878,7 +3037,8 @@ class Scratch {
   public int diff = 0;
 
   public int maxAncestorDiff(TreeNode root) {
-    if (root == null) return 0;
+    if (root == null)
+      return 0;
 
     int min = root.val;
     int max = root.val;
@@ -2889,7 +3049,8 @@ class Scratch {
   }
 
   public void diff(TreeNode root, int min, int max) {
-    if (root == null) return;
+    if (root == null)
+      return;
 
     diff = Math.max(diff, Math.max(Math.abs(min - root.val), Math.abs(max - root.val)));
     min = Math.min(min, root.val);
@@ -2917,7 +3078,8 @@ class Scratch {
   }
 
   public static int matchPlayersAndTrainers(int[] players, int[] trainers) {
-    if (trainers.length == 1 && players.length == 1 && players[0] <= trainers[0]) return 1;
+    if (trainers.length == 1 && players.length == 1 && players[0] <= trainers[0])
+      return 1;
 
     Arrays.sort(players);
     Arrays.sort(trainers);
@@ -2941,7 +3103,8 @@ class Scratch {
   }
 
   public int rangeSumBST(TreeNode root, int low, int high) {
-    if (root == null) return 0;
+    if (root == null)
+      return 0;
 
     int current = (root.val >= low && root.val <= high) ? root.val : 0;
     int left = rangeSumBST(root.left, low, high);
@@ -3001,12 +3164,15 @@ class Scratch {
     }
 
     for (int num : set1) {
-      if (set2.contains(num)) overlap.add(num);
+      if (set2.contains(num))
+        overlap.add(num);
     }
 
     for (int num : overlap) {
-      if (set1.size() >= set2.size()) set1.remove(num);
-      else set2.remove(num);
+      if (set1.size() >= set2.size())
+        set1.remove(num);
+      else
+        set2.remove(num);
     }
 
     return Math.min(set1.size(), target) + Math.min(set2.size(), target);
@@ -3043,12 +3209,14 @@ class Scratch {
     Arrays.sort(hand);
 
     for (int k : hand) {
-      if (map.get(k) == 0) continue;
+      if (map.get(k) == 0)
+        continue;
 
       for (int j = 0; j < groupSize; j++) {
         int current = k + j;
 
-        if (map.getOrDefault(current, 0) == 0) return false;
+        if (map.getOrDefault(current, 0) == 0)
+          return false;
 
         map.put(current, map.get(current) - 1);
       }
@@ -3188,7 +3356,8 @@ class Scratch {
     Set<Integer> set = new HashSet<>();
 
     for (int num : nums) {
-      if (num != 0) set.add(num);
+      if (num != 0)
+        set.add(num);
     }
 
     return set.size();
@@ -3199,7 +3368,8 @@ class Scratch {
     int ans = 0;
 
     for (int right = 0; right < nums.length; right++) {
-      while (left < right && check(nums, left, right)) left++;
+      while (left < right && check(nums, left, right))
+        left++;
 
       ans = Math.max(ans, right - left + 1);
     }
@@ -3209,7 +3379,8 @@ class Scratch {
 
   public static boolean check(int[] nums, int left, int right) {
     for (int i = left; i < right; i++) {
-      if ((nums[i] & nums[right]) != 0) return true;
+      if ((nums[i] & nums[right]) != 0)
+        return true;
     }
 
     return false;
@@ -3226,7 +3397,8 @@ class Scratch {
       int currentLast = skill[skill.length - 1 - i];
 
       // checking if total skill is the same
-      if (firstPair != current + currentLast) return -1;
+      if (firstPair != current + currentLast)
+        return -1;
       chemistry += (long) currentLast * current;
     }
 
@@ -3262,7 +3434,8 @@ class Scratch {
     Set<Integer> set = new HashSet<>();
     for (int i = 0; i < nums.length - 1; i++) {
       int sum = nums[i] + nums[i + 1];
-      if (!set.add(sum)) return true;
+      if (!set.add(sum))
+        return true;
     }
 
     return false;
@@ -3277,7 +3450,8 @@ class Scratch {
     }
 
     for (int value : map.values()) {
-      if (value == 1) return -1;
+      if (value == 1)
+        return -1;
 
       ans += (int) Math.ceil((double) value / 3);
     }
@@ -3287,7 +3461,8 @@ class Scratch {
 
   public static int lengthOfLastWord(String s) {
     s = s.trim();
-    if (s.isEmpty() || s.equals(" ")) return 0;
+    if (s.isEmpty() || s.equals(" "))
+      return 0;
     int length = 0;
     char[] arr = s.toCharArray();
     for (int i = arr.length - 1; i >= 0; i--) {
@@ -3534,7 +3709,8 @@ class Scratch {
 
   public int minDifficulty(int[] jobDifficulty, int d) {
     int n = jobDifficulty.length;
-    if (d > n) return -1;
+    if (d > n)
+      return -1;
     int[][] dp = new int[d][n];
     for (int i = 1; i < d; i++) {
       Arrays.fill(dp[i], Integer.MAX_VALUE);
@@ -3561,13 +3737,15 @@ class Scratch {
   public static List<List<Integer>> threeSum(int[] nums) {
     List<List<Integer>> ans = new ArrayList<>();
 
-    if (nums.length < 3) return ans;
+    if (nums.length < 3)
+      return ans;
 
     Arrays.sort(nums);
 
     for (int i = 0; i < nums.length - 2; i++) {
       // skip dps
-      if (i > 0 && nums[i] == nums[i - 1]) continue;
+      if (i > 0 && nums[i] == nums[i - 1])
+        continue;
 
       int target = -nums[i];
       int left = i + 1;
@@ -3579,8 +3757,10 @@ class Scratch {
         if (sum == target) {
           ans.add(Arrays.asList(nums[i], nums[left], nums[right]));
 
-          while (left < right && nums[left] == nums[left + 1]) left++;
-          while (left < right && nums[right] == nums[right - 1]) right--;
+          while (left < right && nums[left] == nums[left + 1])
+            left++;
+          while (left < right && nums[right] == nums[right - 1])
+            right--;
 
           left++;
           right--;
@@ -3656,12 +3836,12 @@ class Scratch {
     // build the graph
     for (int[] flight : flights) {
       graph.putIfAbsent(flight[0], new ArrayList<>());
-      graph.get(flight[0]).add(new int[] {flight[1], flight[2]});
+      graph.get(flight[0]).add(new int[] { flight[1], flight[2] });
     }
 
     // pq to store cost, current city, stops
     PriorityQueue<int[]> pq = new PriorityQueue<>(Comparator.comparingInt(a -> a[0]));
-    pq.offer(new int[] {0, src, 0});
+    pq.offer(new int[] { 0, src, 0 });
 
     while (!pq.isEmpty()) {
       int[] current = pq.poll();
@@ -3669,7 +3849,8 @@ class Scratch {
       int city = current[1];
       int stops = current[2];
 
-      if (city == dst) return cost;
+      if (city == dst)
+        return cost;
 
       if (stops <= k) {
         List<int[]> neighbors = graph.getOrDefault(city, new ArrayList<>());
@@ -3677,7 +3858,7 @@ class Scratch {
           int nextCity = neighbor[0];
           int nextCost = cost + neighbor[1];
           int nextStops = stops + 1;
-          pq.offer(new int[] {nextCost, nextCity, nextStops});
+          pq.offer(new int[] { nextCost, nextCity, nextStops });
         }
       }
     }
@@ -3740,8 +3921,8 @@ class Scratch {
       int v = road[1];
       int time = road[2];
 
-      graph[u].add(new int[] {v, time});
-      graph[v].add(new int[] {u, time});
+      graph[u].add(new int[] { v, time });
+      graph[v].add(new int[] { u, time });
     }
 
     return dijkstra(n, graph);
@@ -3755,7 +3936,7 @@ class Scratch {
     ways[0] = 1;
 
     PriorityQueue<long[]> pq = new PriorityQueue<>(Comparator.comparingLong(a -> a[1]));
-    pq.offer(new long[] {0, 0});
+    pq.offer(new long[] { 0, 0 });
 
     while (!pq.isEmpty()) {
       long[] current = pq.poll();
@@ -3773,7 +3954,7 @@ class Scratch {
         if (distance[u] + time < distance[v]) {
           distance[v] = distance[u] + time;
           ways[v] = ways[u];
-          pq.offer(new long[] {v, distance[v]});
+          pq.offer(new long[] { v, distance[v] });
 
         } else if (distance[u] + time == distance[v]) {
           ways[v] = (ways[v] + ways[u]) % 1_000_000_007;
@@ -3817,11 +3998,14 @@ class Scratch {
   }
 
   public static int numRollsToTargetHelper(int n, int k, int target, Map<String, Integer> memo) {
-    if (n == 0 && target == 0) return 1;
-    if (n == 0 || target <= 0) return 0;
+    if (n == 0 && target == 0)
+      return 1;
+    if (n == 0 || target <= 0)
+      return 0;
 
     String key = n + "," + target;
-    if (memo.containsKey(key)) return memo.get(key);
+    if (memo.containsKey(key))
+      return memo.get(key);
 
     int ans = 0;
     for (int i = 1; i <= k; i++) {
@@ -3853,14 +4037,16 @@ class Scratch {
   }
 
   public static boolean validMountainArray(int[] arr) {
-    if (arr.length < 3) return false;
+    if (arr.length < 3)
+      return false;
 
     int peak = 0;
     while (peak < arr.length - 1 && arr[peak] < arr[peak + 1]) {
       peak++;
     }
 
-    if (peak == 0 || peak == arr.length - 1) return false;
+    if (peak == 0 || peak == arr.length - 1)
+      return false;
 
     while (peak < arr.length - 1 && arr[peak] > arr[peak + 1]) {
       peak++;
@@ -3908,7 +4094,8 @@ class Scratch {
     Arrays.sort(nums);
 
     for (int i = 0; i < nums.length; i++) {
-      if (nums[i] == target) ans.add(i);
+      if (nums[i] == target)
+        ans.add(i);
     }
 
     return ans;
@@ -3917,7 +4104,8 @@ class Scratch {
   public static List<Integer> findWordsContaining(String[] words, char x) {
     List<Integer> ans = new ArrayList<>();
     for (int i = 0; i < words.length; i++) {
-      if (words[i].indexOf(x) != -1) ans.add(i);
+      if (words[i].indexOf(x) != -1)
+        ans.add(i);
     }
 
     return ans;
@@ -3953,7 +4141,8 @@ class Scratch {
   }
 
   public void hasPathSum3Helper(TreeNode root, int targetSum, List<Integer> current, int[] ans) {
-    if (root == null) return;
+    if (root == null)
+      return;
 
     current.add(root.val);
     int sum = 0;
@@ -3978,7 +4167,8 @@ class Scratch {
 
   public static void hasPathSum2Helper(
       TreeNode root, int targetSum, List<Integer> current, List<List<Integer>> ans) {
-    if (root == null) return;
+    if (root == null)
+      return;
 
     current.add(root.val);
 
@@ -4091,8 +4281,10 @@ class Scratch {
   }
 
   public static boolean isValidBST(TreeNode root, long min, long max) {
-    if (root == null) return true;
-    if (root.val >= max || root.val <= min) return false;
+    if (root == null)
+      return true;
+    if (root.val >= max || root.val <= min)
+      return false;
     return isValidBST(root.left, min, root.val) && isValidBST(root.right, root.val, max);
   }
 
@@ -4264,7 +4456,8 @@ class Scratch {
       return;
     }
 
-    if (sum > target) return;
+    if (sum > target)
+      return;
 
     for (int i = start; i < candidates.length; i++) {
       combination.add(candidates[i]);
@@ -4359,16 +4552,17 @@ class Scratch {
 
     for (int i = 1; i < n; i++) {
       if (nonZero(i) && nonZero(n - i)) {
-        return new int[] {i, n - i};
+        return new int[] { i, n - i };
       }
     }
 
-    return new int[] {-1, -1};
+    return new int[] { -1, -1 };
   }
 
   public static boolean nonZero(int n) {
     while (n > 0) {
-      if (n % 10 == 0) return false;
+      if (n % 10 == 0)
+        return false;
       n /= 10;
     }
     return true;
@@ -4500,7 +4694,8 @@ class Scratch {
     // return Math.ceil(Math.log(n) / Math.log(2)) == Math.floor(Math.log(n) /
     // Math.log(2));
 
-    if (n == 0) return false;
+    if (n == 0)
+      return false;
 
     while (n != 1) {
       if (n % 2 != 0) {
@@ -4700,7 +4895,8 @@ class Scratch {
       }
     }
 
-    if (goodSubstring) return s.length();
+    if (goodSubstring)
+      return s.length();
 
     for (char letter : evilLetters) {
       s = s.replace(letter, ' ');
@@ -4821,7 +5017,8 @@ class Scratch {
         }
       }
 
-      if (good) sum += word.length();
+      if (good)
+        sum += word.length();
     }
 
     return sum;
@@ -4901,16 +5098,14 @@ class Scratch {
     map.put("nine", 9);
 
     try {
-      File file =
-          new File(
-              "C:\\Users\\tmdop\\AppData\\Roaming\\JetBrains\\IntelliJIdea2023.3\\scratches\\input.txt");
+      File file = new File(
+          "C:\\Users\\tmdop\\AppData\\Roaming\\JetBrains\\IntelliJIdea2023.3\\scratches\\input.txt");
       Scanner scanner = new Scanner(file);
 
       while (scanner.hasNextLine()) {
         String line = scanner.nextLine();
 
-        String wordsOnly =
-            line.replaceAll("[^a-zA-Z]|(one|two|three|four|five|six|seven|eight|nine)", "$1");
+        String wordsOnly = line.replaceAll("[^a-zA-Z]|(one|two|three|four|five|six|seven|eight|nine)", "$1");
         System.out.println(wordsOnly);
       }
 
@@ -4933,9 +5128,8 @@ class Scratch {
     int sumInt = 0;
     String sum = "";
     try {
-      File file =
-          new File(
-              "C:\\Users\\tmdop\\AppData\\Roaming\\JetBrains\\IntelliJIdea2023.3\\scratches\\input.txt");
+      File file = new File(
+          "C:\\Users\\tmdop\\AppData\\Roaming\\JetBrains\\IntelliJIdea2023.3\\scratches\\input.txt");
       Scanner scanner = new Scanner(file);
 
       while (scanner.hasNextLine()) {
@@ -4971,7 +5165,8 @@ class Scratch {
   }
 
   public static int backtrack(int[] nums, int index, int currentSum, int target) {
-    if (index == nums.length) return currentSum == target ? 1 : 0;
+    if (index == nums.length)
+      return currentSum == target ? 1 : 0;
 
     int positive = backtrack(nums, index + 1, currentSum + nums[index], target);
     int negative = backtrack(nums, index + 1, currentSum - nums[index], target);
@@ -4980,10 +5175,11 @@ class Scratch {
   }
 
   public static String largestGoodInteger(String num) {
-    String[] array = {"999", "888", "777", "666", "555", "444", "333", "222", "111", "000"};
+    String[] array = { "999", "888", "777", "666", "555", "444", "333", "222", "111", "000" };
 
     for (String number : array) {
-      if (num.contains(number)) return number;
+      if (num.contains(number))
+        return number;
     }
 
     return "";
@@ -5014,7 +5210,8 @@ class Scratch {
           for (int n = m + 1; n <= t.length(); n++) {
             String currentT = t.substring(m, n);
 
-            if (differ(current, currentT)) count++;
+            if (differ(current, currentT))
+              count++;
           }
         }
       }
@@ -5029,7 +5226,8 @@ class Scratch {
     for (int i = 0; i < minLength; i++) {
       if (s.charAt(i) != t.charAt(i)) {
         differences++;
-        if (differences > 1) return false;
+        if (differences > 1)
+          return false;
       }
     }
 
@@ -5078,7 +5276,8 @@ class Scratch {
   }
 
   public static int countNodes(TreeNode root) {
-    if (root == null) return 0;
+    if (root == null)
+      return 0;
 
     int left = countNodes(root.left);
     int right = countNodes(root.right);
@@ -5186,7 +5385,8 @@ class Scratch {
   public static int numOfStrings(String[] patterns, String word) {
     int count = 0;
     for (String pattern : patterns) {
-      if (word.contains(pattern)) count++;
+      if (word.contains(pattern))
+        count++;
     }
 
     return count;
@@ -5273,7 +5473,8 @@ class Scratch {
   }
 
   public static int countEven(int num) {
-    if (num == 0) return 0;
+    if (num == 0)
+      return 0;
 
     int count = 0;
 
@@ -5287,7 +5488,8 @@ class Scratch {
         copy /= 10;
       }
 
-      if (sum % 2 == 0) count++;
+      if (sum % 2 == 0)
+        count++;
     }
 
     return count;
@@ -5317,7 +5519,8 @@ class Scratch {
   }
 
   public static int addDigits(int num) {
-    if (num == 0) return 0;
+    if (num == 0)
+      return 0;
     int sum = 0;
     while (num > 0) {
       sum += num % 10;
@@ -5338,8 +5541,10 @@ class Scratch {
     for (int i = 0; i < nums.length; i++) {
       sum = 0;
       for (int j = i + 1; j < nums.length; j++) {
-        if (maxDigit(nums[i]) == maxDigit(nums[j])) sum = nums[i] + nums[j];
-        if (sum > max) max = sum;
+        if (maxDigit(nums[i]) == maxDigit(nums[j]))
+          sum = nums[i] + nums[j];
+        if (sum > max)
+          max = sum;
       }
     }
     if (max == 0) {
@@ -5359,7 +5564,8 @@ class Scratch {
   }
 
   public static boolean canBeEqual(String s1, String s2) {
-    if (s1.length() != s2.length()) return false;
+    if (s1.length() != s2.length())
+      return false;
 
     for (int i = 0; i < s1.length(); i++) {
       if (s1.charAt(i) != s2.charAt(i) && s1.charAt(i) != s2.charAt((i + 2) % s1.length()))
@@ -5394,7 +5600,8 @@ class Scratch {
   // return false;
   // }
   public static String gcdOfStrings(String str1, String str2) {
-    if (!(str1 + str2).equals(str2 + str1)) return "";
+    if (!(str1 + str2).equals(str2 + str1))
+      return "";
 
     int length1 = str1.length();
     int length2 = str2.length();
@@ -5405,7 +5612,8 @@ class Scratch {
   }
 
   public static int gcd(int a, int b) {
-    if (b == 0) return a;
+    if (b == 0)
+      return a;
     return gcd(b, a % b);
   }
 
@@ -5444,14 +5652,16 @@ class Scratch {
   }
 
   public boolean isBalanced(TreeNode root) {
-    if (root == null) return true;
+    if (root == null)
+      return true;
     return Math.abs(height(root.left) - height(root.right)) <= 1
         && isBalanced(root.left)
         && isBalanced(root.right);
   }
 
   public int height(TreeNode currentNode) {
-    if (currentNode == null) return 0;
+    if (currentNode == null)
+      return 0;
     return 1 + Math.max(height(currentNode.left), height(currentNode.right));
   }
 
@@ -5509,7 +5719,8 @@ class Scratch {
   }
 
   public static boolean checkSubarraySum(int[] nums, int k) {
-    if (nums == null || nums.length < 2) return false;
+    if (nums == null || nums.length < 2)
+      return false;
 
     // Handle the special case where k is 0
     if (k == 0) {
@@ -5564,7 +5775,8 @@ class Scratch {
       int product = 1;
       for (int j = i; j < nums.length; j++) {
         product *= nums[j];
-        if (product > max) max = product;
+        if (product > max)
+          max = product;
       }
     }
     return max;
@@ -5583,7 +5795,8 @@ class Scratch {
 
   public static int numSubarrayProductLessThanK(int[] nums, int k) {
     // this passes everything
-    if (k <= 1) return 0;
+    if (k <= 1)
+      return 0;
 
     int count = 0;
     int product = 1;
@@ -5619,7 +5832,8 @@ class Scratch {
       int sum = 0;
       for (int j = i; j < nums.length; j++) {
         sum += nums[j];
-        if (sum == k) count++;
+        if (sum == k)
+          count++;
       }
     }
     return count;
@@ -5647,7 +5861,8 @@ class Scratch {
 
   public static boolean checkPowersOfThree(int n) {
     while (n > 0) {
-      if (n % 3 == 2) return false;
+      if (n % 3 == 2)
+        return false;
       n /= 3;
     }
     return true;
@@ -5668,7 +5883,8 @@ class Scratch {
   public static boolean check(int[] nums) {
     int count = 0;
     for (int i = 0; i < nums.length; i++) {
-      if (nums[i] > nums[(i + 1) % nums.length]) count++;
+      if (nums[i] > nums[(i + 1) % nums.length])
+        count++;
     }
     return count <= 1;
   }
@@ -5690,7 +5906,8 @@ class Scratch {
   public static int numberOfEmployeesWhoMetTarget(int[] hours, int target) {
     int res = 0;
     for (int hour : hours) {
-      if (hour >= target) res++;
+      if (hour >= target)
+        res++;
     }
 
     return res;
@@ -5722,7 +5939,8 @@ class Scratch {
   // }
   public static List<Integer> rightSideView(TreeNode root) {
     List<Integer> result = new ArrayList<>();
-    if (root == null) return result;
+    if (root == null)
+      return result;
 
     Queue<TreeNode> queue = new LinkedList<>();
     queue.add(root);
@@ -5733,8 +5951,10 @@ class Scratch {
         if (i == size - 1) {
           result.add(current.val);
         }
-        if (current.left != null) queue.add(current.left);
-        if (current.right != null) queue.add(current.right);
+        if (current.left != null)
+          queue.add(current.left);
+        if (current.right != null)
+          queue.add(current.right);
       }
     }
     return result;
@@ -5853,7 +6073,7 @@ class Scratch {
   // return new int[]{even, odd};
   // }
   public static int[] evenOddBit(int n) {
-    return new int[] {Integer.bitCount(n & 0b0101010101), Integer.bitCount(n & 0b1010101010)};
+    return new int[] { Integer.bitCount(n & 0b0101010101), Integer.bitCount(n & 0b1010101010) };
     /*
      * n & 0b0101010101:
      * The binary number 0b0101010101 is a 10-bit number (0-indexed) that has ones
@@ -5917,14 +6137,14 @@ class Scratch {
       for (int j = 0; j < grid[0].length; j++) {
         // If the orange is rotten, add it to the queue
         if (grid[i][j] == 2) {
-          rottenOranges.add(new int[] {i, j});
+          rottenOranges.add(new int[] { i, j });
         } else if (grid[i][j] == 1) {
           freshOranges++;
         }
       }
     }
 
-    int[][] directions = {{0, 1}, {0, -1}, {1, 0}, {-1, 0}};
+    int[][] directions = { { 0, 1 }, { 0, -1 }, { 1, 0 }, { -1, 0 } };
 
     // bfs to rot the oranges
     while (!rottenOranges.isEmpty() && freshOranges > 0) {
@@ -5947,12 +6167,13 @@ class Scratch {
               && newY < grid[0].length
               && grid[newX][newY] == 1) {
             grid[newX][newY] = 2;
-            rottenOranges.add(new int[] {newX, newY});
+            rottenOranges.add(new int[] { newX, newY });
             freshOranges--;
           }
         }
       }
-      if (!rottenOranges.isEmpty()) minutes++;
+      if (!rottenOranges.isEmpty())
+        minutes++;
     }
     return freshOranges == 0 ? minutes : -1;
   }
@@ -5960,18 +6181,21 @@ class Scratch {
   public static boolean isValidSudoku(char[][] board) {
     // Check rows
     for (int i = 0; i < 9; i++) {
-      if (!isValidRow(board, i)) return false;
+      if (!isValidRow(board, i))
+        return false;
     }
 
     // Check columns
     for (int i = 0; i < 9; i++) {
-      if (!isValidColumn(board, i)) return false;
+      if (!isValidColumn(board, i))
+        return false;
     }
 
     // Check 3x3 boxes
     for (int i = 0; i < 9; i += 3) {
       for (int j = 0; j < 9; j += 3) {
-        if (!isValidBox(board, i, j)) return false;
+        if (!isValidBox(board, i, j))
+          return false;
       }
     }
 
@@ -5981,8 +6205,10 @@ class Scratch {
   public static boolean isValidRow(char[][] board, int row) {
     Set<Character> set = new HashSet<>();
     for (int i = 0; i < 9; i++) {
-      if (set.contains(board[row][i])) return false;
-      if (board[row][i] != '.') set.add(board[row][i]);
+      if (set.contains(board[row][i]))
+        return false;
+      if (board[row][i] != '.')
+        set.add(board[row][i]);
     }
     return true;
   }
@@ -5990,8 +6216,10 @@ class Scratch {
   public static boolean isValidColumn(char[][] board, int col) {
     Set<Character> set = new HashSet<>();
     for (int i = 0; i < 9; i++) {
-      if (set.contains(board[i][col])) return false;
-      if (board[i][col] != '.') set.add(board[i][col]);
+      if (set.contains(board[i][col]))
+        return false;
+      if (board[i][col] != '.')
+        set.add(board[i][col]);
     }
     return true;
   }
@@ -6000,8 +6228,10 @@ class Scratch {
     Set<Character> set = new HashSet<>();
     for (int i = row; i < row + 3; i++) {
       for (int j = col; j < col + 3; j++) {
-        if (set.contains(board[i][j])) return false;
-        if (board[i][j] != '.') set.add(board[i][j]);
+        if (set.contains(board[i][j]))
+          return false;
+        if (board[i][j] != '.')
+          set.add(board[i][j]);
       }
     }
     return true;
@@ -6011,23 +6241,32 @@ class Scratch {
     StringBuilder sb = new StringBuilder();
     sb.append(Integer.toBinaryString(num));
     for (int i = 0; i < sb.length(); i++) {
-      if (sb.charAt(i) == '0') sb.setCharAt(i, '1');
-      else sb.setCharAt(i, '0');
+      if (sb.charAt(i) == '0')
+        sb.setCharAt(i, '1');
+      else
+        sb.setCharAt(i, '0');
     }
     return Integer.parseInt(sb.toString(), 2);
   }
 
   public boolean isUgly(int n) {
-    if (n == 0) return false;
-    while (n % 2 == 0) n /= 2;
-    while (n % 3 == 0) n /= 3;
-    while (n % 5 == 0) n /= 5;
-    if (n == 1) return true;
-    else return false;
+    if (n == 0)
+      return false;
+    while (n % 2 == 0)
+      n /= 2;
+    while (n % 3 == 0)
+      n /= 3;
+    while (n % 5 == 0)
+      n /= 5;
+    if (n == 1)
+      return true;
+    else
+      return false;
   }
 
   public static int sumOfLeftLeaves(TreeNode root) {
-    if (root == null) return 0;
+    if (root == null)
+      return 0;
     int sum = 0;
     if (root.left != null && root.left.left == null && root.left.right == null)
       sum += root.left.val;
@@ -6041,13 +6280,17 @@ class Scratch {
       sum += Math.pow(copy % 10, 2);
       copy /= 10;
     }
-    if (sum == 1) return true;
-    else if (sum == 4) return false;
-    else return isHappy(sum);
+    if (sum == 1)
+      return true;
+    else if (sum == 4)
+      return false;
+    else
+      return isHappy(sum);
   }
 
   public String removeOccurrences(String s, String part) {
-    while (s.contains(part)) s = s.replace(part, "");
+    while (s.contains(part))
+      s = s.replace(part, "");
     return s;
   }
 
@@ -6055,14 +6298,16 @@ class Scratch {
     StringBuilder sb = new StringBuilder();
     for (String word : words) {
       sb.append(word);
-      if (sb.toString().equals(s)) return true;
+      if (sb.toString().equals(s))
+        return true;
     }
     return false;
   }
 
   public static int longestConsecutive(int[] nums) {
     // bonus e si O(n) time complexity
-    if (nums.length == 0) return 0;
+    if (nums.length == 0)
+      return 0;
     int longestConsecutive = 0;
     int currentConsecutive = 0;
     Arrays.sort(nums);
@@ -6092,10 +6337,10 @@ class Scratch {
   public static boolean isVowelString(String s) {
     for (int i = 0; i <= s.length() - 1; i++) {
       if ((s.charAt(0) == 'a'
-              || s.charAt(0) == 'e'
-              || s.charAt(0) == 'i'
-              || s.charAt(0) == 'o'
-              || s.charAt(0) == 'u')
+          || s.charAt(0) == 'e'
+          || s.charAt(0) == 'i'
+          || s.charAt(0) == 'o'
+          || s.charAt(0) == 'u')
           && (s.charAt(s.length() - 1) == 'a'
               || s.charAt(s.length() - 1) == 'e'
               || s.charAt(s.length() - 1) == 'i'
@@ -6240,8 +6485,10 @@ class Scratch {
     Arrays.sort(nums);
     int count = 1;
     for (int i = nums.length - 1; i > 0; i--) {
-      if (nums[i] != nums[i - 1]) count++;
-      if (count == 3) return nums[i - 1];
+      if (nums[i] != nums[i - 1])
+        count++;
+      if (count == 3)
+        return nums[i - 1];
     }
     return nums[nums.length - 1];
   }
@@ -6249,10 +6496,14 @@ class Scratch {
   public static List<String> fizzBuzz(int n) {
     List<String> list = new ArrayList<>();
     for (int i = 1; i <= n; i++) {
-      if (i % 15 == 0) list.add("FizzBuzz");
-      else if (i % 3 == 0) list.add("Fizz");
-      else if (i % 5 == 0) list.add("Buzz");
-      else list.add(String.valueOf(i));
+      if (i % 15 == 0)
+        list.add("FizzBuzz");
+      else if (i % 3 == 0)
+        list.add("Fizz");
+      else if (i % 5 == 0)
+        list.add("Buzz");
+      else
+        list.add(String.valueOf(i));
     }
     return list;
   }
@@ -6264,7 +6515,8 @@ class Scratch {
       map.put(c, map.getOrDefault(c, 0) + 1);
     }
     for (int i = 0; i < letters.length; i++) {
-      if (map.get(letters[i]) == 1) return i;
+      if (map.get(letters[i]) == 1)
+        return i;
     }
     return -1;
   }
@@ -6275,7 +6527,8 @@ class Scratch {
     Arrays.sort(sArr);
     Arrays.sort(tArr);
     for (int i = 0; i < sArr.length; i++) {
-      if (sArr[i] != tArr[i]) return tArr[i];
+      if (sArr[i] != tArr[i])
+        return tArr[i];
     }
     return tArr[tArr.length - 1];
   }
@@ -6286,8 +6539,10 @@ class Scratch {
 
   public static int myAtoi(String s) {
     s = s.trim();
-    if (s.length() == 0) return 0;
-    if (s.length() == 1 && !Character.isDigit(s.charAt(0))) return 0;
+    if (s.length() == 0)
+      return 0;
+    if (s.length() == 1 && !Character.isDigit(s.charAt(0)))
+      return 0;
     for (int i = 0; i < s.length(); i++) {
       if (!Character.isDigit(s.charAt(i)) && s.charAt(i) != '-' && s.charAt(i) != '+') {
         s = s.substring(0, i);
@@ -6344,7 +6599,8 @@ class Scratch {
   public static int findDuplicate(int[] nums) {
     Arrays.sort(nums);
     for (int i = 0; i < nums.length - 1; i++) {
-      if (nums[i] == nums[i + 1]) return nums[i];
+      if (nums[i] == nums[i + 1])
+        return nums[i];
     }
     return -1;
   }
@@ -6444,14 +6700,16 @@ class Scratch {
     for (int i = 0; i < nums.length; i++) {
       frequency = 0;
       for (int j = i + 1; j < nums.length; j++) {
-        if (nums[i] == nums[j]) frequency++;
+        if (nums[i] == nums[j])
+          frequency++;
       }
       if (frequency <= 2) {
         nums[k] = nums[i];
         k++;
       }
     }
-    for (int i = 0; i < k; i++) {}
+    for (int i = 0; i < k; i++) {
+    }
 
     return k;
   }
@@ -6472,7 +6730,8 @@ class Scratch {
     // odd = impar
     int[] arr = new int[100001];
     for (int i : nums) {
-      if (i % 2 == 0) arr[i]++;
+      if (i % 2 == 0)
+        arr[i]++;
     }
     int max = -1, ans = 0;
     for (int i = 0; i < 100001; i++) {
@@ -6481,7 +6740,8 @@ class Scratch {
         ans = i;
       }
     }
-    if (max == 0) return -1;
+    if (max == 0)
+      return -1;
     return ans;
   }
 
@@ -6626,7 +6886,8 @@ class Scratch {
     for (int i = 0; i < arr.length; i++) {
       q.add(arr[i]);
 
-      if (arr[i] == 0) q.add(0);
+      if (arr[i] == 0)
+        q.add(0);
 
       arr[i] = q.remove();
       System.out.println("we just added this to array " + arr[i]);
@@ -6730,8 +6991,10 @@ class Scratch {
     while (x != 0) {
       int pop = x % 10;
       x /= 10;
-      if (rev > Integer.MAX_VALUE / 10 || (rev == Integer.MAX_VALUE / 10 && pop > 7)) return 0;
-      if (rev < Integer.MIN_VALUE / 10 || (rev == Integer.MIN_VALUE / 10 && pop < -8)) return 0;
+      if (rev > Integer.MAX_VALUE / 10 || (rev == Integer.MAX_VALUE / 10 && pop > 7))
+        return 0;
+      if (rev < Integer.MIN_VALUE / 10 || (rev == Integer.MIN_VALUE / 10 && pop < -8))
+        return 0;
       rev = rev * 10 + pop;
     }
     return rev;
@@ -6804,10 +7067,13 @@ class Scratch {
     if (root == null) {
       return minDepth;
     }
-    if (root.left == null && root.right == null) return 1;
-    if (root.left == null) return minDepth(root.right) + 1;
+    if (root.left == null && root.right == null)
+      return 1;
+    if (root.left == null)
+      return minDepth(root.right) + 1;
 
-    if (root.right == null) return minDepth(root.left) + 1;
+    if (root.right == null)
+      return minDepth(root.left) + 1;
     return Math.min(minDepth(root.left), minDepth(root.right)) + 1;
   }
 
@@ -6942,7 +7208,8 @@ class Scratch {
   }
 
   public static boolean isPalindrome(String s) {
-    if (s.length() == 0 || s.length() == 1) return true;
+    if (s.length() == 0 || s.length() == 1)
+      return true;
     s = s.trim().toLowerCase().replaceAll("[^a-zA-Z\\d]", "");
 
     int start = 0;
@@ -6972,8 +7239,10 @@ class Scratch {
   }
 
   public boolean checkForSymmetry(TreeNode t1, TreeNode t2) {
-    if (t1 == null && t2 == null) return true;
-    if (t1 == null || t2 == null) return false;
+    if (t1 == null && t2 == null)
+      return true;
+    if (t1 == null || t2 == null)
+      return false;
 
     return (t1.val == t2.val)
         && checkForSymmetry(t1.left, t2.right)
@@ -7007,7 +7276,8 @@ class Scratch {
     // // Printing secondary diagonal
     // System.out.print(mat[i][k--] + ", ");
     // }
-    if (mat.length == 1) return mat[0][0];
+    if (mat.length == 1)
+      return mat[0][0];
     int sum = 0;
     int k = mat.length - 1;
     for (int i = 0; i < mat.length; i++) {
@@ -7027,10 +7297,10 @@ class Scratch {
 
     for (int[] queriesArray : queries) {
       for (int[] pointsArray : points) {
-        int radius =
-            ((queriesArray[0] - pointsArray[0]) * (queriesArray[0] - pointsArray[0])
-                + (queriesArray[1] - pointsArray[1]) * (queriesArray[1] - pointsArray[1]));
-        if (radius <= (queriesArray[2] * queriesArray[2])) count++;
+        int radius = ((queriesArray[0] - pointsArray[0]) * (queriesArray[0] - pointsArray[0])
+            + (queriesArray[1] - pointsArray[1]) * (queriesArray[1] - pointsArray[1]));
+        if (radius <= (queriesArray[2] * queriesArray[2]))
+          count++;
       }
       howManyPointsInsideTheCircle.add(count);
       count = 0;
@@ -7317,7 +7587,8 @@ class Scratch {
     // } while(t - squareRoot != 0);
 
     // newton's method
-    if (n < 2) return (int) n;
+    if (n < 2)
+      return (int) n;
     double squareRoot = n;
 
     while (squareRoot > n / squareRoot) {
@@ -7391,8 +7662,10 @@ class Scratch {
   }
 
   public TreeNode mergeTrees(TreeNode root1, TreeNode root2) {
-    if (root1 == null) return root2;
-    if (root2 == null) return root1;
+    if (root1 == null)
+      return root2;
+    if (root2 == null)
+      return root1;
 
     root1.val += root2.val;
     root1.left = mergeTrees(root1.left, root2.left);
@@ -7402,7 +7675,8 @@ class Scratch {
   }
 
   public static boolean isPalindrome(ListNode head) {
-    if (head == null || head.next == null) return true;
+    if (head == null || head.next == null)
+      return true;
     ListNode fast = head;
     ListNode slow = head;
 
@@ -7416,7 +7690,8 @@ class Scratch {
     fast = head;
 
     while (slow != null) {
-      if (fast.val != slow.val) return false;
+      if (fast.val != slow.val)
+        return false;
       slow = slow.next;
       fast = fast.next;
     }
@@ -7505,7 +7780,8 @@ class Scratch {
   }
 
   public ListNode deleteMiddle(ListNode head) {
-    if (head.next == null) return null;
+    if (head.next == null)
+      return null;
 
     // edge case for 2 nodes
     if (head.next.next == null) {
