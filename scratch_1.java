@@ -93,12 +93,38 @@ class Scratch {
     System.out.println(intersection(a, b));
   }
 
+  public static <T> Node<T> insertNode(Node<T> head, T value, int index) {
+    if (index == 0) {
+      Node<T> node = new Node<>(value);
+      node.next = head;
+      return head;
+    }
+
+    int count = 0;
+    Node<T> current = head;
+    Node<T> prev = null;
+
+    while (true) {
+      if (index == count) {
+        Node<T> node = new Node<>(value);
+        node.next = prev.next;
+        prev.next = node;
+        return head;
+      }
+
+      count++;
+      prev = current;
+      current = current.next;
+    }
+
+  }
+
   public static boolean isSubsequence(String string1, String string2) {
     int i = 0;
     int j = 0;
 
-    while(i < string1.length() && j < string2.length()){
-      if(string1.charAt(i) == string2.charAt(j)){
+    while (i < string1.length() && j < string2.length()) {
+      if (string1.charAt(i) == string2.charAt(j)) {
         i++;
         j++;
       } else {
@@ -110,119 +136,119 @@ class Scratch {
   }
 
   // public static <T> T bottomRightValue(Node<T> root) {
-  //   Queue<Node<T>> bt = new ArrayDeque<>();
-  //   bt.add(root);
+  // Queue<Node<T>> bt = new ArrayDeque<>();
+  // bt.add(root);
 
-  //   Node<T> current = null;
-  //   while(!bt.isEmpty()){
-  //     current = bt.remove();
+  // Node<T> current = null;
+  // while(!bt.isEmpty()){
+  // current = bt.remove();
 
-  //     if(current.left != null){
-  //       bt.add(current.left);
-  //     }
+  // if(current.left != null){
+  // bt.add(current.left);
+  // }
 
-  //     if(current.right != null){
-  //       bt.add(current.right);
-  //     }
-      
-  //   }
-  //   // current will be the last node processed, which is the bottom right node
-  //   return current.val;
+  // if(current.right != null){
+  // bt.add(current.right);
+  // }
+
+  // }
+  // // current will be the last node processed, which is the bottom right node
+  // return current.val;
   // }
 
   // public static <T> List<T> leafList(Node<T> root) {
-  //   if(root == null){
-  //     return List.of();
-  //   }
+  // if(root == null){
+  // return List.of();
+  // }
 
-  //   List<T> leaves = new ArrayList<>();
-  //   Stack<Node<T>> bt = new Stack<>();
-  //   bt.add(root);
+  // List<T> leaves = new ArrayList<>();
+  // Stack<Node<T>> bt = new Stack<>();
+  // bt.add(root);
 
-  //   while(!bt.isEmpty()){
-  //     Node<T> current = bt.pop();
-  //     if(current.left == null && current.right == null){
-  //       leaves.add(current.val);
-  //     }
+  // while(!bt.isEmpty()){
+  // Node<T> current = bt.pop();
+  // if(current.left == null && current.right == null){
+  // leaves.add(current.val);
+  // }
 
-  //     if(current.right != null){
-  //       bt.push(current.right);
-  //     }
+  // if(current.right != null){
+  // bt.push(current.right);
+  // }
 
-  //     if(current.left != null){
-  //       bt.push(current.left);
-  //     }
-      
-  //   }
-  
-  //   return leaves;
+  // if(current.left != null){
+  // bt.push(current.left);
+  // }
+
+  // }
+
+  // return leaves;
   // }
 
   // public static <T> int howHigh(Node<T> root){
-  //   if(root == null){
-  //     return -1;
-  //   }
+  // if(root == null){
+  // return -1;
+  // }
 
-  //   return 1 + Math.max(howHigh(root.left), howHigh(root.right));
+  // return 1 + Math.max(howHigh(root.left), howHigh(root.right));
   // }
 
   // public static <T> int treeValueCount(Node<T> root, T target){
-  //   if(root == null){
-  //     return 0;
-  //   }
+  // if(root == null){
+  // return 0;
+  // }
 
-  //   if(root.val == target && root.left == null && root.right == null){
-  //     return 1;
-  //   }
+  // if(root.val == target && root.left == null && root.right == null){
+  // return 1;
+  // }
 
-  //   int count = 0;
-  //   Queue<Node<T>> bt = new ArrayDeque<>();
-  //   bt.add(root);
+  // int count = 0;
+  // Queue<Node<T>> bt = new ArrayDeque<>();
+  // bt.add(root);
 
-  //   while(!bt.isEmpty()){
-  //     Node<T> current = bt.remove();
-  //     if(current.val == target){
-  //       count++;
-  //     }
+  // while(!bt.isEmpty()){
+  // Node<T> current = bt.remove();
+  // if(current.val == target){
+  // count++;
+  // }
 
-  //     if(current.left != null){
-  //       bt.add(current.left);
-  //     }
+  // if(current.left != null){
+  // bt.add(current.left);
+  // }
 
-  //     if(current.right != null){
-  //       bt.add(current.right);
-  //     }
-  //   }
-    
-  //   return count;
+  // if(current.right != null){
+  // bt.add(current.right);
+  // }
+  // }
+
+  // return count;
   // }
 
   // public static <T> List<T> pathFinder(Node<T> root, T target) {
-  //   if (root == null){
-  //     return List.of();
-  //   }
+  // if (root == null){
+  // return List.of();
+  // }
 
-  //   if(root.val == target){
-  //     return List.of(root.val);
-  //   }
+  // if(root.val == target){
+  // return List.of(root.val);
+  // }
 
-  //   List<T> left = pathFinder(root.left, target);
-  //   if(left != null){
-  //     List<T> newPath = new ArrayList<>();
-  //     newPath.add(root.left);
-  //     newPath.addAll(left);
-  //     return newPath;
-  //   }
+  // List<T> left = pathFinder(root.left, target);
+  // if(left != null){
+  // List<T> newPath = new ArrayList<>();
+  // newPath.add(root.left);
+  // newPath.addAll(left);
+  // return newPath;
+  // }
 
-  //   List<T> right = pathFinder(root.right, target);
-  //   if(right != null){
-  //     List<T> newPath = new ArrayList<>();
-  //     newPath.add(root.right);
-  //     newPath.addAll(right);
-  //     return newPath;
-  //   }
+  // List<T> right = pathFinder(root.right, target);
+  // if(right != null){
+  // List<T> newPath = new ArrayList<>();
+  // newPath.add(root.right);
+  // newPath.addAll(right);
+  // return newPath;
+  // }
 
-  //   return List.of(null);
+  // return List.of(null);
   // }
 
   // public static int treeSum(Node<Integer> root) {
