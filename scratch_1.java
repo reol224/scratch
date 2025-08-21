@@ -86,11 +86,98 @@ class Scratch {
   static boolean mem[][];
 
   public static void main(String[] args) {
-    System.out.println(mostFrequentChar("riverbed"));
-    List<Integer> a = List.of(4, 2, 1, 6);
-    List<Integer> b = List.of(3, 6, 9, 2, 10);
+    Map<String, List<String>> graph = Map.of(
+        "f", List.of("g", "i"),
+        "g", List.of("h"),
+        "h", List.of(),
+        "i", List.of("g", "k"),
+        "j", List.of("i"),
+        "k", List.of());
 
-    System.out.println(intersection(a, b));
+    System.out.println(hasPath(graph, "f", "k"));
+  }
+
+  public static boolean undirectedPath(List<List<String>> edges, String nodeA, String nodeB) {
+    Map<String, List<String>> graph = adjacencyList(edges);
+    return dfsUndirectedPath(graph, nodeA, nodeB, new HashSet<>());
+  }
+
+  public static boolean dfsUndirectedPath(Map<String, List<String>> graph, String src, String dst,
+      HashSet<String> visited) {
+    if (src == dst) {
+      return true;
+    }
+
+    if (visited.contains(src)) {
+      return false; // to avoid cycles, don't visit the same node twice
+    }
+    visited.add(src);
+
+    for (String neighbor : graph.get(src)) { // going through the neighbors
+      if (dfsUndirectedPath(graph, neighbor, dst, visited)) {
+        return true;
+      }
+    }
+
+    return false;
+  }
+
+  public static Map<String, List<String>> adjacencyList(List<List<String>> edges) {
+    Map<String, List<String>> graph = new HashMap<>();
+    for (List<String> edge : edges) {
+      String a = edge.get(0);
+      String b = edge.get(1);
+
+      if (!graph.containsKey(a)) {
+        graph.put(a, new ArrayList<>());
+      }
+
+      if (!graph.containsKey(b)) {
+        graph.put(b, new ArrayList<>());
+      }
+
+      graph.get(a).add(b);
+      graph.get(b).add(a);
+    }
+
+    return graph;
+  }
+
+  public static boolean hasPath(Map<String, List<String>> graph, String src, String dst) {
+    // recursive
+    if (src == dst) {
+      return true;
+    }
+
+    for (String neighbor : graph.get(src)) {
+      if (hasPath(graph, neighbor, dst)) {
+        return true;
+      }
+    }
+
+    return false;
+
+    /*
+     * breadth first
+     * 
+     * ArrayDeque<String> q = new ArrayDeque<>();
+     * q.add(src);
+     * 
+     * while(!q.isEmpty()){
+     * String node = q.remove();
+     * if(node == dst){
+     * return true;
+     * }
+     *
+     * for(String neighbor : graph.get(node)){
+     * q.add(neighbor);
+     *
+     * }
+     * 
+     * return false;
+     * }
+     */
+
   }
 
   public static <T> Node<T> insertNode(Node<T> head, T value, int index) {
