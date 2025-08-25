@@ -98,6 +98,50 @@ class Scratch {
     System.out.println(hasPath(graph, "f", "k"));
   }
 
+  public static int islandCountStructy(List<List<String>> grid) {
+    if (grid == null || grid.isEmpty() || grid.get(0).isEmpty()) {
+      return 0;
+    }
+
+    int rows = grid.size();
+    int cols = grid.get(0).size();
+    int numIslands = 0;
+
+    List<List<String>> mutableGrid = new ArrayList<>();
+    for (List<String> row : grid) {
+      mutableGrid.add(new ArrayList<>(row));
+    }
+
+    for (int i = 0; i < rows; i++) {
+      for (int j = 0; j < cols; j++) {
+        if (mutableGrid.get(i).get(j).equals("L")) {
+          numIslands++;
+          dfsNumIslandsStructy(mutableGrid, i, j);
+        }
+      }
+    }
+
+    return numIslands;
+  }
+
+  public static void dfsNumIslandsStructy(List<List<String>> grid, int i, int j) {
+    int rows = grid.size();
+    int cols = grid.get(0).size();
+
+    // boundaries check
+    if (i < 0 || j < 0 || i >= rows || j >= cols || grid.get(i).get(j).equals("W")) {
+      return;
+    }
+
+    // mark visited
+    grid.get(i).set(j, "W");
+
+    dfsNumIslandsStructy(grid, i + 1, j);
+    dfsNumIslandsStructy(grid, i - 1, j);
+    dfsNumIslandsStructy(grid, i, j + 1);
+    dfsNumIslandsStructy(grid, i, j - 1);
+  }
+
   public static boolean hasCycle(Map<String, List<String>> graph) {
     HashSet<String> visited = new HashSet<>();
 
