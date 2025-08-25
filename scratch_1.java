@@ -2,6 +2,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.*;
+import java.util.AbstractMap.SimpleEntry;
 import java.util.stream.IntStream;
 
 class ListNode {
@@ -97,6 +98,97 @@ class Scratch {
     System.out.println(hasPath(graph, "f", "k"));
   }
 
+  public static boolean hasCycle(Map<String, List<String>> graph) {
+    HashSet<String> visited = new HashSet<>();
+
+    for (String node : graph.keySet()) {
+      if (hasCycle(graph, node, new HashSet<>(), visited)) {
+        return true;
+      }
+    }
+
+    return false;
+  }
+
+  public static boolean hasCycle(Map<String, List<String>> graph, String node, HashSet<String> visiting,
+      HashSet<String> visited) {
+    if (visited.contains(node)) {
+      return false; // means it was already fully explored, won't lead to a cycle
+    }
+
+    if (visiting.contains(node)) {
+      return true;
+    }
+
+    visiting.add(node);
+    for (String neighbor : graph.get(node)) {
+      if (hasCycle(graph, neighbor, visiting, visited)) {
+        return true;
+      }
+    }
+
+    visiting.remove(node);
+    visited.add(node);
+
+    return false;
+  }
+
+  public static int shortestPath(List<List<String>> edges, String nodeA, String nodeB) {
+    Map<String, List<String>> graph = adjacencyList(edges);
+    HashSet<String> visited = new HashSet<>();
+
+    ArrayDeque<SimpleEntry<String, Integer>> q = new ArrayDeque<>();
+    q.add(new SimpleEntry<>(nodeA, 0));
+
+    visited.add(nodeA);
+
+    while (!q.isEmpty()) {
+      SimpleEntry<String, Integer> entry = q.remove();
+      String node = entry.getKey();
+      int distance = entry.getValue();
+
+      if (node == nodeB) {
+        return distance;
+      }
+
+      for (String neighbor : graph.get(node)) {
+        if (!visited.contains(neighbor)) {
+          q.add(new SimpleEntry<>(neighbor, distance + 1));
+          visited.add(neighbor);
+        }
+      }
+    }
+
+    return -1;
+  }
+
+  public static int countConnectedElements(Map<Integer, List<Integer>> graph) {
+    int count = 0;
+    HashSet<Integer> visited = new HashSet<>();
+
+    for (int node : graph.keySet()) {
+      if (dfsCountConnectedElements(graph, node, visited)) {
+        count++;
+      }
+    }
+
+    return count;
+  }
+
+  public static boolean dfsCountConnectedElements(Map<Integer, List<Integer>> graph, int node,
+      HashSet<Integer> visited) {
+    if (visited.contains(node)) {
+      return false;
+    }
+    visited.add(node);
+
+    for (int neighbor : graph.get(node)) {
+      dfsCountConnectedElements(graph, neighbor, visited);
+    }
+
+    return true;
+  }
+
   public static boolean undirectedPath(List<List<String>> edges, String nodeA, String nodeB) {
     Map<String, List<String>> graph = adjacencyList(edges);
     return dfsUndirectedPath(graph, nodeA, nodeB, new HashSet<>());
@@ -122,8 +214,8 @@ class Scratch {
     return false;
   }
 
-  public static Map<String, List<String>> adjacencyList(List<List<String>> edges) {
-    Map<String, List<String>> graph = new HashMap<>();
+  public static HashMap<String, List<String>> adjacencyList(List<List<String>> edges) {
+    HashMap<String, List<String>> graph = new HashMap<>();
     for (List<String> edge : edges) {
       String a = edge.get(0);
       String b = edge.get(1);
@@ -139,7 +231,6 @@ class Scratch {
       graph.get(a).add(b);
       graph.get(b).add(a);
     }
-
     return graph;
   }
 
