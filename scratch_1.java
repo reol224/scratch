@@ -98,6 +98,120 @@ class Scratch {
     System.out.println(hasPath(graph, "f", "k"));
   }
 
+  public static int longestPath(Map<String, List<String>> graph) {
+    // for leaf nodes
+    HashMap<String, Integer> distance = new HashMap<>();
+    for (String node : graph.keySet()) {
+      if (graph.get(node).size() == 0) {
+        distance.put(node, 0);
+      }
+    }
+
+    // traversal
+    for (String node : graph.keySet()) {
+      dfsLongestPath(graph, node, distance);
+    }
+
+    return Collections.max(distance.values());
+  }
+
+  public static int dfsLongestPath(Map<String, List<String>> graph, String node, HashMap<String, Integer> distance) {
+    if (distance.containsKey(node)) {
+      return distance.get(node); // return the already known distance for that node
+    }
+
+    int maxValue = 0;
+    for (String neighbor : graph.get(node)) {
+      int value = dfsLongestPath(graph, neighbor, distance);
+      if (value > maxValue) {
+        maxValue = value;
+      }
+    }
+
+    distance.put(node, maxValue + 1); // + 1 = for current node
+    return maxValue + 1;
+  }
+
+  public static int closestCarrot(List<List<String>> grid, int startRow, int startCol) {
+    ArrayDeque<List<Integer>> q = new ArrayDeque<>();
+    q.add(List.of(startRow, startCol, 0));
+
+    HashSet<List<Integer>> visited = new HashSet<>();
+    visited.add(List.of(startRow, startCol));
+
+    int[][] directions = {
+        { 1, 0 }, // down
+        { -1, 0 }, // up
+        { 0, 1 }, // right
+        { 0, -1 } // left
+    };
+
+    while (!q.isEmpty()) {
+      List<Integer> curr = q.remove();
+      int row = curr.get(0);
+      int col = curr.get(1);
+      int distance = curr.get(2);
+
+      if (grid.get(row).get(col).equals("C")) {
+        return distance;
+      }
+
+      for (int[] dir : directions) {
+        int newRow = row + dir[0];
+        int newCol = col + dir[1];
+
+        if (newRow >= 0 && newRow < grid.size()
+            && newCol >= 0 && newCol < grid.get(0).size()
+            && !grid.get(newRow).get(newCol).equals("X")) {
+          List<Integer> position = List.of(newRow, newCol);
+          if (!visited.contains(position)) {
+            visited.add(position);
+            q.add(List.of(newRow, newCol, distance + 1));
+          }
+        }
+      }
+    }
+
+    return -1;
+  }
+
+  public static int minimumIsland(List<List<String>> grid) {
+    List<List<String>> mutableGrid = new ArrayList<>();
+    for (List<String> row : grid) {
+      mutableGrid.add(new ArrayList<>(row));
+    }
+
+    double min = Double.POSITIVE_INFINITY;
+    for (int row = 0; row < mutableGrid.size(); row++) {
+      for (int col = 0; col < mutableGrid.get(0).size(); col++) {
+        double size = dfsMinimumIsland(mutableGrid, row, col);
+        if (size < min && size > 0) {
+          min = size;
+        }
+      }
+    }
+    return (int) min;
+  }
+
+  public static double dfsMinimumIsland(List<List<String>> grid, int i, int j) {
+    int rows = grid.size();
+    int cols = grid.get(0).size();
+
+    if (i < 0 || j < 0 || i >= rows || j >= cols || grid.get(i).get(j).equals("W")) {
+      return 0;
+    }
+
+    grid.get(i).set(j, "W");
+
+    int totalSize = 1;
+
+    return dfsMinimumIsland(grid, i + 1, j) +
+        dfsMinimumIsland(grid, i - 1, j) +
+        dfsMinimumIsland(grid, i, j + 1) +
+        dfsMinimumIsland(grid, i, j - 1) +
+        totalSize;
+  }
+
   public static int islandCountStructy(List<List<String>> grid) {
     if (grid == null || grid.isEmpty() || grid.get(0).isEmpty()) {
       return 0;
