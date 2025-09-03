@@ -98,6 +98,91 @@ class Scratch {
     System.out.println(hasPath(graph, "f", "k"));
   }
 
+  public static boolean prereqsPossible(int numCourses, List<List<Integer>> prereqs) {
+    HashMap<Integer, List<Integer>> graph = adjListHandleDisconnectedNodes(numCourses, prereqs);
+    HashSet<Integer> visited = new HashSet<>();
+    for (int node : graph.keySet()) {
+      if (hasCycleInteger(node, graph, new HashSet<>(), visited)) {
+        return false;
+      }
+    }
+
+    return true;
+  }
+
+  public static boolean hasCycleInteger(int node, HashMap<Integer, List<Integer>> graph, HashSet<Integer> visiting,
+      HashSet<Integer> visited) {
+    if (visited.contains(node)) {
+      return false;
+    }
+
+    if (visiting.contains(node)) {
+      return true;
+    }
+    visiting.add(node);
+
+    for (int neighbor : graph.get(node)) {
+      if (hasCycleInteger(neighbor, graph, visiting, visited)) {
+        return true;
+      }
+    }
+
+    visiting.remove(node);
+    visited.add(node);
+
+    return false;
+  }
+
+  public static int semestersRequired(int numCourses, List<List<Integer>> prereqs) {
+    // step 1 adjList + handle disconnected nodes
+    HashMap<Integer, List<Integer>> graph = adjListHandleDisconnectedNodes(numCourses, prereqs);
+
+    // step 2 dfs, handle distance
+    HashMap<Integer, Integer> distance = new HashMap<>();
+    for (int node : graph.keySet()) {
+      dfsSemestersRequired(node, graph, distance);
+    }
+
+    return Collections.max(distance.values());
+  }
+
+  public static int dfsSemestersRequired(int node, HashMap<Integer, List<Integer>> graph,
+      HashMap<Integer, Integer> distance) {
+    if (distance.containsKey(node)) {
+      return distance.get(node);
+    }
+
+    int max = 0;
+    for (int neighbor : graph.get(node)) {
+      int tryMax = dfsSemestersRequired(neighbor, graph, distance);
+      if (tryMax > max) {
+        max = tryMax;
+      }
+    }
+
+    distance.put(node, max + 1);
+    return max + 1; // + 1 is for the current node
+  }
+
+  public static HashMap<Integer, List<Integer>> adjListHandleDisconnectedNodes(int numCourses,
+      List<List<Integer>> prereqs) {
+    // START - handle disconnected nodes
+    HashMap<Integer, List<Integer>> graph = new HashMap<>();
+    for (int i = 0; i < numCourses; i++) {
+      graph.put(i, new ArrayList<>());
+    }
+    // END - handle disconnected nodes
+
+    for (List<Integer> pq : prereqs) {
+      int a = pq.get(0);
+      int b = pq.get(1);
+
+      graph.get(a).add(b); // it's a directed graph, so no bidirectional
+    }
+
+    return graph;
+  }
+
   public static int longestPath(Map<String, List<String>> graph) {
     // for leaf nodes
     HashMap<String, Integer> distance = new HashMap<>();
