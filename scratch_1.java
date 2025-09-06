@@ -98,6 +98,61 @@ class Scratch {
     System.out.println(hasPath(graph, "f", "k"));
   }
 
+  public static int fibStructy(int n) {
+    return fibWMemo(n, new HashMap<>());
+  }
+
+  public static int fibWMemo(int n, HashMap<Integer, Integer> memo) {
+    if (n == 0 || n == 1) {
+      return n;
+    }
+
+    if (memo.containsKey(n)) {
+      return memo.get(n);
+    }
+
+    int result = fibWMemo(n - 1, memo) + fibWMemo(n - 2, memo);
+    memo.put(n, result);
+    return result;
+  }
+
+  public static boolean prereqsPossibleKahn(int numCourses, List<List<Integer>> prereqs) {
+    HashMap<Integer, List<Integer>> graph = adjListHandleDisconnectedNodes(numCourses, prereqs);
+    int[] inDegree = new int[numCourses];
+
+    // Build in-degree array
+    for (List<Integer> edge : prereqs) {
+      int from = edge.get(0);
+      int to = edge.get(1);
+      inDegree[to]++;
+    }
+
+    // Add all nodes with in-degree 0 to the queue
+    Queue<Integer> queue = new LinkedList<>();
+    for (int i = 0; i < numCourses; i++) {
+      if (inDegree[i] == 0) {
+        queue.offer(i);
+      }
+    }
+
+    int visitedCount = 0;
+
+    while (!queue.isEmpty()) {
+      int course = queue.poll();
+      visitedCount++;
+
+      for (int neighbor : graph.get(course)) {
+        inDegree[neighbor]--;
+        if (inDegree[neighbor] == 0) {
+          queue.offer(neighbor);
+        }
+      }
+    }
+
+    // If we visited all courses, there's no cycle
+    return visitedCount == numCourses;
+  }
+
   public static boolean prereqsPossible(int numCourses, List<List<Integer>> prereqs) {
     HashMap<Integer, List<Integer>> graph = adjListHandleDisconnectedNodes(numCourses, prereqs);
     HashSet<Integer> visited = new HashSet<>();
