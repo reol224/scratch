@@ -98,6 +98,63 @@ class Scratch {
     System.out.println(hasPath(graph, "f", "k"));
   }
 
+  public static int countPathsStructy(List<List<String>> grid) {
+    return countPathsStructy(0, 0, grid, new HashMap<>());
+  }
+
+  public static int countPathsStructy(int row, int col, List<List<String>> grid, HashMap<List<Integer>, Integer> memo) {
+    // boundaries
+    if (row == grid.size() || col == grid.get(0).size()) { // end of grid, java's end is -1, not 0, because it's 0 based
+      return 0;
+    }
+
+    if (row == grid.size() - 1 && col == grid.get(0).size() - 1) { // we're at the bottom right corner
+      return 1;
+    }
+
+    if (grid.get(row).get(col) == "X") { // hit a wall
+      return 0;
+    }
+
+    List<Integer> cell = List.of(row, col);
+    if (memo.containsKey(cell)) {
+      return memo.get(cell);
+    }
+
+    int ans = countPathsStructy(row + 1, col, grid, memo) + countPathsStructy(row, col + 1, grid, memo);
+    memo.put(cell, ans);
+
+    return ans;
+  }
+
+  public static boolean sumPossible(int amount, List<Integer> numbers) {
+    return sumPossible(amount, numbers, new HashMap<>());
+  }
+
+  public static boolean sumPossible(int sum, List<Integer> numbers, HashMap<Integer, Boolean> memo) {
+    if (sum == 0) {
+      return true;
+    }
+
+    if (sum < 0) {
+      return false;
+    }
+
+    if (memo.containsKey(sum)) {
+      return memo.get(sum);
+    }
+
+    for (int num : numbers) {
+      if (sumPossible(sum - num, numbers, memo)) {
+        memo.put(sum, true);
+        return true;
+      }
+    }
+
+    memo.put(sum, false);
+    return false;
+  }
+
   public static int fibStructy(int n) {
     return fibWMemo(n, new HashMap<>());
   }
