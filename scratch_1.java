@@ -98,6 +98,142 @@ class Scratch {
     System.out.println(hasPath(graph, "f", "k"));
   }
 
+  public static boolean arrayStepper(List<Integer> nums) {
+    return arrayStepper(0, nums, new HashMap<>());
+  }
+  
+  public static boolean arrayStepper(int idx, List<Integer> nums, HashMap<Integer, Boolean> memo) {
+    // Structy solution
+    if (idx >= nums.size() - 1) {
+      return true;
+    }
+    
+    if (memo.containsKey(idx)) {
+      return memo.get(idx);
+    }
+    
+    for (int step = 1; step <= nums.get(idx); step += 1) {
+      if (arrayStepper(idx + step, nums, memo)) {
+        memo.put(idx, true);
+        return true;
+      }
+    }
+    memo.put(idx, false);
+    return false;
+  }
+
+  // Leetcode solution
+  public static boolean arrayStepperLeetcode(List<Integer> nums) {
+    int max = 0;
+    for (int i = 0; i < nums.size() && i <= max; i++) {
+      max = Math.max(max, i + nums.get(i));
+    }
+    return max >= nums.size() - 1;
+  }
+
+  public static int countingChange(int amount, List<Integer> coins) {
+    return countingChange(amount, 0, coins, new HashMap<>());
+  }
+
+  public static int countingChange(int amount, int current, List<Integer> coins, HashMap<List<Integer>, Integer> memo) {
+    if (amount == 0) {
+      return 1;
+    }
+
+    if (current == coins.size()) {
+      return 0;
+    }
+
+    List<Integer> key = List.of(amount, current);
+    if (memo.containsKey(key)) {
+      return memo.get(key);
+    }
+
+    int total = 0;
+    for (int quantity = 0; quantity * coins.get(current) <= amount; quantity++) {
+      int subAmount = amount - (quantity * coins.get(current));
+      total += countingChange(subAmount, current + 1, coins, memo);
+    }
+
+    memo.put(key, total);
+    return total;
+  }
+
+  public static int summingSquares(int n) {
+    return (int) summingSquares(n, new HashMap<>());
+  }
+
+  public static double summingSquares(int n, HashMap<Integer, Double> memo) {
+    if (n < 0) {
+      return Double.POSITIVE_INFINITY;
+    }
+
+    if (n == 0) {
+      return 0.;
+    }
+
+    if (memo.containsKey(n)) {
+      return memo.get(n);
+    }
+
+    Double min = Double.POSITIVE_INFINITY;
+    for (int i = 1; i <= Math.sqrt(n); i++) {
+      int square = i * i;
+      double squares = 1 + summingSquares(n - square, memo);
+      if (squares < min) {
+        min = squares;
+      }
+    }
+    memo.put(n, min);
+
+    return min;
+  }
+
+  public static int nonAdjacentSum(List<Integer> nums) {
+    return nonAdjacentSum(nums, 0, new HashMap<>());
+  }
+
+  public static int nonAdjacentSum(List<Integer> nums, int num, HashMap<Integer, Integer> memo) {
+    if (num >= nums.size()) {
+      return 0;
+    }
+
+    if (memo.containsKey(num)) {
+      return memo.get(num);
+    }
+
+    int ans = Math.max(nums.get(num) + nonAdjacentSum(nums, num + 2, memo), nonAdjacentSum(nums, num + 1, memo));
+
+    memo.put(num, ans);
+
+    return ans;
+  }
+
+  public static int maxPathSum(List<List<Integer>> grid) {
+    return (int) maxPathSum(0, 0, grid, new HashMap<>());
+  }
+
+  public static double maxPathSum(int row, int col, List<List<Integer>> grid, HashMap<List<Integer>, Double> memo) {
+    if (row == grid.size() || col == grid.get(0).size()) {
+      return Double.NEGATIVE_INFINITY;
+    }
+
+    if (row == grid.size() - 1 && col == grid.get(0).size() - 1) {
+      return grid.get(row).get(col);
+    }
+
+    List<Integer> cell = List.of(row, col);
+    if (memo.containsKey(cell)) {
+      return memo.get(cell);
+    }
+
+    double max = grid.get(row).get(col)
+        + Math.max(maxPathSum(row + 1, col, grid, memo), maxPathSum(row, col + 1, grid, memo));
+    memo.put(cell, max);
+
+    return max;
+  }
+
   public static int countPathsStructy(List<List<String>> grid) {
     return countPathsStructy(0, 0, grid, new HashMap<>());
   }
