@@ -76,15 +76,18 @@ class TrieNode {
   }
 }
 
-class Scratch {
+public class scratch_1 {
   static int result = 0;
-  int n;
+  static int n;
 
   Set<String> set = new HashSet<>();
 
   TreeNode prev;
 
   static boolean mem[][];
+
+  static int[][] directions = { { 0, 1 }, { 1, 0 }, { 0, -1 }, { -1, 0 } };
+  static int m;
 
   public static void main(String[] args) {
     Map<String, List<String>> graph = Map.of(
@@ -95,23 +98,119 @@ class Scratch {
         "j", List.of("i"),
         "k", List.of());
 
-    System.out.println(hasPath(graph, "f", "k"));
+  }
+
+  public static int longestIncreasingPath329(int[][] matrix) {
+    // https://leetcode.com/problems/longest-increasing-path-in-a-matrix/submissions/1772841569/
+    if (matrix == null || matrix.length == 0
+        || matrix[0].length == 0) {
+      return 0;
+    }
+
+    m = matrix.length;
+    n = matrix[0].length;
+
+    int[][] memo = new int[m][n];
+    int max = 0;
+
+    for (int i = 0; i < m; i++) {
+      for (int j = 0; j < n; j++) {
+        max = Math.max(max, maxDfsLip329(matrix, i, j, memo));
+      }
+    }
+
+    return max;
+  }
+
+  public static int maxDfsLip329(int[][] matrix, int i, int j, int[][] memo) {
+    if (memo[i][j] != 0) {
+      return memo[i][j];
+    }
+
+    int max = 1;
+    for (int[] dir : directions) {
+      int x = i + dir[0];
+      int y = j + dir[1];
+
+      if (x < 0 || y < 0 || x >= m || y >= n || matrix[x][y] <= matrix[i][j])
+        continue;
+      max = Math.max(max, maxDfsLip329(matrix, x, y, memo));
+    }
+
+    memo[i][j] = max;
+    return max;
+  }
+
+  public List<Integer> replaceNonCoprimes(int[] nums) {
+    // HARD
+    // This list acts like a stack to store the final merged values
+    List<Integer> result = new ArrayList<>();
+
+    // Iterate through each number in the input array
+    for (int num : nums) {
+      // Try merging with the last element in the result list
+      while (!result.isEmpty() && gcdLeetcode(result.get(result.size() - 1), num) > 1) {
+        // If the last number and current number are non-coprime,
+        // replace them with their Least Common Multiple (LCM)
+        num = lcm(result.get(result.size() - 1), num);
+        // Remove the last number since it's now merged
+        result.remove(result.size() - 1);
+      }
+      // Add the final merged number to the result list
+      result.add(num);
+    }
+
+    // Return the fully processed list
+    return result;
+  }
+
+  // Helper method to compute the Greatest Common Divisor (GCD)
+  private int gcdLeetcode(int a, int b) {
+    // Base case: if b is 0, GCD is a
+    // Recursive case: keep reducing using Euclidean algorithm
+    return b == 0 ? a : gcd(b, a % b);
+  }
+
+  // Helper method to compute the Least Common Multiple (LCM)
+  private int lcm(int a, int b) {
+    // LCM formula: (a * b) / GCD(a, b)
+    return a / gcd(a, b) * b;
+  }
+
+  public static int canBeTypedWords(String text, String brokenLetters) {
+    int count = 0;
+    String[] words = text.split(" ");
+
+    for (String word : words) {
+      boolean canType = true;
+      for (char c : word.toCharArray()) {
+        if (brokenLetters.indexOf(c) != -1) {
+          canType = false;
+          break;
+        }
+      }
+      if (canType) {
+        count++;
+      }
+    }
+
+    return count;
   }
 
   public static boolean arrayStepper(List<Integer> nums) {
     return arrayStepper(0, nums, new HashMap<>());
   }
-  
+
   public static boolean arrayStepper(int idx, List<Integer> nums, HashMap<Integer, Boolean> memo) {
     // Structy solution
     if (idx >= nums.size() - 1) {
       return true;
     }
-    
+
     if (memo.containsKey(idx)) {
       return memo.get(idx);
     }
-    
+
     for (int step = 1; step <= nums.get(idx); step += 1) {
       if (arrayStepper(idx + step, nums, memo)) {
         memo.put(idx, true);
