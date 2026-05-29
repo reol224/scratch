@@ -98,6 +98,124 @@ public class scratch_1 {
         "j", List.of("i"),
         "k", List.of());
 
+    System.out.println(alternatingSubarray(new int[] { 4, 5, 6 }));
+  }
+
+  public static int alternatingSubarray(int[] nums) {
+    if (nums.length < 1) {
+      return -1;
+    }
+
+    int count = 0;
+    int max = 0;
+    for (int i = 0; i < nums.length - 1; i++) {
+      if (Math.abs(nums[i] - nums[i + 1]) == 1) {
+        count++;
+        if (count > max) {
+          max = count;
+        }
+      } else {
+        count = 0;
+      }
+    }
+
+    return max;
+  }
+
+  public static int minimumSubarray(int[] nums, int k) {
+    int result = Integer.MAX_VALUE;
+    for (int i = 0; i < nums.length; i++) {
+      int bitwiseOR = 0;
+      for (int j = i; j < nums.length; j++) {
+        bitwiseOR |= nums[j];
+        if (bitwiseOR >= k) {
+          result = Math.min(result, j - i + 1);
+          break;
+        }
+      }
+
+    }
+    return result == Integer.MAX_VALUE ? -1 : result;
+  }
+
+  public static int minElement(int[] nums) {
+    int min = nums[0];
+    for (int i = 0; i < nums.length; i++) {
+      int sum = 0;
+      while (nums[i] != 0) {
+        int last = nums[i] % 10;
+        sum += last;
+        nums[i] /= 10;
+      }
+      if (sum < min) {
+        min = sum;
+      }
+    }
+
+    return min;
+  }
+
+  private int smallestPrimeFactor(int x) {
+
+    for (int d = 2; d * d <= x; d++) {
+
+      if (x % d == 0) {
+        return d;
+      }
+    }
+
+    return x; // x is prime
+  }
+
+  // https://leetcode.com/problems/find-the-length-of-the-longest-common-prefix/description/?envType=daily-question&envId=2026-05-25
+  public int maxRotateFunction(int[] nums) {
+    // value x position
+    int n = nums.length;
+
+    int sum = 0;
+    int position = 0;
+
+    for (int i = 0; i < n; i++) {
+      sum += nums[i];
+      position += i * nums[i];
+    }
+
+    int prev = position;
+    int max = position;
+
+    for (int j = 1; j < n; j++) {
+      int last = nums[n - j];
+      prev = prev + sum - n * last;
+      max = Math.max(max, prev);
+    }
+
+    return max;
+  }
+
+  public static boolean canReach(String s, int minJump, int maxJump) {
+    int n = s.length();
+    // [min jump ---in-bounds---- maxJump]
+
+    if (s.charAt(n - 1) != '0')
+      return false;
+
+    boolean[] reachable = new boolean[n];
+    int count = 0;
+    for (int i = 1; i < n; i++) {
+      if (i - minJump >= 0 && reachable[i - minJump]) {
+        count++;
+      }
+
+      if (i - maxJump - 1 >= 0 && reachable[i - maxJump]) {
+        count--;
+      }
+
+      if (count > 0 && s.charAt(i) == '0') {
+        reachable[i] = true;
+      }
+    }
+
+    return reachable[n - 1];
   }
 
   public static int longestIncreasingPath329(int[][] matrix) {
