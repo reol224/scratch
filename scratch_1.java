@@ -98,7 +98,127 @@ public class scratch_1 {
         "j", List.of("i"),
         "k", List.of());
 
-    System.out.println(alternatingSubarray(new int[] { 4, 5, 6 }));
+    // System.out.println(alternatingSubarray(new int[] { 4, 5, 6 }));
+    System.out.println(canReach(new int[] { 4, 2, 3, 0, 3, 1, 2 }, 5));
+
+  }
+
+  public static int getMinDistance(int[] nums, int target, int start) {
+    int minDistance = Integer.MAX_VALUE;
+    for (int i = 0; i < nums.length; i++) {
+      if (nums[i] == target) {
+        minDistance = Math.min(minDistance, Math.abs(i - start));
+      }
+    }
+    return minDistance == Integer.MAX_VALUE ? -1 : minDistance;
+  }
+
+  public int minimumCost(int[] cost) {
+    // 2144. Minimum Cost of Buying Candies With Discount
+    Arrays.sort(cost);
+
+    int ans = 0;
+    int count = 0;
+
+    for (int i = cost.length - 1; i >= 0; i--) {
+      count++;
+
+      if (count % 3 != 0) {
+        ans += cost[i];
+      }
+
+    }
+
+    return ans;
+  }
+
+  public static boolean canReach(int[] arr, int start) {
+    // jump game 3 - medium
+    if (start < 0 || start >= arr.length || arr[start] < 0) {
+      return false;
+    }
+
+    if (arr[start] == 0) {
+      return true;
+    }
+
+    int jump = arr[start];
+    arr[start] = -1; // mark as visited
+
+    return canReach(arr, start + jump) || canReach(arr, start - jump);
+  }
+
+  public static int minimumDistance(int[] nums) {
+    // int min = Integer.MAX_VALUE;
+    // for (int i = 0; i < nums.length; i++) {
+    // for (int j = i + 1; j < nums.length; j++) {
+    // for(int k = j + 1; k < nums.length; k++){
+    // if (nums[i] == nums[j] && nums[j] == nums[k]) {
+    // int distance = Math.abs(i - j) + Math.abs(j - k) + Math.abs(k - i);
+    // if (distance < min) {
+    // min = distance;
+    // }
+    // }
+    // }
+    // }
+    // }
+    // return min == Integer.MAX_VALUE ? -1 : min;
+
+    // HashMap version
+    HashMap<Integer, List<Integer>> map = new HashMap<>();
+    int min = Integer.MAX_VALUE;
+
+    for (int i = 0; i < nums.length; i++) {
+      if (!map.containsKey(nums[i])) {
+        map.put(nums[i], new ArrayList<>());
+      }
+      map.get(nums[i]).add(i);
+    }
+
+    for (int key : map.keySet()) {
+      List<Integer> indices = map.get(key);
+      if (indices.size() >= 3) {
+        for (int i = 0; i < indices.size() - 2; i++) {
+          int distance = Math.abs(indices.get(i) - indices.get(i + 1))
+              + Math.abs(indices.get(i + 1) - indices.get(i + 2))
+              + Math.abs(indices.get(i + 2) - indices.get(i));
+          if (distance < min) {
+            min = distance;
+          }
+        }
+      }
+    }
+
+    return min == Integer.MAX_VALUE ? -1 : min;
+  }
+
+  // https://leetcode.com/problems/total-distance-traveled/
+  public static int splitNum(int num) {
+    String numStr = String.valueOf(num);
+    char[] digits = numStr.toCharArray();
+    Arrays.sort(digits);
+    String num1 = "";
+    String num2 = "";
+    for (int i = 0; i < digits.length; i += 2) {
+      num1 += digits[i];
+    }
+    for (int i = 1; i < digits.length; i += 2) {
+      num2 += digits[i];
+    }
+
+    return Integer.parseInt(num1) + Integer.parseInt(num2);
+  }
+
+  public static int closestTarget(String[] words, String target, int startIndex) {
+    int ans = Integer.MAX_VALUE;
+    for (int i = 0; i < words.length; i++) {
+      if (words[i].equals(target)) {
+        int min = Math.abs(i - startIndex);
+        ans = Math.min(ans, Math.min(min, words.length - min));
+      }
+    }
+
+    return ans == Integer.MAX_VALUE ? -1 : ans;
   }
 
   public static int alternatingSubarray(int[] nums) {
