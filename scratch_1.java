@@ -103,6 +103,45 @@ public class scratch_1 {
 
   }
 
+  public int reverseBits(int n) {
+    // 190. reverse bits --> reverse the actual bits not the number!!!!!!
+    return Integer.reverse(n);
+  }
+
+  public int longestBalancedSubstring(String s) {
+    // 3713. Longest Balanced Substring I
+    int max = 0;
+    char[] letters = s.toCharArray();
+    for (int i = 0; i < letters.length; i++) {
+      int[] frequencies = new int[26];
+      for (int j = i; j < letters.length; j++) {
+        frequencies[letters[j] - 'a']++;
+
+        int target = 0;
+        boolean balanced = true;
+
+        for (int fr : frequencies) {
+          if (fr == 0) {
+            continue;
+          }
+
+          if (target == 0) {
+            target = fr;
+          } else if (target != fr) {
+            balanced = false;
+            break;
+          }
+
+        }
+        if (balanced) {
+          max = Math.max(max, j - i + 1);
+        }
+      }
+    }
+
+    return max;
+  }
+
   public int longestBalanced(int[] nums) {
     int max = 0;
     for (int i = 0; i < nums.length; i++) {
