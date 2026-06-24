@@ -99,8 +99,178 @@ public class scratch_1 {
         "k", List.of());
 
     // System.out.println(alternatingSubarray(new int[] { 4, 5, 6 }));
-    System.out.println(canReach(new int[] { 4, 2, 3, 0, 3, 1, 2 }, 5));
+    System.out.println(evaluate("AAB", "AAA"));
 
+  }
+
+  public int longestBalanced(int[] nums) {
+    int max = 0;
+    for (int i = 0; i < nums.length; i++) {
+      Set<Integer> set = new HashSet<>();
+      int pare = 0;
+      int impare = 0;
+      for (int j = i; j < nums.length; j++) {
+        if (!set.contains(nums[j])) {
+          set.add(nums[j]);
+          if (nums[j] % 2 == 0) {
+            pare++;
+          } else {
+            impare++;
+          }
+
+        }
+        if (pare == impare) {
+          max = Math.max(max, j - i + 1);
+        }
+      }
+    }
+
+    return max;
+  }
+
+  public long minimumCost(String source, String target, char[] original, char[] changed, int[] cost) {
+    long total = 0;
+
+    long[][] min = new long[26][26];
+    for (long[] row : min) {
+      Arrays.fill(row, Integer.MAX_VALUE);
+    }
+
+    for (int i = 0; i < original.length; i++) {
+      int startChar = original[i] - 'a';
+      int endChar = changed[i] - 'a';
+
+      min[startChar][endChar] = Math.min(min[startChar][endChar], (long) cost[i]);
+    }
+
+    // floyd warshall -->
+    for (int k = 0; k < 26; k++) {
+      for (int i = 0; i < 26; i++) {
+        for (int j = 0; j < 26; j++) {
+          min[i][j] = Math.min(min[i][j],
+              min[i][k] + min[k][j]);
+        }
+      }
+    }
+    // <-- floyd warshall
+    for (int i = 0; i < source.length(); i++) {
+      if (source.charAt(i) == target.charAt(i)) {
+        continue;
+      }
+
+      int sourceC = source.charAt(i) - 'a';
+      int targetC = target.charAt(i) - 'a';
+
+      if (min[sourceC][targetC] >= Integer.MAX_VALUE) {
+        return -1;
+      }
+
+      total += min[sourceC][targetC];
+    }
+
+    return total;
+  }
+
+  public int minCost(int n, int[][] edges) {
+    // min cost dijkstra (Reversed edges or sum bs)
+    List<int[]>[] g = new ArrayList[n];
+    for (int i = 0; i < n; i++) {
+      g[i] = new ArrayList<>();
+    }
+
+    for (int[] edge : edges) {
+      int x = edge[0];
+      int y = edge[1];
+      int w = edge[2];
+
+      g[x].add(new int[] { y, w });
+      g[y].add(new int[] { x, 2 * w });
+    }
+
+    // hell
+    int[] d = new int[n];
+    boolean[] visited = new boolean[n];
+    Arrays.fill(d, Integer.MAX_VALUE);
+    d[0] = 0;
+
+    PriorityQueue<int[]> pq = new PriorityQueue<>(Comparator.comparingInt(a -> a[0]));
+
+    pq.offer(new int[] { 0, 0 }); // [distance, node];
+
+    while (!pq.isEmpty()) {
+      int[] current = pq.poll();
+      int distance = current[0];
+      int x = current[1];
+
+      if (x == n - 1) {
+        return distance;
+      }
+
+      if (visited[x]) {
+        continue;
+      }
+      visited[x] = true;
+
+      for (int[] neighbor : g[x]) {
+        int y = neighbor[0];
+        int w = neighbor[1];
+
+        if (distance + w < d[y]) {
+          d[y] = distance + w;
+          pq.offer(new int[] { d[y], y });
+        }
+      }
+    }
+
+    return -1;
+  }
+
+  public static String evaluate(String secret, String guess) {
+    int n = secret.length();
+    char[] res = new char[n];
+    Map<Character, Integer> freq = new HashMap<>();
+
+    // First pass: handle Greens and count remaining letters
+    for (int i = 0; i < n; i++) {
+      if (secret.charAt(i) == guess.charAt(i)) {
+        res[i] = 'G';
+      } else {
+        res[i] = '*';
+        char c = secret.charAt(i);
+        freq.put(c, freq.getOrDefault(c, 0) + 1);
+      }
+    }
+
+    // Second pass: handle Yellows and Reds
+    for (int i = 0; i < n; i++) {
+      if (res[i] == 'G')
+        continue;
+
+      char c = guess.charAt(i);
+      if (freq.getOrDefault(c, 0) > 0) {
+        res[i] = 'Y';
+        freq.put(c, freq.get(c) - 1);
+      } else {
+        res[i] = 'R';
+      }
+    }
+
+    return new String(res);
+  }
+
+  public static int maxIceCream(int[] costs, int coins) {
+    // 1833. Maximum Ice Cream Bars
+    Arrays.sort(costs);
+    int count = 0;
+    for (int cost : costs) {
+      if (coins >= cost) {
+        coins -= cost;
+        count++;
+      } else {
+        break;
+      }
+    }
+    return count;
   }
 
   public static int getMinDistance(int[] nums, int target, int start) {
