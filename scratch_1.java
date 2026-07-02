@@ -103,6 +103,25 @@ public class scratch_1 {
 
   }
 
+  public static int countMajoritySubarrays(int[] nums, int target) {
+    int n = nums.length;
+    int ans = 0;
+    for (int i = 0; i < n; i++) {
+      int count = 0;
+      for (int j = i; j < n; j++) {
+        if (nums[j] == target) {
+          count++;
+        } else {
+          count = -1;
+        }
+        if (count > 0) {
+          ans++;
+        }
+      }
+    }
+    return ans;
+  }
+
   public int reverseBits(int n) {
     // 190. reverse bits --> reverse the actual bits not the number!!!!!!
     return Integer.reverse(n);
