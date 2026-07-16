@@ -99,8 +99,215 @@ public class scratch_1 {
         "k", List.of());
 
     // System.out.println(alternatingSubarray(new int[] { 4, 5, 6 }));
-    System.out.println(evaluate("AAB", "AAA"));
+    // System.out.println(evaluate("AAB", "AAA"));
+    System.out.println();
 
+  }
+
+  public static boolean[] pathExistenceQueries(int n, int[] nums, int maxDiff, int[][] queries) {
+    int[] component = new int[n];
+
+    int val = 0;
+    component[0] = 0;
+
+    for (int i = 1; i < n; i++) {
+      if (nums[i] - nums[i - 1] > maxDiff) {
+        val++;
+      }
+      component[i] = val;
+    }
+
+    boolean[] ans = new boolean[queries.length];
+
+    for (int i = 0; i < queries.length; i++) {
+      int u = queries[i][0];
+      int v = queries[i][1];
+      ans[i] = component[u] == component[v];
+    }
+
+    return ans;
+  }
+
+  public static int longestCommonPrefix(int[] arr1, int[] arr2) {
+    Set<Integer> arr1pref = new HashSet<Integer>();
+
+    for (int val : arr1) {
+      while (!arr1pref.contains(val)) {
+        arr1pref.add(val);
+        val /= 10;
+      }
+    }
+
+    int longest = 0;
+
+    for (int val : arr2) {
+      while (!arr1pref.contains(val) && val > 0) {
+        val /= 10;
+      }
+      if (val > 0) {
+        // Length of the matched prefix using log10 to determine the number of digits
+        longest = Math.max(
+            longest,
+            (int) Math.log10(val) + 1);
+      }
+    }
+    return longest;
+  }
+
+  public static int countSubmatrices(int[][] grid, int k) {
+    // TLE
+    // int count = 0;
+    // int rows = grid.length;
+    // int cols = grid[0].length;
+    // for (int i = 0; i < rows; i++) {
+    // for (int j = 0; j < cols; j++) {
+    // int sum = 0;
+    // for (int m = 0; m <= i; m++) {
+    // for (int n = 0; n <= j; n++) {
+    // sum += grid[m][n];
+    // }
+    // }
+
+    // if (sum <= k) {
+    // count++;
+    // }
+    // }
+    // }
+    // return count;
+    int count = 0;
+    int rows = grid.length;
+    int cols = grid[0].length;
+    for (int i = 0; i < rows; i++) {
+      for (int j = 0; j < cols; j++) {
+        if (i > 0) {
+          grid[i][j] += grid[i - 1][j];
+        }
+        if (j > 0) {
+          grid[i][j] += grid[i][j - 1];
+        }
+        if (i > 0 && j > 0) {
+          grid[i][j] -= grid[i - 1][j - 1];
+        }
+        if (grid[i][j] <= k) {
+          count++;
+        }
+      }
+    }
+    return count;
+  }
+
+  public static int gcdOfOddEvenSums(int n) {
+    int oddSum = 0;
+    int evenSum = 0;
+
+    for (int i = 1; i <= n; i++) {
+      if (i % 2 == 0) {
+        evenSum += i;
+      } else {
+        oddSum += i;
+      }
+    }
+
+    return gcd(oddSum, evenSum);
+  }
+
+  public static int[] arrayRankTransform(int[] arr) {
+    int[] sorted = arr.clone();
+    Arrays.sort(sorted);
+
+    Map<Integer, Integer> rankMap = new HashMap<>();
+    int rank = 1;
+
+    for (int i = 0; i < sorted.length; i++) {
+      if (!rankMap.containsKey(sorted[i])) {
+        rankMap.put(sorted[i], rank++);
+      }
+    }
+    int[] result = new int[arr.length];
+    for (int i = 0; i < arr.length; i++) {
+      result[i] = rankMap.get(arr[i]);
+    }
+    return result;
+  }
+
+  public static int minMirrorPairDistance(int[] nums) {
+    Map<Integer, Integer> map = new HashMap<>();
+    int minDistance = nums.length + 1;
+
+    for (int i = 0; i < nums.length; i++) {
+      int copy = nums[i];
+      if (map.containsKey(copy)) {
+        minDistance = Math.min(minDistance, i - map.get(copy));
+      }
+      // map.put(reverseNum(copy), i);
+    }
+
+    return minDistance == nums.length + 1 ? -1 : minDistance;
+  }
+
+  public static int countPrimeSetBits(int left, int right) {
+    int count = 0;
+    for (int i = left; i <= right; i++) {
+      int bits = Integer.bitCount(i);
+      if (isPrime(bits) == 1) {
+        count++;
+      }
+    }
+    return count;
+  }
+
+  public static int isPrime(int n) {
+    if (n < 2)
+      return 0;
+    for (int i = 2; i * i <= n; i++) {
+      if (n % i == 0)
+        return 0;
+    }
+    return 1;
+  }
+
+  public static int rotatedDigits(int n) {
+    int count = 0;
+    for (int i = 1; i <= n; i++) {
+      if (isGoodRotatedDigits(i)) {
+        count++;
+      }
+    }
+    return count;
+  }
+
+  public static boolean isGoodRotatedDigits(int n) {
+    boolean passes = false;
+
+    while (n > 0) {
+      int last = n % 10;
+      if (last == 3 || last == 4 || last == 7) {
+        return false;
+      }
+      if (last == 2 || last == 5 || last == 6 || last == 9) {
+        passes = true;
+      }
+      n /= 10;
+    }
+    return passes;
+  }
+
+  public static int binaryGap(int n) {
+    StringBuilder sb = new StringBuilder(Integer.toBinaryString(n));
+    int maxGap = 0;
+
+    for (int i = 0; i < sb.length(); i++) {
+      if (sb.charAt(i) == '1') {
+        int j = i + 1;
+        while (j < sb.length() && sb.charAt(j) != '1') {
+          j++;
+        }
+        if (j < sb.length()) {
+          maxGap = Math.max(maxGap, j - i);
+        }
+      }
+    }
+    return maxGap;
   }
 
   public static int countMajoritySubarrays(int[] nums, int target) {
