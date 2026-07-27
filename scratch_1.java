@@ -100,8 +100,51 @@ public class scratch_1 {
 
     // System.out.println(alternatingSubarray(new int[] { 4, 5, 6 }));
     // System.out.println(evaluate("AAB", "AAA"));
-    System.out.println();
+    System.out.println(hasAllCodes("00110110", 2));
 
+  }
+
+  public static int prefixCount(String[] words, String pref) {
+    int count = 0;
+    for (String word : words) {
+      if (word.startsWith(pref)) {
+        count++;
+      }
+    }
+    return count;
+  }
+
+  public int maximumUniqueSubarray(int[] nums) {
+    Set<Integer> set = new HashSet<>();
+    int max = 0;
+    int sum = 0;
+    int left = 0;
+    for (int right = 0; right < nums.length; right++) {
+      while (set.contains(nums[right])) {
+        set.remove(nums[left]);
+        sum -= nums[left];
+        left++;
+      }
+      set.add(nums[right]);
+      sum += nums[right];
+      max = Math.max(max, sum);
+    }
+
+    return max;
+  }
+
+  public static boolean hasAllCodes(String s, int k) {
+    Set<Integer> set = new HashSet<>();
+    for (int i = 0; i <= s.length() - k; i++) {
+      String substring = s.substring(i, i + k);
+      int value = Integer.parseInt(substring, 2);
+      set.add(value);
+    }
+    if (set.size() == Math.pow(2, k)) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
   public static boolean[] pathExistenceQueries(int n, int[] nums, int maxDiff, int[][] queries) {
