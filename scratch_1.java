@@ -100,8 +100,86 @@ public class scratch_1 {
 
     // System.out.println(alternatingSubarray(new int[] { 4, 5, 6 }));
     // System.out.println(evaluate("AAB", "AAA"));
-    System.out.println(hasAllCodes("00110110", 2));
+    System.out.println(minDeletionSize(new String[] { "cba", "daf", "ghi" }));
 
+  }
+
+  /**
+   * chars[s.length() - 1 - i] = chars[i];
+   * place the char at the end of the string at the index of the current char
+   * so basically on the opposite side of the string
+   */
+
+  /**
+   * if (i != j && intervals[j][0] <= intervals[i][0] && intervals[i][1] <=
+   * intervals[j][1])
+   * 
+   */
+
+  public static int minDeletionSize(String[] strs) {
+    int count = 0;
+    for (int i = 0; i < strs[0].length(); i++) {
+      for (int j = 1; j < strs.length; j++) {
+        if (strs[j].charAt(i) < strs[j - 1].charAt(i)) {
+          count++;
+          break;
+        }
+      }
+    }
+    return count;
+  }
+
+  public static int removeCoveredIntervals(int[][] intervals) {
+    int count = 0;
+    for (int i = 0; i < intervals.length; i++) {
+      boolean covered = false;
+      for (int j = 0; j < intervals.length; j++) {
+        if (i != j && intervals[j][0] <= intervals[i][0] && intervals[i][1] <= intervals[j][1]) {
+          covered = true;
+          break;
+        }
+      }
+      if (!covered) {
+        count++;
+      }
+    }
+    return count;
+  }
+
+  public static String processStr(String s) {
+    StringBuilder sb = new StringBuilder();
+    for (char c : s.toCharArray()) {
+      if (c == '*') {
+        if (sb.length() > 0) {
+          sb.deleteCharAt(sb.length() - 1);
+        }
+      } else if (c == '#') {
+        sb.append(sb.toString());
+      } else if (c == '%') {
+        sb.reverse();
+      } else {
+        sb.append(c);
+      }
+    }
+    return sb.toString();
+  }
+
+  public static long sumAndMultiply(int n) {
+    long ans = 0;
+    long sum = 0;
+
+    StringBuilder sb = new StringBuilder(Integer.toString(n));
+    String s = "";
+    for (int i = 0; i < sb.length(); i++) {
+      if (sb.charAt(i) == '0') {
+        continue;
+      } else {
+        s += sb.charAt(i);
+        sum += Character.getNumericValue(sb.charAt(i));
+      }
+    }
+    ans = sum * Long.parseLong(s);
+    return ans;
   }
 
   public static int prefixCount(String[] words, String pref) {
