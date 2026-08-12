@@ -116,6 +116,42 @@ public class scratch_1 {
    * 
    */
 
+  class Solution {
+    public int minScore(int n, int[][] roads) {
+      // Build adjacency list storing [neighbor, weight]
+      List<List<int[]>> graph = new ArrayList<>();
+      for (int i = 0; i <= n; i++)
+        graph.add(new ArrayList<>());
+
+      for (int[] road : roads) {
+        graph.get(road[0]).add(new int[] { road[1], road[2] });
+        graph.get(road[1]).add(new int[] { road[0], road[2] });
+      }
+
+      // BFS from node 1, find min edge in its connected component
+      boolean[] visited = new boolean[n + 1];
+      Queue<Integer> queue = new LinkedList<>();
+      queue.offer(1);
+      visited[1] = true;
+      int minScore = Integer.MAX_VALUE;
+
+      while (!queue.isEmpty()) {
+        int node = queue.poll();
+        for (int[] neighbor : graph.get(node)) {
+          int next = neighbor[0], weight = neighbor[1];
+          // track min edge weight regardless of whether we visit next
+          minScore = Math.min(minScore, weight);
+          if (!visited[next]) {
+            visited[next] = true;
+            queue.offer(next);
+          }
+        }
+      }
+
+      return minScore;
+    }
+  }
+
   public static int minDeletionSize(String[] strs) {
     int count = 0;
     for (int i = 0; i < strs[0].length(); i++) {
@@ -6305,6 +6341,7 @@ public class scratch_1 {
     for (int num : nums) {
       hash.add(num);
     }
+    Collections.sort(new ArrayList<>(hash));
 
     for (int i = 0; i < nums.length; i++) {
       if (!hash.contains(i + 1)) {
@@ -9473,16 +9510,6 @@ public class scratch_1 {
       s[i] = sb.charAt(i);
     }
     System.out.println(s);
-  }
-
-  public static int prodImpare() {
-    Scanner scanner = new Scanner(System.in);
-    int n = scanner.nextInt();
-    int produs = 1;
-    for (int i = 1; i <= 2 * n - 1; i += 2) {
-      produs = produs * i;
-    }
-    return produs;
   }
 
   public static int[] intersect(int[] nums1, int[] nums2) {
