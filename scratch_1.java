@@ -104,6 +104,19 @@ public class scratch_1 {
 
   }
 
+  public int nthUglyNumber(int n) {
+    TreeSet<Long> set = new TreeSet<>();
+    set.add(1L);
+    Long current = 1L;
+    for (int i = 0; i < n; i++) {
+      current = set.pollFirst();
+      set.add(current * 2);
+      set.add(current * 3);
+      set.add(current * 5);
+    }
+    return current.intValue();
+  }
+
   /**
    * chars[s.length() - 1 - i] = chars[i];
    * place the char at the end of the string at the index of the current char
