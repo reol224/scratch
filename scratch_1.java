@@ -1,6 +1,8 @@
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.*;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.stream.IntStream;
@@ -84,24 +86,358 @@ public class scratch_1 {
 
   TreeNode prev;
 
-  static boolean mem[][];
+  static boolean[][] mem;
 
   static int[][] directions = { { 0, 1 }, { 1, 0 }, { 0, -1 }, { -1, 0 } };
   static int m;
 
   public static void main(String[] args) {
-    Map<String, List<String>> graph = Map.of(
-        "f", List.of("g", "i"),
-        "g", List.of("h"),
-        "h", List.of(),
-        "i", List.of("g", "k"),
-        "j", List.of("i"),
-        "k", List.of());
+    System.out.println(toggleLightBulbs(Arrays.asList(10,30,20,10)));
+  }
 
-    // System.out.println(alternatingSubarray(new int[] { 4, 5, 6 }));
-    // System.out.println(evaluate("AAB", "AAA"));
-    System.out.println(minDeletionSize(new String[] { "cba", "daf", "ghi" }));
+  public static boolean checkTwoChessboards(String coordinate1, String coordinate2) {
+    // Input: coordinate1 = "a1", coordinate2 = "c3"
 
+    //Output: true
+    //because a = 97 + 1 (from a1) = 98
+    // and c = 99 + 3 (from c3) = 102
+        return ((coordinate1.charAt(0) + coordinate1.charAt(1)) % 2) == ((coordinate2.charAt(0) + coordinate2.charAt(1)) % 2);
+    }
+
+  public boolean isAcronym(List<String> words, String s) {
+    StringBuilder acronym = new StringBuilder();
+    for (String word : words) {
+      acronym.append(word.charAt(0));
+    }
+
+    return acronym.toString().equals(s);
+  }
+
+  public static int smallestEvenMultiple(int n) {
+        if(n % 2 == 0) return n;
+        return n * 2; //impar
+  }
+
+  public static int differenceOfSums(int n, int m) {
+       // [1, n] is n * (n + 1) / 2
+       int x = n / m;
+       int num1 = n * (n + 1) / 2;
+       int num2 = m * x * (x + 1);
+       return num1 - num2;
+    }
+
+  public static int[] assignTasks(int[] servers, int[] tasks) {
+        int ans[] = new int[tasks.length];
+
+        PriorityQueue<int[]> freeServer = new PriorityQueue<>((a, b) ->
+            a[1] != b[1] ? Integer.compare(a[1], b[1]) : Integer.compare(a[0], b[0])
+        );
+
+        PriorityQueue<int[]> usedServer = new PriorityQueue<>((a, b) ->
+            a[1] != b[1] ? Integer.compare(a[1], b[1]) : Integer.compare(a[0], b[0])
+        );
+
+        for(int i = 0; i < servers.length; i++){
+          freeServer.offer(new int[]{i, servers[i]});
+        }
+
+
+        // the actual implementation
+        int current = 0;
+        for(int i = 0; i < tasks.length; i++){
+          current = Math.max(current, i);
+          // free up servers that have finished their tasks
+          while(!usedServer.isEmpty() && usedServer.peek()[1] <= current){
+            int[] server = usedServer.poll();
+            freeServer.offer(new int[]{server[0], servers[server[0]]});
+          }
+
+          // if no free servers, move time forward to the next available server
+          if(freeServer.isEmpty()){
+            current = usedServer.peek()[1];
+            while(!usedServer.isEmpty() && usedServer.peek()[1] == current){
+              int[] server = usedServer.poll();
+              freeServer.offer(new int[]{server[0], servers[server[0]]});
+            }
+          }
+
+          // assign the task to the best available server
+          int[] server = freeServer.poll();
+          ans[i] = server[0];
+          usedServer.offer(new int[]{server[0], current + tasks[i]});
+        }
+        return ans;
+  }
+
+  public static String trimTrailingVowels(String s) {
+    int i = s.length() - 1;
+    while (i >= 0 && (s.charAt(i) == 'a' || s.charAt(i) == 'e' || s.charAt(i) == 'i' || s.charAt(i) == 'o' || s.charAt(i) == 'u')) {
+      i--;
+    }
+    return s.substring(0, i + 1);
+  }
+
+  public static int countNegatives(int[][] grid) {
+        int count = 0;
+
+        for (int[] row : grid) {
+            int l = 0;
+            int r = row.length - 1;
+
+            while (l <= r) {
+                int mid = l + (r - l) / 2;
+
+                if (row[mid] < 0) {
+                    r = mid - 1;
+                } else {
+                    l = mid + 1;
+                }
+            }
+
+            count += row.length - l;
+        }
+
+        return count;
+    }
+
+  public static int findMinFibonacciNumbers(int k) {
+    List<Integer> fib = new ArrayList<>();
+    fib.add(1);
+    fib.add(1);
+
+    while(true){
+      int size = fib.size();
+      int next = fib.get(size - 1) + fib.get(size - 2);
+      if(next > k){
+        break;
+      }
+      fib.add(next);
+    }
+    int count = 0;
+      for(int i = fib.size() - 1; i >= 0; i--){
+        if(fib.get(i) <= k){
+          k -= fib.get(i);
+          count++;
+        }
+      }
+
+      return count;
+    }
+
+  public static boolean threeFibonacciSum(int n) {
+    // Euler-Binet formula
+    long c = n / 2;
+    return isSquare(5 * c * c + 4) || isSquare(5 * c * c - 4);
+  }
+
+  public static boolean isSquare(long x){
+    long s = (long)Math.sqrt(x);
+    return s * s == x;
+  }
+
+  public static int isPrefixOfWord(String sentence, String searchWord) {
+    String[] words = sentence.split(" ");
+    for (int i = 0; i < words.length; i++) {
+      if (words[i].startsWith(searchWord)) {
+        return i + 1;
+      }
+    }
+
+      return -1;
+    }
+
+  public static int calculateScore(int a, int b) {
+        int aBits = Integer.bitCount(a);
+        int bBits = Integer.bitCount(b);  
+
+        if(aBits > bBits){
+          return aBits * bBits;
+        } else {
+          return bBits / aBits;
+        }
+  }
+
+    public static int[] countServers(int n, int[][] logs, int x, int[] queries) {
+        int[] result = new int[queries.length];
+
+        Integer[] order = new Integer[queries.length];
+        for (int i = 0; i < queries.length; i++) {
+            order[i] = i;
+        }
+
+        Arrays.sort(order, (a, b) ->
+            Integer.compare(queries[a], queries[b])
+        );
+
+        Arrays.sort(logs, (a, b) ->
+            Integer.compare(a[1], b[1])
+        );
+
+        int left = 0;
+        int right = 0;
+        int active = 0;
+        int[] freq = new int[n + 1];
+
+        for (int i = 0; i < order.length; i++) {
+            int queryTime = queries[order[i]];
+
+            // Add all logs up to queryTime
+            while (right < logs.length && logs[right][1] <= queryTime) {
+                int server = logs[right][0];
+
+                if (freq[server] == 0) {
+                    active++;
+                }
+
+                freq[server]++;
+                right++;
+            }
+
+            // Remove logs outside the inclusive window
+            while (left < right && logs[left][1] < queryTime - x) {
+                int server = logs[left][0];
+
+                freq[server]--;
+
+                if (freq[server] == 0) {
+                    active--;
+                }
+
+                left++;
+            }
+
+            result[order[i]] = n - active;
+        }
+
+        return result;
+    }
+
+  public static int countDistinct(int[] nums, int k, int p) {
+    int count = 0;
+    int n = nums.length;
+
+    long base = 201;
+    long mod = 45887423068929227L;
+
+
+    Set<Long> set = new HashSet<>();
+
+    for(int i = 0; i < n; i++){
+      long hash = 0;
+      int divCount = 0;
+      for(int j = i; j < n; j++){
+        if(nums[j] % p == 0){
+          divCount++;
+        }
+
+        if(divCount > k){
+          break;
+        }
+
+        //Rabin-Karp rolling hash
+        hash = (hash * base + nums[j]) % mod;
+        
+        if(set.add(hash)){
+          count++;
+        }
+      }
+    }
+
+
+    return count;
+  }
+  
+  public static int longestSubarrayWithAtMostKDistinctPrimeFactors(int[] nums, int k) {
+     int left = 0;
+     int count = 0;
+     int maxLength = 0;
+
+     int[] fq = new int[1000001]; // Assuming the maximum number in nums is 10^6
+     
+     for(int right = 0; right < nums.length; right++) {
+         for(int prime : countDistinctPrimeFactors(nums[right])) {
+             if(fq[prime] == 0) {
+                 count++;
+             }
+
+             fq[prime]++;
+         }
+         
+         while(count > k) {
+             for(int prime : countDistinctPrimeFactors(nums[left])) {
+                 fq[prime]--;
+                 if(fq[prime] == 0) {
+                     count--;
+                 }
+             }
+             left++;
+         }
+         
+         maxLength = Math.max(maxLength, right - left + 1);
+     }
+     return maxLength;
+  }
+
+  public static Set<Integer> countDistinctPrimeFactors(int num){
+    
+    Set<Integer> primeFactors = new HashSet<>();
+    for(int i = 2; i * i <= num; i++){
+      while(num % i == 0){
+        primeFactors.add(i);
+        num /= i;
+      }
+    }
+    if(num > 1){
+      primeFactors.add(num);
+    }
+    return primeFactors;
+  }
+
+  public static String licenseKeyFormatting(String s, int k) {
+    StringBuilder sb = new StringBuilder();
+    int count = 0;
+    for(int i = s.length() - 1; i >= 0; i--){
+      if(s.charAt(i) == '-'){
+        continue;
+      } else{
+        if(count == k){
+          sb.append('-');
+          count = 0;
+        }
+        sb.append(Character.toUpperCase(s.charAt(i)));
+        count++;
+      }
+    }
+    return sb.reverse().toString();
+  }
+
+  public static boolean isLongPressedNameNew(String name, String typed) {
+    int freq[] = new int[26];
+    for (char c : name.toCharArray()) {
+      freq[c - 'a']++;
+    }
+    for (char c : typed.toCharArray()) {
+      freq[c - 'a']--;
+    }
+    for (int i = 0; i < 26; i++) {
+      if (freq[i] > 0) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  public static int heightChecker(int[] heights) {
+    int[] sorted = heights.clone();
+    Arrays.sort(sorted);
+    int result = 0;
+
+    for(int i = 0; i < heights.length; i++){
+      if(heights[i] != sorted[i]){
+        result++;
+      }
+    }
+    return result;
   }
 
   public int nthUglyNumber(int n) {
@@ -8490,7 +8826,7 @@ public class scratch_1 {
     return list;
   }
 
-  public int heightChecker(int[] heights) {
+  public int heightCheckerOld(int[] heights) {
     int[] sortedHeights = Arrays.copyOf(heights, heights.length);
     Arrays.sort(sortedHeights);
     int count = 0;
